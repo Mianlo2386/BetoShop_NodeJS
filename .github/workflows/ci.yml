@@ -8,13 +8,12 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  NODE_VERSION: '25.8.1'
 
 jobs:
   test:
-    name: Run Test Suite (Node.js ${{ env.NODE_VERSION }})
+    name: Run Test Suite (Node.js 25.8.1)
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 25.8.1
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
