@@ -13,6 +13,7 @@ jobs:
   test:
     name: Run Test Suite (Node.js 25.8.1)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -29,14 +30,6 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
-      - name: Run Vitest Test Suite with Coverage
+      - name: Run Vitest Test Suite
         working-directory: ./backend
-        run: npm test -- --coverage
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          directory: ./backend/coverage/
-          files: lcov.info
-          format: lcov
-        continue-on-error: true
+        run: npm test
