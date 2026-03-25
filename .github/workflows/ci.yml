@@ -6,36 +6,27 @@ on:
   pull_request:
     branches: [ main ]
 
-# --- NIVEL WORKFLOW (Recomendado) ---
-# Al ponerlo aquí, afecta a todos los jobs y todos los pasos automáticamente.
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
-  test-suite:
+  test:
+    name: Run Test Suite (Node.js 25.8.1)
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
-    # --- NIVEL JOB (Alternativa) ---
-    # Si prefieres que solo afecte a este job específico, ponlo aquí (fuera de steps).
-    # env:
-    #   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - name: Setup Node.js v25.8.1
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
-          node-version: '25.8.1'
+          node-version: 25.8.1
           cache: 'npm'
-          cache-dependency-path: './backend/package-lock.json'
+          cache-dependency-path: backend/package-lock.json
 
-      - name: Install Dependencies
+      - name: Install dependencies
+        working-directory: ./backend
         run: npm ci
-        working-directory: ./backend
 
-      - name: Run Vitest Suite (40 Tests)
-        run: npm test
+      - name: Run Vitest Test Suite
         working-directory: ./backend
+        run: npm test
