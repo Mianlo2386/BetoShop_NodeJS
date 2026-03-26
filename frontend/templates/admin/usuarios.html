@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Usuarios Registrados</h2>
+
+        <table class="table table-bordered table-hover text-center shadow-sm">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.id}">1</td>
+                <td th:text="${usuario.username}">usuario1</td>
+                <td th:text="${usuario.email}">usuario@correo.com</td>
+                <td>
+                    <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}"
+                          method="post"
+                          class="d-inline">
+                        <button type="submit"
+                                class="btn btn-outline-danger btn-sm"
+                                onclick="return confirm('¿Eliminar este usuario?')">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+
+<!-- Scripts -->
+<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Script de confirmación de logout -->
+<script th:src="@{/assets/js/logoutConfirm.js}"></script>
+</body>
+</html>

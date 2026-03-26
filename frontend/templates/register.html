@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/head :: head}"></head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<!-- Registro -->
+<div class="modal-dialog modal-lg d-flex justify-content-center align-items-center vh-100">
+    <div class="modal-content modal-body border-0 p-4 shadow bg-white rounded">
+        <!-- Logo de la tienda -->
+        <div class="text-center mb-3">
+            <img th:src="@{/assets/img/logo.png}" alt="Logo BetoStore" class="img-fluid" style="max-height: 100px;">
+        </div>
+
+        <!-- Botón Cerrar -->
+        <div class="text-right mb-4">
+            <button type="button" class="btn-close" aria-label="Cerrar" onclick="location.href='/'"></button>
+        </div>
+
+        <h3 class="text-center mb-4 text-success">Registro de Usuario</h3>
+
+        <form action="/register" method="post">
+            <!-- Input de Usuario -->
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" required>
+            </div>
+            <!-- Input de Correo -->
+            <div class="input-group mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
+            </div>
+            <!-- Input de Contraseña -->
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+            </div>
+            <!-- Botón de Enviar -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn bg-success text-white">Registrarse</button>
+            </div>
+            <!-- Enlace de login -->
+            <div class="text-center mt-3">
+                <small>¿Ya tienes cuenta? <a href="/login" class="text-success">Inicia sesión</a></small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

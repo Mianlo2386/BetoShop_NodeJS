@@ -21,8 +21,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 2
 
-      - name: Claude Code Security Review
-        uses: anthropics/claude-code-security-review@v1
+      - name: Claude Security Review Action
+        uses: anthropics/claude-code-security-review@main
         with:
-          comment-pr: true
           claude-api-key: ${{ secrets.CLAUDE_API_KEY }}

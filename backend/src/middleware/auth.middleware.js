@@ -2,14 +2,7 @@ import jwt from 'jsonwebtoken';
 import { authConfig } from '../config/auth.js';
 import Usuario from '../schemas/usuario.schema.js';
 import { ROLES } from '../config/auth.js';
-
-export class AuthError extends Error {
-  constructor(message, statusCode = 401) {
-    super(message);
-    this.statusCode = statusCode;
-    this.name = 'AuthError';
-  }
-}
+import { AuthError } from './errorHandler.middleware.js';
 
 export const verifyJWT = async (req, res, next) => {
   try {

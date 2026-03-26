@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<div th:insert="~{fragments/head :: head}"></div>
+
+<!-- Slick -->
+<!--<link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">-->
+
+
+<body>
+
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div th:insert="~{fragments/modal :: modal}"></div>
+
+<!-- Open Content -->
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3">
+                    <!-- Imagen principal del producto -->
+                    <img class="card-img img-fluid" th:src="${producto.imagenUrl}" alt="Imagen principal del producto" id="product-detail">
+                </div>
+                <div class="row">
+                    <!-- Flecha izquierda -->
+                    <div class="col-1 align-self-center">
+                        <a href="#multi-item-example" role="button" data-bs-slide="prev">
+                            <i class="text-dark fas fa-chevron-left"></i>
+                            <span class="sr-only">Previo</span>
+                        </a>
+                    </div>
+
+                    <!-- Contenedor del carrusel -->
+                    <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
+                        <div class="carousel-inner product-links-wap" role="listbox">
+                            <div th:each="i : ${#numbers.sequence(0, imagenes.size() - 1, 3)}" class="carousel-item" th:classappend="${i == 0} ? 'active'">
+                                <div class="row">
+                                    <div class="col-4" th:each="j : ${#numbers.sequence(i, i + 2)}" th:if="${j < imagenes.size()}">
+                                        <a href="#">
+                                            <img class="card-img img-fluid" th:src="${imagenes[j]}" alt="Imagen relacionada">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flecha derecha -->
+                    <div class="col-1 align-self-center">
+                        <a href="#multi-item-example" role="button" data-bs-slide="next">
+                            <i class="text-dark fas fa-chevron-right"></i>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Nombre del producto -->
+                            <h1 class="h2" th:text="${producto.nombre}"></h1>
+                            <!-- Precio del producto -->
+                            <p class="h3 py-2" th:text="'$' + ${producto.precio}"></p>
+                            <h6>Valoración:</h6>
+                            <p class="py-2">
+                                <!-- Estrellas amarillas -->
+                                <i th:each="i : ${#numbers.sequence(1, producto.stars)}" class="fa fa-star text-warning"></i>
+                                <!-- Estrellas grises -->
+                                <i th:each="i : ${#numbers.sequence(1, 5 - producto.stars)}"
+                                   th:if="${producto.stars < 5}" class="fa fa-star text-secondary"></i>
+                            </p>
+
+                            <!-- Descripción del producto -->
+                            <h6>Descripción:</h6>
+                            <p th:text="${producto.descripcion != null ? producto.descripcion : 'Descripción no disponible'}"></p>
+                            <h6>Especificaciones:</h6>
+                            <p th:text="${producto.especificaciones != null ? producto.especificaciones : 'Especificaciones no disponibles'}"></p>
+                            <!-- Categoría -->
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <h6>Categoría:</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong th:text="${producto.categoria}"></strong></p>
+                                </li>
+                            </ul>
+                            <!-- Subcategoría -->
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <h6>Subcategoría:</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong th:text="${producto.subcategoria}"></strong></p>
+                                </li>
+                            </ul>
+
+                            <!-- Formulario para medidas, cantidad y botones -->
+                            <form action="" method="GET">
+                                <input type="hidden" name="product-title" th:value="${producto.nombre}">
+                                <div class="row">
+                                    <!-- Sección de medidas -->
+                                    <div class="col-auto">
+                                        <ul class="list-inline pb-3">
+                                            <li class="list-inline-item">Medidas :</li>
+                                            <li class="list-inline-item" th:each="medida : ${producto.size.split(',')}">
+                                                <span class="btn btn-success btn-size" th:text="${medida}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Sección de cantidad -->
+                                    <!--<div class="col-auto">
+                                        <ul class="list-inline pb-3">
+                                            <li class="list-inline-item text-right">
+                                                Cantidad
+                                                <input type="hidden" name="product-quantity" id="product-quantity" value="1">
+                                            </li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+                                            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+                                        </ul>
+                                    </div>-->
+                                </div>
+                                <!-- Botones de acción -->
+                                <!--<div class="row pb-3">
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Compra</button>
+                                    </div>
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Adicionar</button>
+                                    </div>
+                                </div>-->
+                            </form>
+                            <!-- Formulario POST separado para el carrito -->
+                            <form action="/cart/add" method="POST">
+                                <input type="hidden" name="productId" th:value="${producto.id}">
+
+                                <!-- Sección de cantidad con mismo estilo -->
+                                <div class="row pb-3">
+                                    <div class="col-auto">
+                                        <ul class="list-inline pb-3">
+                                            <li class="list-inline-item text-right">
+                                                Cantidad
+                                                <input type="hidden" name="quantity" id="product-quantity-post" value="1">
+                                            </li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus-post">-</span></li>
+                                            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value-post">1</span></li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus-post">+</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="row pb-3">
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Compra</button>
+                                    </div>
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Adicionar</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Close Content -->
+<div th:insert="~{fragments/related-products :: related-products}"></div>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+
+<!-- Scripts -->
+<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
+<script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/templatemo.js}"></script>
+<script th:src="@{/assets/js/custom.js}"></script>
+<script th:src="@{/assets/js/slick.min.js}"></script>
+<script th:src="@{/assets/js/busqueda.js}"></script>
+<script th:src="@{/assets/js/carousel.js}"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Script de confirmación de logout -->
+<script th:src="@{/assets/js/logoutConfirm.js}"></script>
+
+
+</body>
+
+</html>

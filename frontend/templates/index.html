@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetoStore - Tu tienda online</title>
+    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">BetoShop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header/Hero -->
+    <div id="template-mo-zay-photo-carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="/assets/img/banner_img_01.jpg" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text-success"><b>BetoShop</b> Tu tienda de confianza</h1>
+                                <h3 class="h2">Los mejores productos</h3>
+                                <p>Descubre nuestra colección de cuadros, llaveros y accesorios.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Categorías -->
+    <section class="container py-5">
+        <div class="row text-center pt-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Categorías</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 p-5 mt-3">
+                <a href="/shop.html?categoria=Cuadros">
+                    <img src="/assets/img/category_img_01.jpg" class="rounded-circle img-fluid border">
+                </a>
+                <h5 class="text-center mt-3 mb-3">Cuadros</h5>
+                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Cuadros">Ver más</a></p>
+            </div>
+            <div class="col-12 col-md-4 p-5 mt-3">
+                <a href="/shop.html?categoria=Llaveros">
+                    <img src="/assets/img/category_img_02.jpg" class="rounded-circle img-fluid border">
+                </a>
+                <h5 class="text-center mt-3 mb-3">Llaveros</h5>
+                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Llaveros">Ver más</a></p>
+            </div>
+            <div class="col-12 col-md-4 p-5 mt-3">
+                <a href="/shop.html?categoria=Accesorios">
+                    <img src="/assets/img/category_img_03.jpg" class="rounded-circle img-fluid border">
+                </a>
+                <h5 class="text-center mt-3 mb-3">Accesorios</h5>
+                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Accesorios">Ver más</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Productos Destacados -->
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Productos Destacados</h1>
+                </div>
+            </div>
+            
+            <!-- Loading -->
+            <div id="loading-destacados" class="text-center py-5">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+
+            <!-- Productos -->
+            <div class="row" id="productos-destacados">
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Información -->
+    <section class="bg-success">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 bg-success text-white text-center">
+                        <div class="card-body">
+                            <i class="fas fa-plane fa-2xl mb-3"></i>
+                            <h4 class="text-uppercase m-0">Envíos</h4>
+                            <p>A todo el país</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 bg-success text-white text-center">
+                        <div class="card-body">
+                            <i class="fas fa-credit-card fa-2xl mb-3"></i>
+                            <h4 class="text-uppercase m-0">Pagos</h4>
+                            <p>Seguros y rápidos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 bg-success text-white text-center">
+                        <div class="card-body">
+                            <i class="fas fa-headset fa-2xl mb-3"></i>
+                            <h4 class="text-uppercase m-0">Soporte</h4>
+                            <p>Siempre disponibles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">BetoShop</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                        <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                        <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/">Inicio</a></li>
+                        <li><a class="text-decoration-none" href="/about.html">Sobre nosotros</a></li>
+                        <li><a class="text-decoration-none" href="/contact.html">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="border-top border-light pt-3">
+                        <p class="text-left text-light">Copyright &copy; 2025 MianloDev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    
+    <!-- API -->
+    <script src="/assets/js/api.js"></script>
+    
+    <script>
+        // Cargar productos destacados
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarProductosDestacados();
+            actualizarMenuUsuario();
+        });
+
+        async function cargarProductosDestacados() {
+            const container = document.getElementById('productos-destacados');
+            const loading = document.getElementById('loading-destacados');
+
+            try {
+                const response = await api.productos.getAll({ limit: 6 });
+                loading.classList.add('d-none');
+
+                if (response.data && response.data.length > 0) {
+                    container.innerHTML = response.data.map(producto => `
+                        <div class="col-12 col-md-4 p-5 mt-3">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="${producto.imagenUrl || '/assets/img/no-image.png'}" alt="${producto.nombre}">
+                                <div class="card-body">
+                                    <ul class="list-unstyled d-flex justify-content-between">
+                                        <li>
+                                            ${Array(5).fill(0).map((_, i) => 
+                                                `<i class="${i < producto.stars ? 'fa fa-star text-warning' : 'fa fa-star text-secondary'}"></i>`
+                                            ).join('')}
+                                        </li>
+                                        <li class="text-muted text-right">$${producto.precio}</li>
+                                    </ul>
+                                    <a href="/shop-single.html?id=${producto._id}" class="h2 text-decoration-none text-dark">${producto.nombre}</a>
+                                    <p class="card-text">${producto.descripcion || ''}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-success w-100" onclick="agregarAlCarrito('${producto._id}')">
+                                        <i class="fas fa-cart-plus"></i> Agregar al carrito
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No hay productos disponibles</p></div>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                loading.classList.add('d-none');
+                container.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Error al cargar productos</p></div>';
+            }
+        }
+
+        async function agregarAlCarrito(productoId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Inicia sesión',
+                    text: 'Necesitas estar logueado para agregar al carrito',
+                    confirmButtonText: 'Ir a Login'
+                }).then(() => {
+                    window.location.href = '/login.html';
+                });
+                return;
+            }
+
+            try {
+                const response = await api.carrito.add(productoId, 1);
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Agregado!',
+                        text: 'Producto agregado al carrito',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    actualizarCarrito();
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo agregar al carrito'
+                });
+            }
+        }
+
+        async function actualizarCarrito() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                const response = await api.carrito.get();
+                if (response.success && response.data) {
+                    document.getElementById('cart-count').textContent = response.data.items?.length || 0;
+                }
+            } catch (error) {}
+        }
+
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
