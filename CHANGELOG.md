@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.0.0...v1.1.0) (2026-03-26)
+
+
+### Features
+
+* implement maintenance mode modal and read-only middleware ([c341a28](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/c341a282081e67e61195d40beea57d4632ca5182))
+* implement maintenance mode modal and read-only middleware ([3549457](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/3549457db2053455b86ed3ace69b431623afe156))
+
+
+### Bug Fixes
+
+* remove broken endpoints-contract test with invalid relative paths ([e2eb6ab](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e2eb6abd2c0eaca6a4ddb3abaa56a1fafcb275df))
+
 ## 1.0.0 (2026-03-26)
 
 
