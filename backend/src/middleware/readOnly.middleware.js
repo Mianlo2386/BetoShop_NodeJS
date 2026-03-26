@@ -2,13 +2,15 @@ import { ROLES } from '../config/auth.js';
 
 export const READ_ONLY_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
+export const MODO_CONSULTA_ACTIVO = true;
+
 export const readOnlyMiddleware = (req, res, next) => {
-  if (READ_ONLY_METHODS.includes(req.method)) {
-    return res.status(403).json({
-      success: false,
-      error: 'Modo solo lectura. Las operaciones de escritura están deshabilitadas en este MVP.',
-      code: 'READ_ONLY_MODE',
-      hint: 'Este endpoint solo permite consultas GET. Las mutaciones no están habilitadas.',
+  if (MODO_CONSULTA_ACTIVO && READ_ONLY_METHODS.includes(req.method)) {
+    return res.status(503).json({
+      status: 'maintenance',
+      message: 'Plataforma en preparación',
+      code: 'MAINTENANCE_MODE',
+      hint: 'El modo de consulta está activo. Las operaciones de escritura están temporalmente deshabilitadas.',
     });
   }
   next();
@@ -17,6 +19,14 @@ export const readOnlyMiddleware = (req, res, next) => {
 export const readOnlyForRole = (...allowedRoles) => {
   return (req, res, next) => {
     if (READ_ONLY_METHODS.includes(req.method)) {
+      if (MODO_CONSULTA_ACTIVO) {
+        return res.status(503).json({
+          status: 'maintenance',
+          message: 'Plataforma en preparación',
+          code: 'MAINTENANCE_MODE',
+        });
+      }
+
       const userRoles = req.user?.roles || [];
       const hasAllowedRole = allowedRoles.some(role => userRoles.includes(role));
       
@@ -66,6 +76,14 @@ export const createReadOnlyGuard = (options = {}) => {
     }
     
     if (isWriteOperation) {
+      if (MODO_CONSULTA_ACTIVO) {
+        return res.status(503).json({
+          status: 'maintenance',
+          message: 'Plataforma en preparación',
+          code: 'MAINTENANCE_MODE',
+        });
+      }
+
       const userRoles = req.user?.roles || [];
       const hasAllowedRole = allowedRoles.some(role => userRoles.includes(role));
       

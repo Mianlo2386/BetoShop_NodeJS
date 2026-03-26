@@ -4,15 +4,26 @@ import Usuario from '../schemas/usuario.schema.js';
 import { ROLES } from '../config/auth.js';
 import { AuthError } from './errorHandler.middleware.js';
 
+export const extractToken = (req) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+  
+  if (req.cookies?.accessToken) {
+    return req.cookies.accessToken;
+  }
+  
+  return null;
+};
+
 export const verifyJWT = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = extractToken(req);
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!token) {
       throw new AuthError('Token no proporcionado o formato inválido');
     }
-    
-    const token = authHeader.split(' ')[1];
     
     const decoded = jwt.verify(token, authConfig.jwt.secret, {
       issuer: authConfig.jwt.issuer,
@@ -74,13 +85,11 @@ export const verifyJWT = async (req, res, next) => {
 
 export const optionalAuth = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const token = extractToken(req);
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!token) {
       return next();
     }
-    
-    const token = authHeader.split(' ')[1];
     
     try {
       const decoded = jwt.verify(token, authConfig.jwt.secret, {
@@ -139,3 +148,4 @@ export const requireUser = requireRole(ROLES.USER);
 export const extractUserFromRequest = (req) => {
   return req.user ? req.user.username : 'system';
 };
+
