@@ -23,6 +23,7 @@ jobs:
           release-type: node
           path: backend
           target-branch: main
+          package-name: betostore-backend
       
       - name: Generate AI Release Notes
         if: ${{ steps.release.outputs.release_created }}
