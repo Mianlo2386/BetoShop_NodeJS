@@ -1,10 +1,17 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import authService from '../services/auth.service.js';
-import { verifyJWT, optionalAuth, requireAdmin } from '../middleware/auth.middleware.js';
+import { verifyJWT, optionalAuth, requireAdmin, extractToken } from '../middleware/auth.middleware.js';
 import { asyncHandler, ValidationError } from '../middleware/errorHandler.middleware.js';
 
 const router = Router();
+
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  path: '/',
+};
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -74,9 +81,27 @@ router.post(
 
     const result = await authService.login({ username, password });
 
+    const accessMaxAge = 15 * 60;
+    const refreshMaxAge = 7 * 24 * 60 * 60;
+
+    res.cookie('accessToken', result.accessToken, {
+      ...COOKIE_OPTIONS,
+      maxAge: accessMaxAge * 1000,
+    });
+
+    res.cookie('refreshToken', result.refreshToken, {
+      ...COOKIE_OPTIONS,
+      maxAge: refreshMaxAge * 1000,
+    });
+
+    const { accessToken, refreshToken, ...userData } = result;
+
     res.json({
       success: true,
-      data: result,
+      data: {
+        ...userData,
+        usesCookies: true,
+      },
       message: 'Login exitoso',
     });
   })
@@ -85,7 +110,7 @@ router.post(
 router.post(
   '/refresh',
   asyncHandler(async (req, res) => {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
 
     if (!refreshToken) {
       throw new ValidationError('Refresh token es requerido');
@@ -93,9 +118,27 @@ router.post(
 
     const tokens = await authService.refreshToken(refreshToken);
 
+    const accessMaxAge = 15 * 60;
+    const refreshMaxAge = 7 * 24 * 60 * 60;
+
+    res.cookie('accessToken', tokens.accessToken, {
+      ...COOKIE_OPTIONS,
+      maxAge: accessMaxAge * 1000,
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      ...COOKIE_OPTIONS,
+      maxAge: refreshMaxAge * 1000,
+    });
+
+    const { accessToken, refreshToken: rt, ...tokenData } = tokens;
+
     res.json({
       success: true,
-      data: tokens,
+      data: {
+        ...tokenData,
+        usesCookies: true,
+      },
     });
   })
 );
@@ -177,9 +220,7 @@ router.get(
   '/validate',
   optionalAuth,
   asyncHandler(async (req, res) => {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!req.user) {
       return res.json({
         success: true,
         valid: false,
@@ -187,13 +228,16 @@ router.get(
       });
     }
 
-    const token = authHeader.split(' ')[1];
-    const result = await authService.validateToken(token);
-
     res.json({
       success: true,
-      ...result,
-      authenticated: result.valid,
+      valid: true,
+      authenticated: true,
+      user: {
+        id: req.user.id,
+        username: req.user.username,
+        email: req.user.email,
+        roles: req.user.roles,
+      },
     });
   })
 );
@@ -236,6 +280,26 @@ router.post(
       success: true,
       data: result,
       message: 'Usuario admin creado exitosamente',
+    });
+  })
+);
+
+router.post(
+  '/logout',
+  asyncHandler(async (req, res) => {
+    res.cookie('accessToken', '', {
+      ...COOKIE_OPTIONS,
+      maxAge: 0,
+    });
+
+    res.cookie('refreshToken', '', {
+      ...COOKIE_OPTIONS,
+      maxAge: 0,
+    });
+
+    res.json({
+      success: true,
+      message: 'Logout exitoso',
     });
   })
 );
