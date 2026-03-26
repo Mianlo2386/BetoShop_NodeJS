@@ -1,0 +1,16 @@
+<!-- Modal para Mensajes de Contacto -->
+<div th:fragment="modalContacto" class="modal fade" id="contactMessageModal" tabindex="-1"
+     aria-labelledby="contactMessageModalLabel" aria-hidden="true" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="contactMessageModalLabel">Mensaje</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-center" id="contactMessageBody">
+                <!-- Aquí se cargará el mensaje dinámicamente -->
+                Enviando...
+            </div>
+        </div>
+    </div>
+</div>

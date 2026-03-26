@@ -8,7 +8,8 @@
     "start": "node src/app.js",
     "dev": "node --watch src/app.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check-env": "node check-env.js"
   },
   "keywords": [
     "ecommerce",
@@ -25,6 +26,7 @@
     "express": "^4.21.0",
     "express-rate-limit": "^7.4.0",
     "helmet": "^8.0.0",
+    "http-proxy-middleware": "^3.0.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "morgan": "^1.10.0",

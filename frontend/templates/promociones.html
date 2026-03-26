@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+
+    <body>
+        <div th:insert="~{fragments/navbar :: navbar}"></div>
+        <div th:insert="~{fragments/header :: header}"></div>
+        <div th:insert="~{fragments/modal :: modal}"></div>
+
+        <div class="container py-5">
+            <h1 class="text-center text-success logo">Promociones Disponibles</h1>
+
+            <div class="row">
+                <div th:each="promotion : ${promociones}" class="col-md-4">
+                    <img th:if="${promotion.images.size() > 0}" th:src="${promotion.images[0].imageUrl}" class="img-fluid rounded" style="border-radius: 15px;">
+                    <h3 th:text="${promotion.title}"></h3>
+                    <p th:if="${promotion.type != 'OTRO'}" th:text="${promotion.description}"></p>
+                    <p th:if="${promotion.type == 'OTRO'}" th:text="'Promo especial: ' + ${promotion.description}"></p>
+                    <p th:if="${promotion.category != null}" th:text="'Categoría: ' + ${promotion.category}"></p>
+                    <p>Descuento: <span th:if="${promotion.discountPercentage != null}" th:text="${promotion.discountPercentage} + '%'"></span></p>
+                    <p th:text="'Válido del ' + ${promotion.startDate} + ' al ' + ${promotion.endDate}"></p>
+                    <a href="#" class="btn btn-success" data-bs-toggle="modal" th:attr="data-bs-target='#promoModal' + ${promotion.id}">
+                        Ver detalle
+                    </a>
+                    <div th:insert="~{fragments/promoModal :: promoModal(${promotion})}"></div>
+
+                </div>
+            </div>
+        </div>
+        <div th:insert="~{fragments/footer :: footer}"></div>
+        <!-- Scripts -->
+        <script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
+        <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Script de confirmación de logout -->
+        <script th:src="@{/assets/js/logoutConfirm.js}"></script>
+    </body>
+
+</html>

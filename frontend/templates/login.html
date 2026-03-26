@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/head :: head}"></head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<!-- Login -->
+<div class="modal-dialog modal-lg d-flex justify-content-center align-items-center vh-100">
+    <div class="modal-content modal-body border-0 p-4 shadow bg-white rounded">
+        <!-- Logo de la tienda -->
+        <div class="text-center mb-3">
+            <img th:src="@{/assets/img/logo.png}" alt="Logo BetoStore" class="img-fluid" style="max-height: 100px;">
+        </div>
+
+        <!-- Botón Cerrar -->
+        <div class="text-right mb-4">
+            <button type="button" class="btn-close" aria-label="Cerrar" onclick="location.href='/'"></button>
+        </div>
+
+        <h3 class="text-center mb-4 text-success">Inicia Sesión</h3>
+
+        <div th:if="${exito}" class="alert alert-success text-center">
+            <p th:text="${exito}"></p>
+        </div>
+
+        <!-- Mensaje de registro exitoso -->
+        <div th:if="${param.registroExitoso}" class="alert alert-success text-center">
+            ¡Registro exitoso! Ahora puedes iniciar sesión.
+        </div>
+
+        <!-- Mensaje de error -->
+        <div th:if="${param.error}" class="alert alert-danger text-center">
+            Usuario o contraseña incorrectos. Por favor, intenta nuevamente.
+        </div>
+
+        <form action="/login" method="post">
+            <!-- Input de Usuario -->
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Usuario" required>
+            </div>
+            <!-- Input de Contraseña -->
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+            </div>
+            <!-- Botón de Enviar -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn bg-success text-white">Iniciar Sesión</button>
+            </div>
+            <!-- Enlace de Registro -->
+            <div class="text-center mt-3">
+                <small>¿No tienes cuenta? <a href="/register" class="text-success">Regístrate aquí</a></small>
+                <p class="text-center mt-3">
+                    <a th:href="@{/recuperar}" class="text-success text-decoration-none"><i class="fa fa-question-circle me-1"></i> ¿Olvidaste tu contraseña o tu usuario?</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

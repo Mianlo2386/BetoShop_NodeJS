@@ -1,0 +1,50 @@
+<!-- Start Featured Product -->
+<section th:fragment="featured-products" class="bg-light" xmlns:th="">
+    <div class="container py-5">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">
+                    <a th:href="@{/releases}" class="navbar-brand text-success logo h1 align-self-center">Lanzamientos</a>
+                </h1>
+                <p>
+                    Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident.
+                </p>
+            </div>
+        </div>
+
+        <!-- Bootstrap Carousel -->
+        <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div th:each="grupo, iterStat : ${releasesGrupos}" class="carousel-item" th:classappend="${iterStat.first} ? 'active'">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div th:each="producto : ${grupo}" class="col-md-4">
+                                <div class="card">
+                                    <a th:href="@{/shopsingle/{id}(id=${producto.id})}">
+                                        <img th:src="${producto.imagenUrl}" class="card-img-top img-fluid" alt="Imagen del producto">
+                                    </a>
+                                    <div class="card-body text-center">
+                                        <a th:href="@{/shopsingle/{id}(id=${producto.id})}" class="h2 text-decoration-none text-dark">
+                                            <span th:text="${producto.nombre}"></span>
+                                        </a>
+                                        <p class="text-muted" th:text="'$' + ${producto.precio}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles del carrusel -->
+            <button class="carousel-control-prev bg-transparent border-0" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next bg-transparent border-0" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </div>
+</section>
+<!-- End Featured Product -->

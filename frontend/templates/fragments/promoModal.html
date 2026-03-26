@@ -1,0 +1,21 @@
+<div th:fragment="promoModal(promotion)" class="modal fade bg-white" th:id="'promoModal' + ${promotion.id}" ...
+     data-bs-keyboard="true" tabindex="-1" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal-dialog modal-md" role="document"> <!-- Cambiamos el tamaño -->
+        <div class="modal-content border-0">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" th:text="${promotion.title}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p th:text="${promotion.description}"></p>
+                <p th:text="'Categoría: ' + ${promotion.category}"></p>
+                <p>Descuento: <span th:text="${promotion.discountPercentage} + '%'"></span></p>
+                <p th:text="'Válido del ' + ${promotion.startDate} + ' al ' + ${promotion.endDate}"></p>
+                <p>Código de cupón: <strong th:text="'Beto' + (${promotion.type == 'OTRO' ? 'Especial' : #strings.replace(promotion.type, ' ', '')})"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
