@@ -1,97 +1,144 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="es">
 
-<div th:insert="~{fragments/head :: head}"></div>
+<head>
+    <title>Contacto - BetoStore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
 <body>
 
-<div th:insert="~{fragments/navbar :: navbar}"></div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">BetoShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<div th:insert="~{fragments/header :: header}"></div>
-
-<div th:insert="~{fragments/modal :: modal}"></div>
-
-<div th:insert="~{fragments/modalContacto :: modalContacto}"></div>
-
-
-<!-- Start Content Page -->
+<!-- Content -->
 <div class="container-fluid bg-light py-5">
     <div class="col-md-6 m-auto text-center">
         <h1 class="h1">Contacto</h1>
-        <p>
-            Proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet.
-        </p>
+        <p>¿Tienes alguna pregunta o quieres hacer un pedido personalizado? ¡Escríbenos!</p>
     </div>
 </div>
 
-<!-- Start Map -->
+<!-- Map -->
 <div class="container py-5">
     <h2 class="text-center">Nuestra Ubicación</h2>
     <div class="text-center">
-        <!-- Contenedor para el mapa de Google -->
-        <!--<div id="mapid" style="width: 100%; height: 300px;"></div>-->
         <img src="https://i.imgur.com/kzBJPeO.png" alt="Mapa de ubicación" style="max-width: 100%; height: auto;">
     </div>
 </div>
 
-
-<!-- End Map -->
-
-<!-- Start Contact -->
+<!-- Contact Form -->
 <div class="container py-5">
     <div class="row py-5">
-        <form class="col-md-9 m-auto" method="post" action="/contact" role="form">
+        <form class="col-md-9 m-auto" id="contactForm" role="form">
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control mt-1" id="name" name="name" placeholder="Nombre" required>
+                    <input type="text" class="form-control mt-1" id="name" name="name" placeholder="Tu nombre" required>
                 </div>
                 <div class="form-group col-md-6 mb-3">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email" required>
+                    <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Tu email" required>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="subject">Asunto</label>
-                <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Asunto" required>
+                <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Asunto de tu mensaje" required>
             </div>
             <div class="mb-3">
                 <label for="message">Mensaje</label>
-                <textarea class="form-control mt-1" id="message" name="message" placeholder="Message" rows="8" required></textarea>
+                <textarea class="form-control mt-1" id="message" name="message" rows="8" placeholder="Escribe tu mensaje aquí..." required></textarea>
             </div>
             <div class="row">
-                <div class="col text-end mt-2">
-                    <button type="submit" class="btn btn-success btn-lg px-3">Hablemos</button>
+                <div class="col text-center mt-2">
+                    <button type="submit" class="btn btn-success btn-lg px-3">Enviar Mensaje</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-<!-- End Contact -->
 
-<div th:insert="~{fragments/footer :: footer}"></div>
+<!-- Footer -->
+<footer class="bg-dark" id="tempaltemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-success border-bottom pb-3 border-light logo">BetoShop</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                    <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                    <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                </ul>
+            </div>
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row text-light">
+            <div class="col-12">
+                <div class="border-top pt-3">
+                    <p class="text-left">Copyright &copy; 2025 MianloDev</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
-<!-- Start Script -->
-<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
-<script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
-<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/assets/js/templatemo.js}"></script>
-<script th:src="@{/assets/js/custom.js}"></script>
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/templatemo.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/maintenance-mode.js"></script>
 
-<!-- Script de confirmación de logout -->
-<script th:src="@{/assets/js/logoutConfirm.js}"></script>
-
-<!--<script th:src="@{/assets/js/google.map.js}"></script>-->
-
-<!-- Carga la API de Google Maps con tu clave API -->
-<!--<script th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleMapsApiKey} + '&callback=initMap'}" async defer></script>-->
-
-<script th:src="@{/assets/js/contact.js}"></script>
-
-
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    
+    Swal.fire({
+        title: 'Enviando mensaje...',
+        text: 'Gracias por contactarnos, ' + name + '. Te responderemos pronto.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#28a745'
+    }).then(() => {
+        this.reset();
+    });
+});
+</script>
 
 </body>
 </html>

@@ -1,98 +1,112 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="es">
 
-<div th:insert="~{fragments/head :: head}"></div>
+<head>
+    <title>Nosotros - BetoStore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
 <body>
-<div th:insert="~{fragments/navbar :: navbar}"></div>
 
-<div th:insert="~{fragments/header :: header}"></div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">BetoShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<div th:insert="~{fragments/modal :: modal}"></div>
-
-
-
-    <section class="bg-success py-5">
-        <div class="container">
-            <div class="row align-items-center py-5">
-                <div class="col-md-8 text-white">
-                    <h1>Acerca de nosotros</h1>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://i.imgur.com/zyNVXpK.png" alt="About Hero">
-                </div>
+<!-- About Hero -->
+<section class="bg-success py-5">
+    <div class="container">
+        <div class="row align-items-center py-5">
+            <div class="col-md-8 text-white">
+                <h1>Acerca de nosotros</h1>
+                <p>Somos una tienda especializada en productos de decoración y coleccionables de tus películas, series y anime favoritos.Ofrecemos cuadros personalizados, bolsas sorpresa y más.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="https://i.imgur.com/zyNVXpK.png" alt="Sobre Nosotros" style="max-width: 100%;">
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-
-    <!-- Start Section -->
-    <section class="container py-5">
-        <div class="row text-center pt-5 pb-3">
-            <div class="col-lg-6 m-auto">
-                <h1 class="h1">Nuestros Servicios</h1>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    Lorem ipsum dolor sit amet.
-                </p>
-            </div>
+<!-- Features -->
+<section class="container py-5">
+    <div class="row text-center py-3">
+        <div class="col-lg-4 m-auto">
+            <i class="fas fa-shipping-fast fa-3x text-success"></i>
+            <h2 class="h2 my-2">Envíos</h2>
+            <p>Envíos a todo el país</p>
         </div>
+        <div class="col-lg-4 m-auto">
+            <i class="fas fa-paint-brush fa-3x text-success"></i>
+            <h2 class="h2 my-2">Personalización</h2>
+            <p>Cuadros en el tamaño que desees</p>
+        </div>
+        <div class="col-lg-4 m-auto">
+            <i class="fas fa-heart fa-3x text-success"></i>
+            <h2 class="h2 my-2">Calidad</h2>
+            <p>Productos de excelente calidad</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark" id="tempaltemo_footer">
+    <div class="container">
         <div class="row">
-
-            <div class="col-md-6 col-lg-3 pb-5">
-                <div class="h-100 py-5 services-icon-wap shadow">
-                    <div class="h1 text-success text-center"><i class="fa fa-truck fa-lg"></i></div>
-                    <h2 class="h5 mt-4 text-center">Servicios de entrega</h2>
-                </div>
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-success border-bottom pb-3 border-light logo">BetoShop</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                    <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                    <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                </ul>
             </div>
-
-            <div class="col-md-6 col-lg-3 pb-5">
-                <div class="h-100 py-5 services-icon-wap shadow">
-                    <div class="h1 text-success text-center"><i class="fas fa-exchange-alt"></i></div>
-                    <h2 class="h5 mt-4 text-center">Envío y devolución</h2>
-                </div>
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                </ul>
             </div>
-
-            <div class="col-md-6 col-lg-3 pb-5">
-                <div class="h-100 py-5 services-icon-wap shadow">
-                    <div class="h1 text-success text-center"><i class="fa fa-percent"></i></div>
-                    <h2 class="h5 mt-4 text-center">Promociones</h2>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3 pb-5">
-                <div class="h-100 py-5 services-icon-wap shadow">
-                    <div class="h1 text-success text-center"><i class="fa fa-user"></i></div>
-                    <h2 class="h5 mt-4 text-center">Servicio 24/7</h2>
+        </div>
+        <div class="row text-light">
+            <div class="col-12">
+                <div class="border-top pt-3">
+                    <p class="text-left">Copyright &copy; 2025 MianloDev</p>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- End Section -->
+    </div>
+</footer>
 
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/templatemo.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/maintenance-mode.js"></script>
 
-
-
-<div th:insert="~{fragments/footer :: footer}"></div>
-
-    <!-- Start Script -->
-    <script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
-    <script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
-    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/assets/js/templatemo.js}"></script>
-    <script th:src="@{/assets/js/custom.js}"></script>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Script de confirmación de logout -->
-    <script th:src="@{/assets/js/logoutConfirm.js}"></script>
-
-    <!-- End Script -->
 </body>
-
 </html>
