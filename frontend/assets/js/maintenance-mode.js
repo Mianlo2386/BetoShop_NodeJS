@@ -6,7 +6,7 @@
 (function() {
   'use strict';
 
-  const DATOS_CONTACTO = 'miguellopez32@gmail.com';
+  const DATOS_CONTACTO = 'betostore72@gmail.com';
 
   const createMaintenanceModal = function() {
     if (document.getElementById('maintenanceModal')) {

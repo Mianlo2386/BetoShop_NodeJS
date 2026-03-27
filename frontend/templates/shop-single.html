@@ -63,6 +63,14 @@
                         
                         <div class="row pb-3">
                             <div class="col d-grid">
+                                <button type="button" class="btn btn-outline-success btn-lg" onclick="showSizeModal()">
+                                    <i class="fas fa-ruler"></i> Elige tu tamaño personalizado
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row pb-3">
+                            <div class="col d-grid">
                                 <button type="button" class="btn btn-success btn-lg" onclick="agregarAlCarrito()">
                                     <i class="fas fa-cart-plus"></i> Agregar al carrito
                                 </button>
@@ -116,6 +124,18 @@
 <script src="/assets/js/maintenance-mode.js"></script>
 
 <script>
+function showSizeModal() {
+    Swal.fire({
+        title: 'Tamaño Personalizado',
+        html: '<p>Para solicitar un tamaño personalizado, contáctanos:</p>' +
+              '<p class="h5 text-success mt-3"><i class="fas fa-envelope"></i> betostore72@gmail.com</p>' +
+              '<p class="text-muted mt-3">Te responderemos a la brevedad con las opciones disponibles.</p>',
+        icon: 'info',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#28a745'
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
