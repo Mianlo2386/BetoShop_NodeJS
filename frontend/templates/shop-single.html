@@ -23,7 +23,7 @@
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
                     <!-- Imagen principal del producto -->
-                    <img class="card-img img-fluid" th:src="${producto.imagenUrl}" alt="Imagen principal del producto" id="product-detail">
+                    <img class="card-img img-fluid" src="/assets/img/no-image.png" alt="Imagen principal del producto" id="product-detail">
                 </div>
                 <div class="row">
                     <!-- Flecha izquierda -->
@@ -61,58 +61,42 @@
 
             <div class="col-lg-7 mt-5">
                 <div class="card">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Nombre del producto -->
-                            <h1 class="h2" th:text="${producto.nombre}"></h1>
-                            <!-- Precio del producto -->
-                            <p class="h3 py-2" th:text="'$' + ${producto.precio}"></p>
-                            <h6>Valoración:</h6>
-                            <p class="py-2">
-                                <!-- Estrellas amarillas -->
-                                <i th:each="i : ${#numbers.sequence(1, producto.stars)}" class="fa fa-star text-warning"></i>
-                                <!-- Estrellas grises -->
-                                <i th:each="i : ${#numbers.sequence(1, 5 - producto.stars)}"
-                                   th:if="${producto.stars < 5}" class="fa fa-star text-secondary"></i>
-                            </p>
+                    <div class="card-body">
+                        <!-- Nombre del producto -->
+                        <h1 class="h2" id="product-name">Cargando...</h1>
+                        <!-- Precio del producto -->
+                        <p class="h3 py-2" id="product-price">$0</p>
+                        <h6>Valoración:</h6>
+                        <p class="py-2" id="product-stars">
+                            <i class="fa fa-star text-secondary"></i>
+                            <i class="fa fa-star text-secondary"></i>
+                            <i class="fa fa-star text-secondary"></i>
+                            <i class="fa fa-star text-secondary"></i>
+                            <i class="fa fa-star text-secondary"></i>
+                        </p>
 
-                            <!-- Descripción del producto -->
-                            <h6>Descripción:</h6>
-                            <p th:text="${producto.descripcion != null ? producto.descripcion : 'Descripción no disponible'}"></p>
-                            <h6>Especificaciones:</h6>
-                            <p th:text="${producto.especificaciones != null ? producto.especificaciones : 'Especificaciones no disponibles'}"></p>
-                            <!-- Categoría -->
-                            <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <h6>Categoría:</h6>
-                                </li>
-                                <li class="list-inline-item">
-                                    <p class="text-muted"><strong th:text="${producto.categoria}"></strong></p>
-                                </li>
-                            </ul>
-                            <!-- Subcategoría -->
-                            <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <h6>Subcategoría:</h6>
-                                </li>
-                                <li class="list-inline-item">
-                                    <p class="text-muted"><strong th:text="${producto.subcategoria}"></strong></p>
-                                </li>
-                            </ul>
+                        <!-- Descripción del producto -->
+                        <h6>Descripción:</h6>
+                        <p id="product-description">Cargando...</p>
 
-                            <!-- Formulario para medidas, cantidad y botones -->
-                            <form action="" method="GET">
-                                <input type="hidden" name="product-title" th:value="${producto.nombre}">
-                                <div class="row">
-                                    <!-- Sección de medidas -->
-                                    <div class="col-auto">
-                                        <ul class="list-inline pb-3">
-                                            <li class="list-inline-item">Medidas :</li>
-                                            <li class="list-inline-item" th:each="medida : ${producto.size.split(',')}">
-                                                <span class="btn btn-success btn-size" th:text="${medida}"></span>
-                                            </li>
-                                        </ul>
-                                    </div>
+                        <h6>Especificaciones:</h6>
+                        <p id="product-specs">Cargando...</p>
+
+                        <form>
+                            <input type="hidden" name="product-title" id="product-title" value="">
+                            <div class="row pb-3">
+                                <div class="col d-grid">
+                                    <button type="button" class="btn btn-success btn-lg" onclick="agregarAlCarrito()">Compra</button>
+                                </div>
+                                <div class="col d-grid">
+                                    <button type="button" class="btn btn-success btn-lg" name="submit" value="addtocard" onclick="agregarAlCarrito()">Adicionar</button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="productId" id="product-id" value="">
+                        </form>
+                    </div>
+                </div>
+            </div>
                                     <!-- Sección de cantidad -->
                                     <!--<div class="col-auto">
                                         <ul class="list-inline pb-3">
@@ -180,7 +164,78 @@
 <div th:insert="~{fragments/footer :: footer}"></div>
 
 <!-- Scripts -->
-<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
+<script src="/assets/js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if (!productId) {
+        document.getElementById('product-detail').src = '/assets/img/no-image.png';
+        document.getElementById('product-name').textContent = 'Producto no encontrado';
+        return;
+    }
+    
+    try {
+        const response = await api.productos.getById(productId);
+        
+        if (response.success && response.data) {
+            const p = response.data;
+            
+            // Imagen principal
+            document.getElementById('product-detail').src = p.imagenUrl || '/assets/img/no-image.png';
+            
+            // Nombre
+            document.getElementById('product-name').textContent = p.nombre || 'Sin nombre';
+            
+            // Precio
+            document.getElementById('product-price').textContent = '$' + (p.precio || 0);
+            
+            // Descripción
+            document.getElementById('product-description').textContent = p.descripcion || 'Descripción no disponible';
+            
+            // Especificaciones
+            document.getElementById('product-specs').textContent = p.especificaciones || 'No disponibles';
+            
+            // Stars
+            const starsContainer = document.getElementById('product-stars');
+            if (starsContainer) {
+                let starsHtml = '';
+                for (let i = 0; i < 5; i++) {
+                    starsHtml += '<i class="fa fa-star ' + (i < p.stars ? 'text-warning' : 'text-secondary') + '"></i>';
+                }
+                starsContainer.innerHTML = starsHtml;
+            }
+            
+            // Hidden fields
+            document.getElementById('product-title').value = p.nombre || '';
+            document.getElementById('product-id').value = p._id || '';
+            
+            // Title
+            document.title = (p.nombre || 'Producto') + ' - BetoStore';
+        } else {
+            document.getElementById('product-name').textContent = 'Producto no encontrado';
+        }
+    } catch (error) {
+        console.error('Error cargando producto:', error);
+        document.getElementById('product-name').textContent = 'Error al cargar producto';
+    }
+});
+
+function agregarAlCarrito() {
+    const productId = document.getElementById('product-id').value;
+    if (!productId) return;
+    
+    Swal.fire({
+        title: 'Agregando...',
+        text: 'El producto se agregará al carrito',
+        icon: 'info',
+        showConfirmButton: false,
+        timer: 1500
+    });
+}
+</script>
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
 <script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
 <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/assets/js/templatemo.js}"></script>
