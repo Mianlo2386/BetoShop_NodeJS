@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.1.0...v1.2.0) (2026-03-27)
+
+
+### Features
+
+* add maintenance mode to login and register pages ([599a19c](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/599a19c39ec14c191d53b37a90d67aad854a80be))
+* add size button and fix contact email ([1f0bb7b](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/1f0bb7b04a9c2cc272275f8f4663bcaefdb43169))
+* fix shop-single.html to load products from API ([580d101](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/580d101e4184cb779eb26f6a2dc23ca554cbee9c))
+* integrate maintenance-mode.js to frontend pages ([ec77a18](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/ec77a18b563a00fa4e89dce1a092fce1f8e90d74))
+
+
+### Bug Fixes
+
+* clean up shop-single.html - remove header, fix layout ([e892495](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e8924953fefb2d26aa84d106659613880400a793))
+* convert contact and about pages to static HTML with Spanish nav ([2d70f56](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/2d70f561479ea2bccaeb8c6445ec00bc6189b1e6))
+* remove th:insert fragments from shop-single for static serving ([8f8e935](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/8f8e935c4903be5477ec5bebab2f316da2eba4c4))
+* update nav links to Spanish in index, shop, shop-single ([b9bf647](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/b9bf647da3c8b7da88e8c19027bab6c958b38c58))
+
 ## [1.1.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.0.0...v1.1.0) (2026-03-26)
 
 
