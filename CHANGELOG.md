@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.4.0...v1.4.1) (2026-03-28)
+
+
+### Bug Fixes
+
+* resolve 2 failing tests - email validation and COOKIE_OPTIONS export ([e6a174a](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e6a174ac7dc8e1fe5785129a93b15455bcffdcf3))
+
 ## [1.4.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.3.0...v1.4.0) (2026-03-28)
 
 
