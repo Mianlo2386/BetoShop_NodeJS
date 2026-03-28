@@ -14,6 +14,11 @@ class AuthService {
       throw new ValidationError('Todos los campos son requeridos');
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new ValidationError('El formato del email es inválido');
+    }
+
     if (password.length < authConfig.security.minPasswordLength) {
       throw new ValidationError(`La contraseña debe tener al menos ${authConfig.security.minPasswordLength} caracteres`);
     }

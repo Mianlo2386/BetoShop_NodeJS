@@ -6,7 +6,7 @@ import { asyncHandler, ValidationError } from '../middleware/errorHandler.middle
 
 const router = Router();
 
-const COOKIE_OPTIONS = {
+export const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'strict',
