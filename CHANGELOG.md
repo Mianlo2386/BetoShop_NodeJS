@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.4.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.3.0...v1.4.0) (2026-03-28)
+
+
+### Features
+
+* add custom logo text style ([3eb15fa](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/3eb15faa4f8bcb7f2bfe623f2479a8832084d202))
+* add maintenance mode to login and register pages ([599a19c](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/599a19c39ec14c191d53b37a90d67aad854a80be))
+* add size button and fix contact email ([1f0bb7b](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/1f0bb7b04a9c2cc272275f8f4663bcaefdb43169))
+* complete frontend pages with maintenance mode and Spanish translations ([aad843c](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/aad843cdd8b3e29f48fbc0b48bec78911524605f))
+* complete frontend with maintenance mode, Spanish translations, and logo updates ([dfbab1c](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/dfbab1c2eca6882e7ccbf0ebedb7e1814a50de65))
+* fix shop-single.html to load products from API ([580d101](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/580d101e4184cb779eb26f6a2dc23ca554cbee9c))
+* improve shop with more categories and search filters ([d81ebaf](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/d81ebaffafb82eedce8741d291331b24414bb5f9))
+* integrate maintenance-mode.js to frontend pages ([ec77a18](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/ec77a18b563a00fa4e89dce1a092fce1f8e90d74))
+* update favicon to custom betostore logo ([e97f5a3](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e97f5a304b891c664e3c49a99496bf264608a69a))
+* update logo to betostore with italic style ([3b1f65f](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/3b1f65f2c90cc24c466808be469bb3d067733727))
+
+
+### Bug Fixes
+
+* clean up shop-single.html - remove header, fix layout ([e892495](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e8924953fefb2d26aa84d106659613880400a793))
+* convert contact and about pages to static HTML with Spanish nav ([2d70f56](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/2d70f561479ea2bccaeb8c6445ec00bc6189b1e6))
+* convert login and register to static HTML with API ([e44cc35](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e44cc3569a4d84c882e38742f945bdf6a323d80c))
+* correct categories and change favicon to logo ([0b2e2c8](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/0b2e2c82d48d9c0ead6d79215973694ebc43462a))
+* remove Relojes category ([79f66a4](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/79f66a44fd8c46a7e2315a1c8e57bebea0fa62b5))
+* remove th:insert fragments from shop-single for static serving ([8f8e935](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/8f8e935c4903be5477ec5bebab2f316da2eba4c4))
+* update nav links to Spanish in index, shop, shop-single ([b9bf647](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/b9bf647da3c8b7da88e8c19027bab6c958b38c58))
+
 ## [1.3.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.2.0...v1.3.0) (2026-03-28)
 
 
