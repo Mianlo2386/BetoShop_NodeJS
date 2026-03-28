@@ -21,6 +21,17 @@ const PORT = process.env.PORT || 3000;
 
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
+      fontSrc: ["'self'", 'cdnjs.cloudflare.com', 'data:'],
+      imgSrc: ["'self'", 'data:', 'https:', 'i.imgur.com'],
+      connectSrc: ["'self'", 'https:', 'http://localhost:3000', 'http://localhost:3001'],
+      frameSrc: ["'self'"],
+    },
+  } : false,
 }));
 
 app.use(cors({

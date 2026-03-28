@@ -16,10 +16,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
-// Security
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' },
-}));
+// Security - Disabled for development
+// app.use(helmet({
+//   crossOriginResourcePolicy: { policy: 'cross-origin' },
+//   contentSecurityPolicy: false,
+// }));
 
 // CORS
 app.use(cors({
@@ -30,9 +31,38 @@ app.use(cors({
 // Logging
 app.use(morgan('dev'));
 
-// Body parsing
+// Body parsing - MUST BE BEFORE PROXY
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ============================================
+// API PROXY - Forward to Backend (MUST BE FIRST)
+// ============================================
+app.use('/api', async (req, res) => {
+  const target = `${API_URL}/api${req.url}`;
+  console.log(`[PROXY] ${req.method} /api${req.url} -> ${target}`);
+  
+  try {
+    const response = await fetch(target, {
+      method: req.method,
+      headers: {
+        ...req.headers,
+        host: new URL(API_URL).host,
+      },
+      body: req.method !== 'GET' && req.method !== 'HEAD' ? JSON.stringify(req.body) : undefined,
+    });
+    
+    const data = await response.text();
+    res.status(response.status);
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+    res.send(data);
+  } catch (err) {
+    console.error('[PROXY ERROR]', err.message);
+    res.status(502).json({ error: 'Proxy error', message: err.message });
+  }
+});
 
 // ============================================
 // STATIC FILES - Frontend
@@ -42,22 +72,6 @@ app.use('/assets', express.static('assets'));
 app.use('/css', express.static('assets/css'));
 app.use('/js', express.static('assets/js'));
 app.use('/img', express.static('assets/img'));
-
-// ============================================
-// API PROXY - Forward to Backend
-// ============================================
-app.use('/api', createProxyMiddleware({
-  target: API_URL,
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api': '/api',
-  },
-  onProxyReq: (proxyReq, req, res) => {
-    if (req.headers.authorization) {
-      proxyReq.setHeader('Authorization', req.headers.authorization);
-    }
-  },
-}));
 
 // ============================================
 // ROUTES - HTML Pages

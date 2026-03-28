@@ -1,6 +1,7 @@
 {
   "name": "betostore-frontend",
   "version": "1.0.0",
+  "type": "module",
   "description": "BetoStore Frontend - Static files + API Proxy",
   "main": "server.js",
   "scripts": {
