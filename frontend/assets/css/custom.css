@@ -1,3 +1,30 @@
 /*
-Custom Css
+Custom CSS - BetoStore
 */
+
+/* Logo de texto estilo */
+.logo {
+    font-family: 'Arial Black', 'Helvetica Neue', sans-serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 1.8rem;
+    letter-spacing: -1px;
+    color: #28a745 !important;
+    text-transform: lowercase;
+}
+
+.logo:hover {
+    color: #20c997 !important;
+}
+
+/* Navbar brand */
+.navbar-brand.logo {
+    display: inline-block;
+    padding: 0;
+    line-height: 1.2;
+}
+
+/* Footer logo */
+#tempaltemo_footer .logo {
+    color: #59ab6e !important;
+}
