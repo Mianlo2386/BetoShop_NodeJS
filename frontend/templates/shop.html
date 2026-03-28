@@ -71,14 +71,50 @@
                 <h1 class="h2 pb-4">Categorías</h1>
                 <ul class="list-unstyled templatemo-accordion">
                     <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html">
+                            Todos
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Decoración">
+                            Decoración
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
                         <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Cuadros">
                             Cuadros
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                     </li>
                     <li class="pb-3">
-                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Llaveros">
-                            Llaveros
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Películas">
+                            Películas
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Deportes">
+                            Deportes
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Dibujos animados">
+                            Dibujos Animados
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Sorpresa">
+                            Bolsas Sorpresa
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Coleccionables">
+                            Coleccionables
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                     </li>
@@ -93,8 +129,11 @@
 
             <!-- Productos -->
             <div class="col-lg-9">
-                <!-- Mensaje de búsqueda -->
-                <h2 class="pb-3" id="mensaje-busqueda">Todos los productos</h2>
+                <!-- Mensaje de búsqueda y botón limpiar -->
+                <div class="d-flex justify-content-between align-items-center pb-3">
+                    <h2 class="mb-0" id="mensaje-busqueda">Todos los productos</h2>
+                    <a href="/shop.html" class="btn btn-outline-success btn-sm" id="btn-limpiar-filtros">Limpiar filtros</a>
+                </div>
 
                 <!-- Loading -->
                 <div id="loading" class="text-center py-5">
@@ -158,6 +197,12 @@
             const params = new URLSearchParams(window.location.search);
             currentSearch = params.get('search') || '';
             currentCategoria = params.get('categoria') || '';
+            
+            // Mostrar/ocultar botón limpiar filtros
+            const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+            if (!currentSearch && !currentCategoria) {
+                btnLimpiar.classList.add('d-none');
+            }
             
             cargarProductos();
             actualizarMenuUsuario();
@@ -368,6 +413,9 @@
             window.location.href = '/';
         }
     </script>
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/api.js"></script>
     <script src="/assets/js/maintenance-mode.js"></script>
 </body>
 </html>
