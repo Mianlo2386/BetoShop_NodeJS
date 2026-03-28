@@ -2,13 +2,13 @@
 Custom CSS - BetoStore
 */
 
-/* Logo de texto estilo */
+/* Logo de texto estilo -betostore- */
 .logo {
     font-family: 'Arial Black', 'Helvetica Neue', sans-serif;
     font-weight: 900;
     font-style: italic;
-    font-size: 1.8rem;
-    letter-spacing: -1px;
+    font-size: 2rem;
+    letter-spacing: -2px;
     color: #28a745 !important;
     text-transform: lowercase;
 }
