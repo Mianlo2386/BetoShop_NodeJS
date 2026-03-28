@@ -1,50 +1,122 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments/head :: head}"></head>
-<body>
-<div th:insert="~{fragments/header :: header}"></div>
+<html lang="es">
 
-<!-- Registro -->
-<div class="modal-dialog modal-lg d-flex justify-content-center align-items-center vh-100">
-    <div class="modal-content modal-body border-0 p-4 shadow bg-white rounded">
-        <!-- Logo de la tienda -->
+<head>
+    <title>Registro - BetoStore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-light">
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="modal-content modal-body border-0 p-4 shadow bg-white rounded" style="max-width: 450px; width: 100%;">
+        <!-- Logo -->
         <div class="text-center mb-3">
-            <img th:src="@{/assets/img/logo.png}" alt="Logo BetoStore" class="img-fluid" style="max-height: 100px;">
+            <img src="/assets/img/logo.png" alt="Logo BetoStore" class="img-fluid" style="max-height: 80px;">
         </div>
 
         <!-- Botón Cerrar -->
-        <div class="text-right mb-4">
-            <button type="button" class="btn-close" aria-label="Cerrar" onclick="location.href='/'"></button>
+        <div class="text-end mb-3">
+            <a href="/" class="btn-close text-decoration-none" aria-label="Cerrar"></a>
         </div>
 
-        <h3 class="text-center mb-4 text-success">Registro de Usuario</h3>
+        <h3 class="text-center mb-4 text-success">Crear Cuenta</h3>
 
-        <form action="/register" method="post">
-            <!-- Input de Usuario -->
-            <div class="input-group mb-3">
+        <!-- Mensaje de error -->
+        <div id="errorMessage" class="alert alert-danger text-center d-none"></div>
+
+        <!-- Formulario -->
+        <form id="registerForm">
+            <div class="mb-3">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" required>
             </div>
-            <!-- Input de Correo -->
-            <div class="input-group mb-3">
+            <div class="mb-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
             </div>
-            <!-- Input de Contraseña -->
-            <div class="input-group mb-3">
+            <div class="mb-3">
                 <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
             </div>
-            <!-- Botón de Enviar -->
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn bg-success text-white">Registrarse</button>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" required>
             </div>
-            <!-- Enlace de login -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn bg-success text-white">Crear Cuenta</button>
+            </div>
             <div class="text-center mt-3">
-                <small>¿Ya tienes cuenta? <a href="/login" class="text-success">Inicia sesión</a></small>
+                <small>¿Ya tienes cuenta? <a href="/login.html" class="text-success">Inicia sesión</a></small>
             </div>
         </form>
     </div>
 </div>
 
-<div th:insert="~{fragments/footer :: footer}"></div>
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
 <script src="/assets/js/maintenance-mode.js"></script>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const errorDiv = document.getElementById('errorMessage');
+    
+    errorDiv.classList.add('d-none');
+    errorDiv.textContent = '';
+    
+    if (password !== confirmPassword) {
+        errorDiv.textContent = 'Las contraseñas no coinciden';
+        errorDiv.classList.remove('d-none');
+        return;
+    }
+    
+    if (password.length < 6) {
+        errorDiv.textContent = 'La contraseña debe tener al menos 6 caracteres';
+        errorDiv.classList.remove('d-none');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            Swal.fire({
+                title: '¡Registro exitoso!',
+                text: 'Ahora puedes iniciar sesión',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#28a745'
+            }).then(() => {
+                window.location.href = '/login.html?registroExitoso=true';
+            });
+        } else {
+            errorDiv.textContent = data.error || 'Error al registrar usuario';
+            errorDiv.classList.remove('d-none');
+        }
+    } catch (error) {
+        errorDiv.textContent = 'Error al conectar con el servidor';
+        errorDiv.classList.remove('d-none');
+    }
+});
+</script>
+
 </body>
 </html>
