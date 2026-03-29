@@ -87,8 +87,12 @@
   };
 
   const isPurchaseAction = function(target) {
+    if (target.closest('#contactForm')) {
+      return false;
+    }
+
     const purchaseSelectors = [
-      'button.btn-success',
+      'button.btn-success:not([type="submit"])',
       'a.btn-success',
       'button[onclick*="agregarAlCarrito"]',
       'button[onclick*="addToCart"]',
@@ -99,7 +103,6 @@
       'form[action*="/cart/"]',
       'a[href*="/cart"]',
       'a[href*="/checkout"]',
-      'button[type="submit"].btn-success',
       'i.fas.fa-cart-plus',
       'i.fas.fa-shopping-cart',
       '.fa-cart-plus',

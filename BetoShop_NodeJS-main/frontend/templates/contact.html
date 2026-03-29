@@ -120,23 +120,54 @@
 <script src="/assets/js/maintenance-mode.js"></script>
 
 <script>
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    const name = document.getElementById('name').value;
+    const nombre = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
+    const asunto = document.getElementById('subject').value;
+    const mensaje = document.getElementById('message').value;
+
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
     
-    Swal.fire({
-        title: 'Enviando mensaje...',
-        text: 'Gracias por contactarnos, ' + name + '. Te responderemos pronto.',
-        icon: 'success',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#28a745'
-    }).then(() => {
-        this.reset();
-    });
+    try {
+        const response = await fetch('http://localhost:3001/api/contacto', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nombre, email, asunto, mensaje })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            Swal.fire({
+                title: '¡Mensaje enviado!',
+                text: 'Gracias por contactarnos, ' + nombre + '. Te responderemos pronto a ' + email,
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#28a745'
+            }).then(() => {
+                this.reset();
+            });
+        } else {
+            throw new Error(data.error || 'Error al enviar');
+        }
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se pudo enviar el mensaje. Intenta de nuevo.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#dc3545'
+        });
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Enviar Mensaje';
+    }
 });
 </script>
 

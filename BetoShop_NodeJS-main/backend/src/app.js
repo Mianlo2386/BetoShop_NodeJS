@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.routes.js';
 import productosRoutes from './routes/productos.routes.js';
 import promocionesRoutes from './routes/promociones.routes.js';
 import carritoRoutes from './routes/carrito.routes.js';
+import contactoRoutes from './routes/contacto.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware.js';
 import { auditMiddleware } from './middleware/audit.middleware.js';
 
@@ -105,6 +106,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/productos', productosRoutes);
 app.use('/api/promociones', promocionesRoutes);
 app.use('/api/carrito', carritoRoutes);
+app.use('/api/contacto', contactoRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
