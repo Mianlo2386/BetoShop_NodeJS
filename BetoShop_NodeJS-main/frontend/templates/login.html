@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Login - BetoStore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-light">
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="modal-content modal-body border-0 p-4 shadow bg-white rounded" style="max-width: 450px; width: 100%;">
+        <!-- Logo -->
+        <div class="text-center mb-3">
+            <img src="/assets/img/logo.png" alt="Logo BetoStore" class="img-fluid" style="max-height: 80px;">
+        </div>
+
+        <!-- Botón Cerrar -->
+        <div class="text-end mb-3">
+            <a href="/" class="btn-close text-decoration-none" aria-label="Cerrar"></a>
+        </div>
+
+        <h3 class="text-center mb-4 text-success">Iniciar Sesión</h3>
+
+        <!-- Mensaje de error -->
+        <div id="errorMessage" class="alert alert-danger text-center d-none"></div>
+
+        <!-- Formulario -->
+        <form id="loginForm">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Usuario" required>
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn bg-success text-white">Iniciar Sesión</button>
+            </div>
+            <div class="text-center mt-3">
+                <small>¿No tienes cuenta? <a href="/register.html" class="text-success">Regístrate aquí</a></small>
+            </div>
+            <div class="text-center mt-2">
+                <a href="/recuperar.html" class="text-success text-decoration-none small">
+                    <i class="fa fa-question-circle me-1"></i> ¿Olvidaste tu contraseña?
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/maintenance-mode.js"></script>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorDiv = document.getElementById('errorMessage');
+    
+    errorDiv.classList.add('d-none');
+    errorDiv.textContent = '';
+    
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            // Login exitoso
+            Swal.fire({
+                title: '¡Bienvenido!',
+                text: 'Has iniciado sesión correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#28a745'
+            }).then(() => {
+                window.location.href = '/';
+            });
+        } else {
+            errorDiv.textContent = data.error || 'Usuario o contraseña incorrectos';
+            errorDiv.classList.remove('d-none');
+        }
+    } catch (error) {
+        errorDiv.textContent = 'Error al conectar con el servidor';
+        errorDiv.classList.remove('d-none');
+    }
+});
+</script>
+
+</body>
+</html>

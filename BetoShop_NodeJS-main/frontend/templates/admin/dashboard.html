@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - BetoStore</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Navigation -->
+    <div class="bg-success py-2">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-white">
+                    <i class="fas fa-cog"></i> Panel de Administración
+                </div>
+                <div>
+                    <a href="/admin/dashboard.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="/admin/productos.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-box"></i> Productos
+                    </a>
+                    <a href="/admin/usuarios.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-users"></i> Usuarios
+                    </a>
+                    <a href="/" class="text-white text-decoration-none">
+                        <i class="fas fa-arrow-left"></i> Volver a la tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <!-- Loading -->
+            <div id="loading-dashboard" class="text-center py-5">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+
+            <!-- Login requerido -->
+            <div id="dashboard-login" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                    <h3>Acceso restringido</h3>
+                    <p class="text-muted">Necesitas iniciar sesión como administrador.</p>
+                    <a href="/login.html" class="btn btn-success btn-lg">Iniciar sesión</a>
+                </div>
+            </div>
+
+            <!-- No admin -->
+            <div id="dashboard-no-admin" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-ban fa-4x text-danger mb-4"></i>
+                    <h3>Acceso denegado</h3>
+                    <p class="text-muted">No tienes permisos de administrador.</p>
+                    <a href="/" class="btn btn-success">Volver al inicio</a>
+                </div>
+            </div>
+
+            <!-- Dashboard contenido -->
+            <div id="dashboard-contenido" class="d-none">
+                <!-- Estadísticas -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fas fa-box fa-3x text-success mb-3"></i>
+                                <h3 id="stat-productos">0</h3>
+                                <p class="text-muted mb-0">Total Productos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fas fa-dollar-sign fa-3x text-success mb-3"></i>
+                                <h3 id="stat-valor">$0</h3>
+                                <p class="text-muted mb-0">Valor Inventario</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fas fa-tags fa-3x text-success mb-3"></i>
+                                <h3 id="stat-categorias">0</h3>
+                                <p class="text-muted mb-0">Categorías</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                                <h3 id="stat-promedio">$0</h3>
+                                <p class="text-muted mb-0">Precio Promedio</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="row">
+                    <div class="col-lg-12 mt-5">
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <h2 class="h2">Gestión del Sistema</h2>
+                                <p class="lead mt-3">Selecciona una sección para administrar:</p>
+                                <div class="d-flex justify-content-center gap-4 mt-4 flex-wrap">
+                                    <a href="/admin/productos.html" class="btn btn-outline-success btn-lg">
+                                        <i class="fas fa-box"></i> Gestionar productos
+                                    </a>
+                                    <a href="/admin/producto-formulario.html" class="btn btn-success btn-lg">
+                                        <i class="fas fa-plus"></i> Nuevo producto
+                                    </a>
+                                    <a href="/admin/usuarios.html" class="btn btn-outline-success btn-lg">
+                                        <i class="fas fa-users"></i> Gestionar usuarios
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Productos recientes -->
+                <div class="row mt-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-clock"></i> Productos Recientes</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Imagen</th>
+                                                <th>Nombre</th>
+                                                <th>Precio</th>
+                                                <th>Stock</th>
+                                                <th>Categoría</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productos-recientes">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="border-top border-light pt-3">
+                        <p class="text-left text-light">Copyright &copy; 2025 MianloDev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarMenuUsuario();
+            cargarDashboard();
+        });
+
+        async function cargarDashboard() {
+            const token = localStorage.getItem('token');
+            const loading = document.getElementById('loading-dashboard');
+            const loginReq = document.getElementById('dashboard-login');
+            const noAdmin = document.getElementById('dashboard-no-admin');
+            const contenido = document.getElementById('dashboard-contenido');
+
+            loading.classList.remove('d-none');
+            loginReq.classList.add('d-none');
+            noAdmin.classList.add('d-none');
+            contenido.classList.add('d-none');
+
+            if (!token) {
+                loading.classList.add('d-none');
+                loginReq.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const userResponse = await api.auth.me();
+                if (!userResponse.success || !userResponse.data) {
+                    loading.classList.add('d-none');
+                    loginReq.classList.remove('d-none');
+                    return;
+                }
+
+                const user = userResponse.data;
+                const isAdmin = user.roles && user.roles.includes('admin');
+                
+                if (!isAdmin) {
+                    loading.classList.add('d-none');
+                    noAdmin.classList.remove('d-none');
+                    return;
+                }
+
+                // Cargar estadísticas
+                const statsResponse = await api.get('/productos/meta/estadisticas');
+                if (statsResponse.success) {
+                    const stats = statsResponse.data;
+                    document.getElementById('stat-productos').textContent = stats.totalProductos || 0;
+                    document.getElementById('stat-valor').textContent = '$' + (stats.valorTotal || 0).toFixed(2);
+                    document.getElementById('stat-categorias').textContent = stats.totalCategorias || 0;
+                    document.getElementById('stat-promedio').textContent = '$' + (stats.precioPromedio || 0).toFixed(2);
+                }
+
+                // Cargar productos recientes
+                const productosResponse = await api.productos.getAll({ limit: 5 });
+                if (productosResponse.success && productosResponse.data) {
+                    renderizarProductosRecientes(productosResponse.data);
+                }
+
+                loading.classList.add('d-none');
+                contenido.classList.remove('d-none');
+            } catch (err) {
+                console.error('Error:', err);
+                loading.classList.add('d-none');
+                noAdmin.classList.remove('d-none');
+            }
+        }
+
+        function renderizarProductosRecientes(productos) {
+            const tbody = document.getElementById('productos-recientes');
+            tbody.innerHTML = productos.map(p => `
+                <tr>
+                    <td><img src="${p.imagenUrl || '/assets/img/no-image.png'}" style="width: 50px; height: 50px; object-fit: cover;" class="rounded"></td>
+                    <td>${p.nombre || 'Sin nombre'}</td>
+                    <td>$${(p.precio || 0).toFixed(2)}</td>
+                    <td>${p.stock || 0}</td>
+                    <td>${p.categoria || 'Sin categoría'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

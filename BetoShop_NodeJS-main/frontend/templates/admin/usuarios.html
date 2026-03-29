@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - BetoStore Admin</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Navigation -->
+    <div class="bg-success py-2">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-white">
+                    <i class="fas fa-cog"></i> Panel de Administración - Usuarios
+                </div>
+                <div>
+                    <a href="/admin/dashboard.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="/admin/productos.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-box"></i> Productos
+                    </a>
+                    <a href="/admin/usuarios.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-users"></i> Usuarios
+                    </a>
+                    <a href="/" class="text-white text-decoration-none">
+                        <i class="fas fa-arrow-left"></i> Volver a la tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <!-- Login requerido -->
+            <div id="usuarios-login" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                    <h3>Acceso restringido</h3>
+                    <p class="text-muted">Necesitas iniciar sesión como administrador.</p>
+                    <a href="/login.html" class="btn btn-success btn-lg">Iniciar sesión</a>
+                </div>
+            </div>
+
+            <!-- No admin -->
+            <div id="usuarios-no-admin" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-ban fa-4x text-danger mb-4"></i>
+                    <h3>Acceso denegado</h3>
+                    <p class="text-muted">No tienes permisos de administrador.</p>
+                    <a href="/" class="btn btn-success">Volver al inicio</a>
+                </div>
+            </div>
+
+            <!-- Usuarios contenido -->
+            <div id="usuarios-contenido">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="h2 mb-4">Usuarios Registrados</h2>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Funcionalidad en desarrollo:</strong> La gestión completa de usuarios requiere implementación del backend.
+                        </div>
+
+                        <!-- Info del usuario actual -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-user"></i> Tu información</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Username:</strong> <span id="user-username">-</span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Email:</strong> <span id="user-email">-</span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Roles:</strong> <span id="user-roles">-</span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Estado:</strong> <span id="user-estado">-</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="/admin/dashboard.html" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="border-top border-light pt-3">
+                        <p class="text-left text-light">Copyright &copy; 2025 MianloDev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarMenuUsuario();
+            verificarPermisos();
+        });
+
+        async function verificarPermisos() {
+            const token = localStorage.getItem('token');
+            const loginReq = document.getElementById('usuarios-login');
+            const noAdmin = document.getElementById('usuarios-no-admin');
+            const contenido = document.getElementById('usuarios-contenido');
+
+            if (!token) {
+                contenido.classList.add('d-none');
+                loginReq.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const userResponse = await api.auth.me();
+                if (!userResponse.success || !userResponse.data) {
+                    contenido.classList.add('d-none');
+                    loginReq.classList.remove('d-none');
+                    return;
+                }
+
+                const isAdmin = userResponse.data.roles && userResponse.data.roles.includes('admin');
+                if (!isAdmin) {
+                    contenido.classList.add('d-none');
+                    noAdmin.classList.remove('d-none');
+                    return;
+                }
+
+                // Mostrar info del usuario
+                const user = userResponse.data;
+                document.getElementById('user-username').textContent = user.username || '-';
+                document.getElementById('user-email').textContent = user.email || '-';
+                document.getElementById('user-roles').textContent = (user.roles || []).join(', ');
+                document.getElementById('user-estado').textContent = user.isActive !== false ? 'Activo' : 'Inactivo';
+
+            } catch (err) {
+                console.error('Error:', err);
+                contenido.classList.add('d-none');
+                loginReq.classList.remove('d-none');
+            }
+        }
+
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

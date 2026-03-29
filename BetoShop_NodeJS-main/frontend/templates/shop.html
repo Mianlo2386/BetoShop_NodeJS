@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetoShop - Catálogo</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header/Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <form class="modal-search-form" action="/shop.html" method="get">
+                        <input class="form-control" name="search" type="search" placeholder="Buscar productos..." aria-label="Search">
+                        <button type="submit" class="btn btn-success">Buscar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Content -->
+    <div class="container py-5">
+        <div class="row">
+
+            <!-- Categorías -->
+            <div class="col-lg-3">
+                <h1 class="h2 pb-4">Categorías</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html">
+                            Todos
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Decoración">
+                            Decoración
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Películas">
+                            Películas
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Deportes">
+                            Deportes
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Dibujos%20animados">
+                            Dibujos Animados
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Sorpresa">
+                            Bolsas Sorpresa
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Coleccionables">
+                            Coleccionables
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="/shop.html?categoria=Accesorios">
+                            Accesorios
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Productos -->
+            <div class="col-lg-9">
+                <!-- Mensaje de búsqueda y botón limpiar -->
+                <div class="d-flex justify-content-between align-items-center pb-3">
+                    <h2 class="mb-0" id="mensaje-busqueda">Todos los productos</h2>
+                    <a href="/shop.html" class="btn btn-outline-success btn-sm" id="btn-limpiar-filtros">Limpiar filtros</a>
+                </div>
+
+                <!-- Loading -->
+                <div id="loading" class="text-center py-5">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+
+                <!-- Mensaje si no hay productos -->
+                <div id="sin-resultados" class="alert alert-info d-none">
+                    No se encontraron productos para la búsqueda.
+                </div>
+
+                <!-- Productos dinámicos -->
+                <div class="row" id="productos-container">
+                    <!-- Los productos se cargan dinámicamente -->
+                </div>
+
+                <!-- Paginación -->
+                <div class="row" id="paginacion-container">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Content -->
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">betostore</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                        <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                        <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- API -->
+    <script src="/assets/js/api.js"></script>
+    
+    <script>
+        // Variables de paginación
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentSearch = '';
+        let currentCategoria = '';
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            currentSearch = params.get('search') || '';
+            currentCategoria = params.get('categoria') || '';
+            
+            // Mostrar/ocultar botón limpiar filtros
+            const btnLimpiar = document.getElementById('btn-limpiar-filtros');
+            if (!currentSearch && !currentCategoria) {
+                btnLimpiar.classList.add('d-none');
+            }
+            
+            cargarProductos();
+            actualizarMenuUsuario();
+            actualizarCarrito();
+        });
+
+        // Cargar productos desde la API
+        async function cargarProductos() {
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('productos-container');
+            const sinResultados = document.getElementById('sin-resultados');
+            const mensaje = document.getElementById('mensaje-busqueda');
+
+            loading.classList.remove('d-none');
+            container.innerHTML = '';
+            sinResultados.classList.add('d-none');
+
+            try {
+                let response;
+                
+                if (currentSearch) {
+                    mensaje.textContent = `Resultados para: "${currentSearch}"`;
+                    response = await api.productos.search(currentSearch);
+                } else if (currentCategoria) {
+                    mensaje.textContent = `Categoría: ${currentCategoria}`;
+                    response = await api.productos.getByCategoria(currentCategoria);
+                } else {
+                    mensaje.textContent = 'Todos los productos';
+                    response = await api.productos.getAll({ page: currentPage, limit: 12 });
+                }
+
+                loading.classList.add('d-none');
+
+                const productos = response.data || [];
+
+                if (productos.length === 0) {
+                    sinResultados.classList.remove('d-none');
+                    return;
+                }
+
+                // Guardar total de páginas si viene de getAll
+                if (response.pagination) {
+                    totalPages = response.pagination.pages || 1;
+                }
+
+                // Renderizar productos
+                container.innerHTML = productos.map(producto => renderProducto(producto)).join('');
+
+                // Renderizar paginación si es necesario
+                if (totalPages > 1) {
+                    renderPaginacion();
+                }
+
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                loading.classList.add('d-none');
+                sinResultados.classList.remove('d-none');
+                sinResultados.className = 'alert alert-danger';
+                sinResultados.textContent = 'Error al cargar los productos. Intenta más tarde.';
+            }
+        }
+
+        // Renderizar un producto
+        function renderProducto(producto) {
+            const stars = Array(5).fill(0).map((_, i) => {
+                return i < producto.stars 
+                    ? '<i class="fa fa-star text-warning"></i>' 
+                    : '<i class="fa fa-star text-secondary"></i>';
+            }).join('');
+
+            return `
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="card mb-4 product-wap rounded-0">
+                        <div class="card rounded-0">
+                            <img class="card-img rounded-0 img-fluid" src="${producto.imagenUrl || '/assets/img/no-image.png'}" alt="${producto.nombre}">
+                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <button class="btn btn-success text-white" onclick="verProducto('${producto._id}')">
+                                            <i class="far fa-eye"></i>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="btn btn-success text-white mt-2" onclick="agregarAlCarrito('${producto._id}')">
+                                            <i class="fas fa-cart-plus"></i>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="/shop-single.html?id=${producto._id}" class="h2 text-decoration-none text-success mb-3 d-block">${producto.nombre}</a>
+                            <p class="text-dark">${producto.descripcion || ''}</p>
+                            <p class="text-center font-weight-bold text-dark">$${producto.precio}</p>
+                            <p class="text-center py-2">${stars}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Renderizar paginación
+        function renderPaginacion() {
+            const container = document.getElementById('paginacion-container');
+            let html = '<div class="col-12"><nav><ul class="pagination justify-content-center">';
+            
+            // Anterior
+            html += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="?page=${currentPage - 1}">Anterior</a>
+            </li>`;
+            
+            // Números
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="?page=${i}">${i}</a>
+                </li>`;
+            }
+            
+            // Siguiente
+            html += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="?page=${currentPage + 1}">Siguiente</a>
+            </li>`;
+            
+            html += '</ul></nav></div>';
+            container.innerHTML = html;
+        }
+
+        // Ver detalle de producto
+        function verProducto(id) {
+            window.location.href = `/shop-single.html?id=${id}`;
+        }
+
+        // Agregar al carrito
+        async function agregarAlCarrito(productoId) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Inicia sesión',
+                        text: 'Necesitas estar logueado para agregar al carrito',
+                        confirmButtonText: 'Ir a Login'
+                    }).then(() => {
+                        window.location.href = '/login.html';
+                    });
+                    return;
+                }
+
+                const response = await api.carrito.add(productoId, 1);
+                
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Agregado!',
+                        text: 'Producto agregado al carrito',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    actualizarCarrito();
+                } else {
+                    throw new Error(response.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo agregar al carrito'
+                });
+            }
+        }
+
+        // Actualizar contador del carrito
+        async function actualizarCarrito() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const response = await api.carrito.get();
+                if (response.success && response.data) {
+                    const count = response.data.items?.length || 0;
+                    document.getElementById('cart-count').textContent = count;
+                }
+            } catch (error) {
+                console.error('Error actualizando carrito:', error);
+            }
+        }
+
+        // Actualizar menú de usuario
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
+</body>
+</html>

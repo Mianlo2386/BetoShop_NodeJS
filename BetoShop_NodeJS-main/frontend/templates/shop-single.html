@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>BetoStore - Producto</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Open Content -->
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <!-- Imagen del producto -->
+            <div class="col-lg-6 mt-5">
+                <div class="card mb-3">
+                    <img class="card-img img-fluid" src="/assets/img/no-image.png" alt="Imagen del producto" id="product-detail">
+                </div>
+            </div>
+            
+            <!-- Detalles del producto -->
+            <div class="col-lg-6 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h2" id="product-name">Cargando...</h1>
+                        <p class="h3 py-2" id="product-price">$0</p>
+                        
+                        <h6>Valoración:</h6>
+                        <p class="py-2" id="product-stars"></p>
+                        
+                        <h6>Descripción:</h6>
+                        <p id="product-description">Cargando...</p>
+                        
+                        <h6>Especificaciones:</h6>
+                        <p id="product-specs">Cargando...</p>
+                        
+                        <div class="row pb-3">
+                            <div class="col d-grid">
+                                <button type="button" class="btn btn-outline-success btn-lg" onclick="showSizeModal()">
+                                    <i class="fas fa-ruler"></i> Elige tu tamaño personalizado
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row pb-3">
+                            <div class="col d-grid">
+                                <button type="button" class="btn btn-success btn-lg" onclick="agregarAlCarrito()">
+                                    <i class="fas fa-cart-plus"></i> Agregar al carrito
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="product-id" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark" id="tempaltemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-success border-bottom pb-3 border-light logo">betostore</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                    <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                    <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                </ul>
+            </div>
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row text-light">
+            <div class="col-12">
+                <div class="border-top pt-3">
+                    <p class="text-left">Copyright &copy; 2025 MianloDev</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/templatemo.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/maintenance-mode.js"></script>
+
+<script>
+function showSizeModal() {
+    Swal.fire({
+        title: 'Tamaño Personalizado',
+        html: '<p>Para solicitar un tamaño personalizado, contáctanos:</p>' +
+              '<p class="h5 text-success mt-3"><i class="fas fa-envelope"></i> betostore72@gmail.com</p>' +
+              '<p class="text-muted mt-3">Te responderemos a la brevedad con las opciones disponibles.</p>',
+        icon: 'info',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#28a745'
+    });
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if (!productId) {
+        document.getElementById('product-detail').src = '/assets/img/no-image.png';
+        document.getElementById('product-name').textContent = 'Producto no encontrado';
+        return;
+    }
+    
+    try {
+        const response = await api.productos.getById(productId);
+        
+        if (response.success && response.data) {
+            const p = response.data;
+            
+            document.getElementById('product-detail').src = p.imagenUrl || '/assets/img/no-image.png';
+            document.getElementById('product-name').textContent = p.nombre || 'Sin nombre';
+            document.getElementById('product-price').textContent = '$' + (p.precio || 0);
+            document.getElementById('product-description').textContent = p.descripcion || 'Descripción no disponible';
+            document.getElementById('product-specs').textContent = p.especificaciones || 'No disponibles';
+            document.getElementById('product-id').value = p._id || '';
+            
+            // Stars
+            let starsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                starsHtml += '<i class="fa fa-star ' + (i < p.stars ? 'text-warning' : 'text-secondary') + '"></i>';
+            }
+            document.getElementById('product-stars').innerHTML = starsHtml;
+            
+            document.title = (p.nombre || 'Producto') + ' - BetoStore';
+        } else {
+            document.getElementById('product-name').textContent = 'Producto no encontrado';
+        }
+    } catch (error) {
+        console.error('Error cargando producto:', error);
+        document.getElementById('product-name').textContent = 'Error al cargar producto';
+    }
+});
+
+function agregarAlCarrito() {
+    const productId = document.getElementById('product-id').value;
+    if (!productId) return;
+    
+    Swal.fire({
+        title: 'Agregando...',
+        text: 'El producto se agregará al carrito',
+        icon: 'info',
+        showConfirmButton: false,
+        timer: 1500
+    });
+}
+</script>
+
+</body>
+</html>

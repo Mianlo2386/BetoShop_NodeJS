@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - BetoStore Admin</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Navigation -->
+    <div class="bg-success py-2">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-white">
+                    <i class="fas fa-cog"></i> Panel de Administración - Productos
+                </div>
+                <div>
+                    <a href="/admin/dashboard.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="/admin/productos.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-box"></i> Productos
+                    </a>
+                    <a href="/admin/usuarios.html" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-users"></i> Usuarios
+                    </a>
+                    <a href="/" class="text-white text-decoration-none">
+                        <i class="fas fa-arrow-left"></i> Volver a la tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <!-- Loading -->
+            <div id="loading-productos" class="text-center py-5">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+
+            <!-- Login requerido -->
+            <div id="productos-login" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                    <h3>Acceso restringido</h3>
+                    <p class="text-muted">Necesitas iniciar sesión como administrador.</p>
+                    <a href="/login.html" class="btn btn-success btn-lg">Iniciar sesión</a>
+                </div>
+            </div>
+
+            <!-- No admin -->
+            <div id="productos-no-admin" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-ban fa-4x text-danger mb-4"></i>
+                    <h3>Acceso denegado</h3>
+                    <p class="text-muted">No tienes permisos de administrador.</p>
+                    <a href="/" class="btn btn-success">Volver al inicio</a>
+                </div>
+            </div>
+
+            <!-- Productos contenido -->
+            <div id="productos-contenido" class="d-none">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="h2">Gestión de Productos</h2>
+                            <a href="/admin/producto-formulario.html" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Nuevo producto
+                            </a>
+                        </div>
+
+                        <!-- Filtros -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <input type="text" id="busqueda" class="form-control" placeholder="Buscar productos...">
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filtro-categoria" class="form-select">
+                                    <option value="">Todas las categorías</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-success w-100" onclick="filtrarProductos()">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="table-success">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Stock</th>
+                                    <th>Categoría</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-productos">
+                            </tbody>
+                        </table>
+
+                        <!-- Paginación -->
+                        <nav>
+                            <ul class="pagination justify-content-center" id="paginacion">
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="border-top border-light pt-3">
+                        <p class="text-left text-light">Copyright &copy; 2025 MianloDev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
+
+    <script>
+        let productosData = [];
+        let paginaActual = 1;
+        const productosPorPagina = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarMenuUsuario();
+            cargarProductos();
+            cargarCategorias();
+        });
+
+        async function cargarCategorias() {
+            try {
+                const response = await api.get('/productos/meta/categorias');
+                if (response.success && response.data) {
+                    const select = document.getElementById('filtro-categoria');
+                    response.data.forEach(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat;
+                        option.textContent = cat;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (err) {
+                console.error('Error:', err);
+            }
+        }
+
+        async function cargarProductos() {
+            const token = localStorage.getItem('token');
+            const loading = document.getElementById('loading-productos');
+            const loginReq = document.getElementById('productos-login');
+            const noAdmin = document.getElementById('productos-no-admin');
+            const contenido = document.getElementById('productos-contenido');
+
+            loading.classList.remove('d-none');
+            loginReq.classList.add('d-none');
+            noAdmin.classList.add('d-none');
+            contenido.classList.add('d-none');
+
+            if (!token) {
+                loading.classList.add('d-none');
+                loginReq.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const userResponse = await api.auth.me();
+                if (!userResponse.success || !userResponse.data) {
+                    loading.classList.add('d-none');
+                    loginReq.classList.remove('d-none');
+                    return;
+                }
+
+                const isAdmin = userResponse.data.roles && userResponse.data.roles.includes('admin');
+                if (!isAdmin) {
+                    loading.classList.add('d-none');
+                    noAdmin.classList.remove('d-none');
+                    return;
+                }
+
+                const response = await api.productos.getAll({ limit: 100 });
+                loading.classList.add('d-none');
+
+                if (response.success && response.data) {
+                    productosData = response.data;
+                    renderizarTabla();
+                    contenido.classList.remove('d-none');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                loading.classList.add('d-none');
+                noAdmin.classList.remove('d-none');
+            }
+        }
+
+        function renderizarTabla() {
+            const tbody = document.getElementById('tabla-productos');
+            const inicio = (paginaActual - 1) * productosPorPagina;
+            const fin = inicio + productosPorPagina;
+            const productosPagina = productosData.slice(inicio, fin);
+
+            tbody.innerHTML = productosPagina.map(p => `
+                <tr>
+                    <td>${p._id ? p._id.substring(0, 8) : '-'}</td>
+                    <td><img src="${p.imagenUrl || '/assets/img/no-image.png'}" style="width: 60px; height: 60px; object-fit: cover;" class="img-thumbnail"></td>
+                    <td>${p.nombre || 'Sin nombre'}</td>
+                    <td>$${(p.precio || 0).toFixed(2)}</td>
+                    <td>${p.stock || 0}</td>
+                    <td>${p.categoria || 'Sin categoría'}</td>
+                    <td>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="/admin/producto-formulario.html?id=${p._id}" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <button class="btn btn-outline-danger btn-sm" onclick="eliminarProducto('${p._id}')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            renderizarPaginacion();
+        }
+
+        function renderizarPaginacion() {
+            const totalPaginas = Math.ceil(productosData.length / productosPorPagina);
+            const paginacion = document.getElementById('paginacion');
+            
+            let html = '';
+            for (let i = 1; i <= totalPaginas; i++) {
+                html += `<li class="page-item ${i === paginaActual ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="cambiarPagina(${i})">${i}</a>
+                </li>`;
+            }
+            paginacion.innerHTML = html;
+        }
+
+        function cambiarPagina(pagina) {
+            paginaActual = pagina;
+            renderizarTabla();
+        }
+
+        function filtrarProductos() {
+            const busqueda = document.getElementById('busqueda').value.toLowerCase();
+            const categoria = document.getElementById('filtro-categoria').value;
+
+            const productosFiltrados = productosData.filter(p => {
+                const coincideBusqueda = !busqueda || 
+                    (p.nombre && p.nombre.toLowerCase().includes(busqueda)) ||
+                    (p.descripcion && p.descripcion.toLowerCase().includes(busqueda));
+                const coincideCategoria = !categoria || p.categoria === categoria;
+                return coincideBusqueda && coincideCategoria;
+            });
+
+            productosData = productosFiltrados;
+            paginaActual = 1;
+            renderizarTabla();
+        }
+
+        async function eliminarProducto(productId) {
+            const result = await Swal.fire({
+                title: '¿Eliminar producto?',
+                text: '¿Estás seguro de que quieres eliminar este producto?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/productos/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Eliminado!',
+                        text: 'Producto eliminado correctamente',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    cargarProductos();
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo eliminar el producto'
+                });
+            }
+        }
+
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

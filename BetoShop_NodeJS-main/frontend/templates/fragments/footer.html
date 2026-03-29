@@ -1,0 +1,110 @@
+    <footer th:fragment="footer" class="bg-dark" id="tempaltemo_footer" xmlns:th="">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">BetoStore</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            123 Consectetur at ligula 10660
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" th:href="@{/shop(search='Cuadros')}">Cuadros</a></li>
+                        <li><a class="text-decoration-none" th:href="@{/shop(search='Llaveros')}">Llaveros</a></li>
+                        <li><a class="text-decoration-none" th:href="@{/shop(search='Accesorios')}">Accesorios</a></li>
+                        <li><a class="text-decoration-none" th:href="@{/shop(search='Sorpresa')}">Sorpresa</a></li><li><a class="text-decoration-none" href="#">A medida</a></li>
+
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" th:href="@{/}">Inicio</a></li>
+                        <li><a class="text-decoration-none" th:href="@{/about}">Sobre nosotros</a></li>
+                        <li><a class="text-decoration-none" href="#">Locales</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" th:href="@{/contact}">Contacto</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark border-light text-light" id="subscribeEmail" placeholder="Email">
+                        <button type="button" class="input-group-text btn-success text-light" data-bs-toggle="modal" data-bs-target="#suscripcionModal">
+                            Subscríbete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2025 MianloDev
+                            | Diseñado por <a rel="sponsored" href="https://mianlo2386.github.io/Portfolio-con-responsive/" target="_blank">MianloDev</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Suscripción -->
+        <div class="modal fade" id="suscripcionModal" tabindex="-1" aria-labelledby="suscripcionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="suscripcionLabel">Suscripción a novedades</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        Para suscribirte, asegúrate de tener configurado un cliente de correo en tu dispositivo.
+                        Si no tienes uno, puedes escribirnos directamente a <strong>betostore@gmail.com</strong>.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Entendido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+

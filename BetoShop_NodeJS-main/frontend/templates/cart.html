@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - BetoStore</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="container-fluid bg-light py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h1">Carrito de Compras</h1>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-md-end">
+                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Carrito</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido del carrito -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-12 mt-5">
+                    <!-- Loading -->
+                    <div id="loading-carrito" class="text-center py-5">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+
+                    <!-- Carrito vacío -->
+                    <div id="carrito-vacio" class="card d-none">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                            <h3>Tu carrito está vacío</h3>
+                            <p class="text-muted">¡Agrega productos para comenzar a comprar!</p>
+                            <a href="/shop.html" class="btn btn-success btn-lg">Ir a la tienda</a>
+                        </div>
+                    </div>
+
+                    <!-- Carrito con productos -->
+                    <div id="carrito-contenido" class="card d-none">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Precio Total</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="carrito-items">
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <h4>Total: <span id="carrito-total" class="text-success">$0</span></h4>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <a href="/shop.html" class="btn btn-outline-secondary btn-lg">
+                                        <i class="fas fa-arrow-left"></i> Seguir comprando
+                                    </a>
+                                    <a href="/checkout.html" class="btn btn-success btn-lg">
+                                        Finalizar compra <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error -->
+                    <div id="carrito-error" class="card d-none">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-exclamation-triangle fa-4x text-danger mb-4"></i>
+                            <h3>Error al cargar el carrito</h3>
+                            <p class="text-muted">Por favor, intenta nuevamente.</p>
+                            <button class="btn btn-success" onclick="cargarCarrito()">Reintentar</button>
+                        </div>
+                    </div>
+
+                    <!-- Login requerido -->
+                    <div id="carrito-login" class="card d-none">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                            <h3>Inicia sesión para ver tu carrito</h3>
+                            <p class="text-muted">Necesitas estar logueado para ver los productos en tu carrito.</p>
+                            <a href="/login.html" class="btn btn-success btn-lg">Iniciar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">betostore</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                        <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                        <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/">Inicio</a></li>
+                        <li><a class="text-decoration-none" href="/about.html">Sobre nosotros</a></li>
+                        <li><a class="text-decoration-none" href="/contact.html">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="border-top border-light pt-3">
+                        <p class="text-left text-light">Copyright &copy; 2025 MianloDev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarMenuUsuario();
+            cargarCarrito();
+        });
+
+        async function cargarCarrito() {
+            const token = localStorage.getItem('token');
+            const loading = document.getElementById('loading-carrito');
+            const vacio = document.getElementById('carrito-vacio');
+            const contenido = document.getElementById('carrito-contenido');
+            const error = document.getElementById('carrito-error');
+            const loginReq = document.getElementById('carrito-login');
+
+            loading.classList.remove('d-none');
+            vacio.classList.add('d-none');
+            contenido.classList.add('d-none');
+            error.classList.add('d-none');
+            loginReq.classList.add('d-none');
+
+            if (!token) {
+                loading.classList.add('d-none');
+                loginReq.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const response = await api.carrito.get();
+                loading.classList.add('d-none');
+
+                if (!response.success) {
+                    error.classList.remove('d-none');
+                    return;
+                }
+
+                const carrito = response.data;
+                if (!carrito || !carrito.items || carrito.items.length === 0) {
+                    vacio.classList.remove('d-none');
+                    return;
+                }
+
+                renderizarCarrito(carrito);
+                contenido.classList.remove('d-none');
+                actualizarContadorCarrito();
+            } catch (err) {
+                console.error('Error:', err);
+                loading.classList.add('d-none');
+                error.classList.remove('d-none');
+            }
+        }
+
+        function renderizarCarrito(carrito) {
+            const tbody = document.getElementById('carrito-items');
+            const totalEl = document.getElementById('carrito-total');
+
+            let total = 0;
+            tbody.innerHTML = carrito.items.map(item => {
+                const producto = item.producto || item.productId;
+                const precio = producto?.precio || 0;
+                const cantidad = item.quantity || 1;
+                const itemTotal = precio * cantidad;
+                total += itemTotal;
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="${producto?.imagenUrl || '/assets/img/no-image.png'}" 
+                                     alt="${producto?.nombre || 'Producto'}" 
+                                     style="width: 50px; height: 50px; object-fit: cover;" 
+                                     class="me-3 rounded">
+                                <div>
+                                    <a href="/shop-single.html?id=${producto?._id}" class="text-dark text-decoration-none">
+                                        <strong>${producto?.nombre || 'Producto'}</strong>
+                                    </a>
+                                    ${producto?.categoria ? `<br><small class="text-muted">${producto.categoria}</small>` : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td>${cantidad}</td>
+                        <td>$${precio.toFixed(2)}</td>
+                        <td>$${itemTotal.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito('${producto?._id}')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            totalEl.textContent = '$' + total.toFixed(2);
+        }
+
+        async function eliminarDelCarrito(productId) {
+            const result = await Swal.fire({
+                title: '¿Eliminar producto?',
+                text: '¿Estás seguro de que quieres eliminar este producto del carrito?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                const response = await api.carrito.remove(productId);
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Eliminado!',
+                        text: 'Producto eliminado del carrito',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    cargarCarrito();
+                } else {
+                    throw new Error(response.message);
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo eliminar el producto'
+                });
+            }
+        }
+
+        async function actualizarContadorCarrito() {
+            try {
+                const response = await api.carrito.get();
+                if (response.success && response.data) {
+                    document.getElementById('cart-count').textContent = response.data.items?.length || 0;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - BetoStore</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light d-none d-lg-block">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:betostore@gmail.com">betostore72@gmail.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                </div>
+                <div id="user-menu">
+                    <a class="text-light" href="/login.html">Login</a>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="/register.html">Registro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nav Principal -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="container-fluid bg-light py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h1">Finalizar Compra</h1>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-md-end">
+                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="/cart.html">Carrito</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <!-- Loading -->
+            <div id="loading-checkout" class="text-center py-5">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+
+            <!-- Login requerido -->
+            <div id="checkout-login" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                    <h3>Inicia sesión para continuar</h3>
+                    <p class="text-muted">Necesitas estar logueado para completar tu compra.</p>
+                    <a href="/login.html" class="btn btn-success btn-lg">Iniciar sesión</a>
+                </div>
+            </div>
+
+            <!-- Carrito vacío -->
+            <div id="checkout-vacio" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                    <h3>Tu carrito está vacío</h3>
+                    <p class="text-muted">¡Agrega productos para comprar!</p>
+                    <a href="/shop.html" class="btn btn-success btn-lg">Ir a la tienda</a>
+                </div>
+            </div>
+
+            <!-- Checkout contenido -->
+            <div id="checkout-contenido" class="row d-none">
+                <!-- Resumen del pedido -->
+                <div class="col-lg-4 order-lg-2 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-shopping-bag"></i> Resumen del Pedido</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="resumen-items" class="mb-3">
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <span id="resumen-subtotal">$0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Envío:</span>
+                                <span>Gratis</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <strong>Total:</strong>
+                                <strong id="resumen-total" class="text-success">$0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="col-lg-8 order-lg-1">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-shipping-fast"></i> Información de Envío</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="checkout-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre" class="form-label">Nombre completo *</label>
+                                        <input type="text" class="form-control" id="nombre" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="telefono" class="form-label">Teléfono *</label>
+                                        <input type="tel" class="form-control" id="telefono" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="direccion" class="form-label">Dirección *</label>
+                                    <input type="text" class="form-control" id="direccion" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ciudad" class="form-label">Ciudad *</label>
+                                        <input type="text" class="form-control" id="ciudad" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="codigoPostal" class="form-label">Código Postal *</label>
+                                        <input type="text" class="form-control" id="codigoPostal" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="observaciones" class="form-label">Observaciones (opcional)</label>
+                                    <textarea class="form-control" id="observaciones" rows="3" 
+                                        placeholder="Instrucciones especiales para la entrega..."></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-credit-card"></i> Método de Pago</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> 
+                                <strong>Modo de demostración:</strong> Esta es una tienda de demostración. 
+                                No se procesarán pagos reales.
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="metodoPago" id="pagoEfectivo" value="efectivo" checked>
+                                <label class="form-check-label" for="pagoEfectivo">
+                                    <i class="fas fa-money-bill-wave"></i> Pago en efectivo (contra entrega)
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="metodoPago" id="pagoTransferencia" value="transferencia">
+                                <label class="form-check-label" for="pagoTransferencia">
+                                    <i class="fas fa-university"></i> Transferencia bancaria
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="metodoPago" id="pagoMercadoPago" value="mercadopago">
+                                <label class="form-check-label" for="pagoMercadoPago">
+                                    <i class="fas fa-credit-card"></i> MercadoPago
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/cart.html" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Volver al carrito
+                        </a>
+                        <button class="btn btn-success btn-lg" onclick="confirmarCompra()">
+                            <i class="fas fa-check"></i> Confirmar Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Éxito -->
+            <div id="checkout-exito" class="card d-none">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-check-circle fa-4x text-success mb-4"></i>
+                    <h3>¡Compra realizada con éxito!</h3>
+                    <p class="text-muted">Gracias por tu compra. Te enviaremos un email con los detalles de tu pedido.</p>
+                    <p><strong>Número de orden:</strong> <span id="numero-orden"></span></p>
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-success btn-lg">Volver al inicio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">betostore</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                        <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                        <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                        <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="/">Inicio</a></li>
+                        <li><a class="text-decoration-none" href="/about.html">Sobre nosotros</a></li>
+                        <li><a class="text-decoration-none" href="/contact.html">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row text-light">
+                <div class="col-12">
+                    <div class="border-top border-light pt-3">
+                        <p class="text-left text-light">Copyright &copy; 2025 MianloDev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
+
+    <script>
+        let carritoData = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarMenuUsuario();
+            cargarCheckout();
+        });
+
+        async function cargarCheckout() {
+            const token = localStorage.getItem('token');
+            const loading = document.getElementById('loading-checkout');
+            const loginReq = document.getElementById('checkout-login');
+            const vacio = document.getElementById('checkout-vacio');
+            const contenido = document.getElementById('checkout-contenido');
+
+            loading.classList.remove('d-none');
+            loginReq.classList.add('d-none');
+            vacio.classList.add('d-none');
+            contenido.classList.add('d-none');
+
+            if (!token) {
+                loading.classList.add('d-none');
+                loginReq.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const response = await api.carrito.get();
+                loading.classList.add('d-none');
+
+                if (!response.success || !response.data || response.data.items.length === 0) {
+                    vacio.classList.remove('d-none');
+                    return;
+                }
+
+                carritoData = response.data;
+                renderizarResumen(carritoData);
+                
+                // Cargar datos del usuario
+                const userResponse = await api.auth.me();
+                if (userResponse.success && userResponse.data) {
+                    document.getElementById('email').value = userResponse.data.email || '';
+                    document.getElementById('nombre').value = userResponse.data.username || '';
+                }
+
+                contenido.classList.remove('d-none');
+            } catch (err) {
+                console.error('Error:', err);
+                loading.classList.add('d-none');
+                vacio.classList.remove('d-none');
+            }
+        }
+
+        function renderizarResumen(carrito) {
+            const itemsContainer = document.getElementById('resumen-items');
+            const subtotalEl = document.getElementById('resumen-subtotal');
+            const totalEl = document.getElementById('resumen-total');
+
+            let total = 0;
+            itemsContainer.innerHTML = carrito.items.map(item => {
+                const producto = item.producto || item.productId;
+                const precio = producto?.precio || 0;
+                const cantidad = item.quantity || 1;
+                const itemTotal = precio * cantidad;
+                total += itemTotal;
+
+                return `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <img src="${producto?.imagenUrl || '/assets/img/no-image.png'}" 
+                                 alt="${producto?.nombre || 'Producto'}" 
+                                 style="width: 40px; height: 40px; object-fit: cover;" 
+                                 class="me-2 rounded">
+                            <div>
+                                <small class="d-block">${producto?.nombre || 'Producto'}</small>
+                                <small class="text-muted">x${cantidad}</small>
+                            </div>
+                        </div>
+                        <strong>$${itemTotal.toFixed(2)}</strong>
+                    </div>
+                `;
+            }).join('');
+
+            subtotalEl.textContent = '$' + total.toFixed(2);
+            totalEl.textContent = '$' + total.toFixed(2);
+        }
+
+        async function confirmarCompra() {
+            const form = document.getElementById('checkout-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const result = await Swal.fire({
+                title: '¿Confirmar compra?',
+                text: '¿Estás seguro de que quieres confirmar tu compra?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, confirmar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                const numeroOrden = 'ORD-' + Date.now();
+                
+                document.getElementById('checkout-contenido').classList.add('d-none');
+                document.getElementById('checkout-exito').classList.remove('d-none');
+                document.getElementById('numero-orden').textContent = numeroOrden;
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Compra exitosa!',
+                    text: 'Tu pedido ha sido registrado correctamente.',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            } catch (err) {
+                console.error('Error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo procesar la compra. Intenta nuevamente.'
+                });
+            }
+        }
+
+        function actualizarMenuUsuario() {
+            const token = localStorage.getItem('token');
+            const userMenu = document.getElementById('user-menu');
+            if (token) {
+                userMenu.innerHTML = `
+                    <span class="text-light mx-2">Hola, ${localStorage.getItem('username') || 'Usuario'}</span>
+                    <span class="mx-2">|</span>
+                    <a class="text-light" href="#" onclick="logout()">Cerrar Sesión</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

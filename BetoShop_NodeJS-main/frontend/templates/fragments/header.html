@@ -1,0 +1,90 @@
+<!-- Header -->
+<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light shadow" xmlns:th="http://www.thymeleaf.org">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a class="navbar-brand text-success logo h1 align-self-center" th:href="@{/}">
+            BetoStore
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+            <div class="flex-fill">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/promociones}">Promociones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/shop}">Tienda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/contact}">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar align-self-center d-flex">
+                <!--<div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inputMobileSearch" placeholder="Buscar ...">
+                        <div class="input-group-text">
+                            <i class="fa fa-fw fa-search"></i>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="nav-item dropdown">
+                    <!-- Ícono de lupa -->
+                    <a class="nav-link dropdown-toggle nav-icon text-dark"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="fa fa-fw fa-search"></i>
+                    </a>
+
+                    <!-- Buscador desplegable -->
+                    <div class="dropdown-menu dropdown-menu-end p-2 shadow" style="min-width: 250px;">
+                        <form action="/shop" method="get" class="d-flex">
+                            <input type="text" name="search" class="form-control form-control-sm me-1" placeholder="Buscar...">
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Ícono de carrito  -->
+                <a class="nav-icon position-relative text-decoration-none" th:href="@{/cart}">
+                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"
+                          th:text="${items.size()}">0</span>
+                </a>
+                <div class="navbar align-self-center d-flex">
+                    <!-- Ícono de logout si el usuario está logueado -->
+                    <a th:if="${#authentication.principal != null and #authentication.principal != 'anonymousUser'}"
+                       href="#"
+                       id="logout-icon"
+                       title="Cerrar sesión"
+                       class="nav-icon position-relative text-decoration-none text-success">
+                        <i class="fa fa-fw fa-user mr-3"></i>
+                    </a>
+
+                    <!-- Ícono de login si el usuario no está logueado -->
+                    <a th:if="${#authentication.principal == null or #authentication.principal == 'anonymousUser'}"
+                       th:href="@{/login}"
+                       title="Iniciar sesión"
+                       class="nav-icon position-relative text-decoration-none text-dark">
+                        <i class="fa fa-fw fa-user mr-3"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<!-- Close Header -->
