@@ -37,7 +37,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // ============================================
 // API PROXY - Forward to Backend (MUST BE FIRST)
-// ============================================
 app.use('/api', async (req, res) => {
   const target = `${API_URL}/api${req.url}`;
   console.log(`[PROXY] ${req.method} /api${req.url} -> ${target}`);
@@ -50,6 +49,32 @@ app.use('/api', async (req, res) => {
         host: new URL(API_URL).host,
       },
       body: req.method !== 'GET' && req.method !== 'HEAD' ? JSON.stringify(req.body) : undefined,
+    });
+    
+    const data = await response.text();
+    res.status(response.status);
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+    res.send(data);
+  } catch (err) {
+    console.error('[PROXY ERROR]', err.message);
+    res.status(502).json({ error: 'Proxy error', message: err.message });
+  }
+});
+
+// Contact Form Proxy
+app.use('/contact', express.json(), async (req, res, next) => {
+  const target = `${API_URL}/contact`;
+  console.log(`[PROXY] ${req.method} /contact -> ${target}`, req.body);
+  
+  try {
+    const response = await fetch(target, {
+      method: req.method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body),
     });
     
     const data = await response.text();

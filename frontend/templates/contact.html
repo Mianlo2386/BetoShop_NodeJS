@@ -81,6 +81,23 @@
     </div>
 </div>
 
+<!-- Contact Modal -->
+<div class="modal fade" id="contactMessageModal" tabindex="-1" aria-labelledby="contactMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactMessageModalLabel">Mensaje</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="contactMessageBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Footer -->
 <footer class="bg-dark" id="tempaltemo_footer">
     <div class="container">
@@ -119,26 +136,7 @@
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/maintenance-mode.js"></script>
 
-<script>
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
-    
-    Swal.fire({
-        title: 'Enviando mensaje...',
-        text: 'Gracias por contactarnos, ' + name + '. Te responderemos pronto.',
-        icon: 'success',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#28a745'
-    }).then(() => {
-        this.reset();
-    });
-});
-</script>
+<script src="/assets/js/contact.js"></script>
 
 </body>
 </html>

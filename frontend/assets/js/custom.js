@@ -4,19 +4,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const quantityDisplay = document.getElementById("var-value-post");
     const quantityInput = document.getElementById("product-quantity-post");
 
-    minusBtn.addEventListener("click", function () {
-        let currentQuantity = parseInt(quantityDisplay.textContent);
-        if (currentQuantity > 1) {
-            currentQuantity--;
+    if (minusBtn && quantityDisplay && quantityInput) {
+        minusBtn.addEventListener("click", function () {
+            let currentQuantity = parseInt(quantityDisplay.textContent);
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                quantityDisplay.textContent = currentQuantity;
+                quantityInput.value = currentQuantity;
+            }
+        });
+    }
+
+    if (plusBtn && quantityDisplay && quantityInput) {
+        plusBtn.addEventListener("click", function () {
+            let currentQuantity = parseInt(quantityDisplay.textContent);
+            currentQuantity++;
             quantityDisplay.textContent = currentQuantity;
             quantityInput.value = currentQuantity;
-        }
-    });
-
-    plusBtn.addEventListener("click", function () {
-        let currentQuantity = parseInt(quantityDisplay.textContent);
-        currentQuantity++;
-        quantityDisplay.textContent = currentQuantity;
-        quantityInput.value = currentQuantity;
-    });
+        });
+    }
 });

@@ -55,38 +55,25 @@
       modalElement.setAttribute('aria-modal', 'true');
       modalElement.removeAttribute('aria-hidden');
       
-      const backdrop = document.createElement('div');
-      backdrop.className = 'modal-backdrop fade show';
-      document.body.appendChild(backdrop);
-      
-      const closeModal = function() {
-        modalElement.style.display = 'none';
-        modalElement.classList.remove('show');
-        modalElement.setAttribute('aria-hidden', 'true');
-        modalElement.removeAttribute('aria-modal');
-        backdrop.remove();
-        modalElement.removeEventListener('click', handleModalClick);
-        document.querySelectorAll('.btn-close[data-bs-dismiss="modal"], .btn-success[data-bs-dismiss="modal"]').forEach(btn => {
-          btn.removeEventListener('click', closeModal);
-        });
-      };
-      
-      const handleModalClick = function(e) {
-        if (e.target === modalElement || e.target.classList.contains('modal-content')) {
-          closeModal();
-        }
-      };
-      
-      setTimeout(() => {
-        modalElement.addEventListener('click', handleModalClick);
-        document.querySelectorAll('.btn-close[data-bs-dismiss="modal"], .btn-success[data-bs-dismiss="modal"]').forEach(btn => {
-          btn.addEventListener('click', closeModal);
-        });
-      }, 100);
+      const existingBackdrop = document.querySelector('.modal-backdrop');
+      if (!existingBackdrop) {
+        const backdrop = document.createElement('div');
+        backdrop.className = 'modal-backdrop fade show';
+        document.body.appendChild(backdrop);
+      }
     }
   };
 
   const isPurchaseAction = function(target) {
+    if (target.closest('#contactMessageModal') || target.closest('#maintenanceModal')) {
+      return false;
+    }
+
+    const form = target.closest('form');
+    if (form && form.id === 'contactForm') {
+      return false;
+    }
+
     const purchaseSelectors = [
       'button.btn-success',
       'a.btn-success',
@@ -112,10 +99,10 @@
       }
     }
 
-    const form = target.closest('form');
-    if (form) {
-      const action = form.getAttribute('action') || '';
-      const submit = form.querySelector('button[type="submit"]');
+    const formElement = target.closest('form');
+    if (formElement) {
+      const action = formElement.getAttribute('action') || '';
+      const submit = formElement.querySelector('button[type="submit"]');
       if (action.includes('/cart') || action.includes('/checkout') || 
           (submit && (submit.value === 'buy' || submit.value === 'addtocard'))) {
         return true;

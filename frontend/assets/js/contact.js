@@ -1,29 +1,49 @@
-const contactForm = document.querySelector('form[action="/contact"]');
+const contactForm = document.getElementById('contactForm');
 
-contactForm.addEventListener('submit', function (e) {
-    e.preventDefault(); // Evitamos que envíe directamente
-    const modal = new bootstrap.Modal(document.getElementById('contactMessageModal'));
-    const messageBody = document.getElementById('contactMessageBody');
+if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        console.log('Form submit intercepted');
+        
+        const modal = new bootstrap.Modal(document.getElementById('contactMessageModal'));
+        const messageBody = document.getElementById('contactMessageBody');
 
-    // Mostramos "Enviando..."
-    messageBody.innerHTML = 'Enviando...';
-    modal.show();
+        messageBody.innerHTML = 'Enviando...';
+        modal.show();
 
-    // Enviar formulario manualmente
-    fetch('/contact', {
-        method: 'POST',
-        body: new FormData(contactForm)
-    })
-    .then(response => {
-        if (response.ok) {
-            messageBody.innerHTML = '¡Gracias! Hemos enviado una confirmación a tu correo.';
-            contactForm.reset(); // Limpiar formulario
-        } else {
+        const formData = new FormData(contactForm);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            subject: formData.get('subject'),
+            message: formData.get('message')
+        };
+
+        console.log('Sending data:', data);
+
+        fetch('http://localhost:3001/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            if (data.success) {
+                messageBody.innerHTML = '¡Gracias! Hemos enviado una confirmación a tu correo.';
+                contactForm.reset();
+            } else {
+                messageBody.innerHTML = data.error || 'Error al enviar el mensaje, por favor intenta de nuevo.';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
             messageBody.innerHTML = 'Error al enviar el mensaje, por favor intenta de nuevo.';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        messageBody.innerHTML = 'Error al enviar el mensaje, por favor intenta de nuevo.';
+        });
     });
-});
+}
