@@ -2,22 +2,30 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend",
+      "src": "frontend/templates/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/assets/**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://beto-shop-node-js.vercel.app/api/$1"
+      "destination": "https://betostore-backend.onrender.com/api/$1"
     },
     {
-      "src": "/((?!assets/).*)",
-      "dest": "/frontend/templates/index.html"
+      "src": "/contact",
+      "destination": "https://betostore-backend.onrender.com/contact"
     },
     {
       "src": "/assets/(.*)",
       "dest": "/frontend/assets/$1"
+    },
+    {
+      "src": "/((?!assets/).*)",
+      "dest": "/frontend/templates/index.html"
     }
   ]
 }

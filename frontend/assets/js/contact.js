@@ -21,7 +21,7 @@ if (contactForm) {
 
         console.log('Sending data:', data);
 
-        fetch('http://localhost:3001/contact', {
+        fetch('https://betostore-backend.onrender.com/contact', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

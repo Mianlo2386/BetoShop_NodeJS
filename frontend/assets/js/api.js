@@ -1,5 +1,5 @@
-// Usar ruta relativa para que funcione con el proxy
-const API_BASE_URL = '/api';
+// URL del backend en producción
+const API_BASE_URL = 'https://betostore-backend.onrender.com';
 
 const api = {
   async get(endpoint) {
