@@ -2,11 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/templates/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "frontend/assets/**/*",
+      "src": "frontend",
       "use": "@vercel/static"
     }
   ],
@@ -21,11 +17,43 @@
     },
     {
       "src": "/assets/(.*)",
-      "dest": "/frontend/assets/$1"
+      "dest": "frontend/assets/$1"
     },
     {
-      "src": "/((?!assets/).*)",
-      "dest": "/frontend/templates/index.html"
+      "src": "/shop.html",
+      "dest": "frontend/templates/shop.html"
+    },
+    {
+      "src": "/shop-single.html",
+      "dest": "frontend/templates/shop-single.html"
+    },
+    {
+      "src": "/login.html",
+      "dest": "frontend/templates/login.html"
+    },
+    {
+      "src": "/register.html",
+      "dest": "frontend/templates/register.html"
+    },
+    {
+      "src": "/contact.html",
+      "dest": "frontend/templates/contact.html"
+    },
+    {
+      "src": "/about.html",
+      "dest": "frontend/templates/about.html"
+    },
+    {
+      "src": "/cart.html",
+      "dest": "frontend/templates/cart.html"
+    },
+    {
+      "src": "/checkout.html",
+      "dest": "frontend/templates/checkout.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/templates/index.html"
     }
   ]
 }
