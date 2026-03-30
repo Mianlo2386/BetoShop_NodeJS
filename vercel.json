@@ -1,16 +1,1 @@
-{
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "static"
-    },
-    {
-      "src": "*.html",
-      "use": "static"
-    },
-    {
-      "src": "assets/**",
-      "use": "static"
-    }
-  ]
-}
+{}
