@@ -1,16 +1,10 @@
 {
   "builds": [
     {
-      "src": "frontend/templates/index.html",
-      "use": "static"
-    },
-    {
-      "src": "frontend/templates/*.html",
-      "use": "static"
-    },
-    {
-      "src": "frontend/assets/**",
-      "use": "static"
+      "use": "@vercel/static",
+      "config": {
+        "output": "frontend"
+      }
     }
   ]
 }
