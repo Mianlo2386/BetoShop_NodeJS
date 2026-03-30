@@ -1,6 +1,6 @@
 {
   "name": "betostore-backend",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "BetoStore E-commerce Backend - Node.js Migration from Java Spring",
   "type": "module",
   "main": "src/app.js",

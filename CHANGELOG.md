@@ -1,5 +1,47 @@
 # Changelog
 
+## [1.5.0](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.4.1...v1.5.0) (2026-03-30)
+
+
+### Features
+
+* activate contact form with email notifications and UI improvements ([074a835](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/074a83539d433ceb16f24b102a631574049969ba))
+* add search button to shop page ([94c8342](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/94c8342d1fdf224362935fa121b5cc989d380c07))
+* add search functionality, fix pagination colors, update hero text, convert cart/checkout pages to API, add contact form tests ([7c876ac](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/7c876ac47e077371c3c7ebe4550844aa28678040))
+* add search icon and fix maintenance mode for search ([fcab5c7](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/fcab5c7bea82c7cad4047f4c27c870e56cee8590))
+* configure for production - point to Render backend ([891fb7e](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/891fb7ece754c6a66f3f32f736ada66e8495efbb))
+
+
+### Bug Fixes
+
+* add _redirects for Vercel ([41dc2ec](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/41dc2ec120e8c3f735b8454ac8ef422187b44765))
+* add .vercelignore ([8aab737](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/8aab737de93caa5c81dfb589ef9d928bf3218489))
+* add /api prefix to all API calls ([455e3a7](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/455e3a702b38f5de0ca22b55ca2d77b395592633))
+* add netlify.toml for redirects ([1f75f6d](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/1f75f6d0ed3492bc55efbb6a7af1c0e4df08295d))
+* add search.js to shop.html ([18071e1](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/18071e1352260df603e839a861ae2a36e194c2a8))
+* clean up and fix deploy ([5b9a899](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/5b9a8995f73ea4acd4c51ebcdfd27e64f904eb7f))
+* copy all frontend assets to root ([293d230](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/293d23085bd6860db9dc2b22cb8bda713c04d395))
+* improve API error handling ([ac053c3](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/ac053c3dedd787d426cfd0bb57217f6f80bac14b))
+* minimal vercel config ([b688f4c](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/b688f4c166f91c8814f387d48ef7f3ec4f8b5e0d))
+* move css to assets folder ([4f43eec](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/4f43eecbb3a9d086be8a751f356fed43e5d1d1df))
+* move frontend files to root for Vercel ([37dda0b](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/37dda0b7478005b905e79812ea97853b06086bb0))
+* move img and webfonts to assets ([6f11611](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/6f116112f5d0c1e97bab9589fd083b1c3af19aa9))
+* move static files to public folder for Vercel ([e9aae24](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/e9aae24f09ec9de1489d96e0ff6a1e9babdafb32))
+* remove duplicate _redirects ([30559f5](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/30559f51ba5320a9daa104a3288a3df09a946908))
+* remove duplicate files ([4cfc18c](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/4cfc18ca6ab6339ea191113b6845d32c24a4ec99))
+* remove verconfig to let Vercel auto-detect ([ab62d97](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/ab62d9750b139a0614a3ba91c9c80905fec78492))
+* simplify vercel config ([2146122](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/21461225a36fe5c14608a360fe727021cbfbf6b7))
+* use small search box like homepage ([dff8248](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/dff8248032ef9493c7fc071a0f29c210325eae8c))
+* vercel assets routing ([953c99e](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/953c99eed8b2f2d7ad726f0c4f0d0dd3e82cae83))
+* vercel config v5 ([41687f1](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/41687f17647b9c0251ff1303e30ab60cdb5c6b4f))
+* vercel config with public dir ([c9b2084](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/c9b20848333cdc11b7c2416a59665b645cce5790))
+* vercel config with public folder ([71f7bc2](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/71f7bc21853502a4835acbd773e416ccd9d31c24))
+* vercel output config ([f0a1c7d](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/f0a1c7d90b2b8d1a4f8920f8d2ee9362d0d0ac03))
+* vercel rewrites config ([9507118](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/9507118265eb422970c5155cc8280a0bc9064f74))
+* vercel routes configuration ([7d1c7f3](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/7d1c7f37755a40124c329e1c6eb672e7a1e720f5))
+* vercel routes for static files ([99b3089](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/99b3089d504ce5c286dbfec4c2ba04525ee9415d))
+* vercel static config ([2cf478b](https://github.com/Mianlo2386/BetoShop_NodeJS/commit/2cf478bfe34b6b9b1f5e454c6ef9e17c6103d471))
+
 ## [1.4.1](https://github.com/Mianlo2386/BetoShop_NodeJS/compare/v1.4.0...v1.4.1) (2026-03-28)
 
 
