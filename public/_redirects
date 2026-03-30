@@ -1,0 +1,2 @@
+/api/:path https://betostore-backend.onrender.com/api/:path 200
+/contact https://betostore-backend.onrender.com/contact 200

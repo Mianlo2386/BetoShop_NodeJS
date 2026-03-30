@@ -1,17 +1,3 @@
 {
-  "build": {
-    "command": "echo 'Build not needed'",
-    "outputDirectory": "."
-  },
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/api/(.*)", "destination": "https://betostore-backend.onrender.com/api/$1" 
-    },
-    {
-      "src": "/contact", "destination": "https://betostore-backend.onrender.com/contact"
-    }
-  ]
+  "outputDirectory": "."
 }
