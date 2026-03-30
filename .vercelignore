@@ -1,0 +1,6 @@
+backend/
+.git/
+*.md
+node_modules/
+.env
+vercel.json
