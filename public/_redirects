@@ -1,2 +1,2 @@
-/api/* https://betostore-backend.onrender.com/api/:splat 200
-/contact https://betostore-backend.onrender.com/contact 200
+/api/*  https://betostore-backend.onrender.com/api/:splat  200
+/contact  https://betostore-backend.onrender.com/contact  200
