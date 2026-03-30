@@ -1,16 +1,20 @@
 {
+  "build": {
+    "command": "echo 'No build needed'",
+    "outputDirectory": "."
+  },
   "rewrites": [
-    { "source": "/api/:match*", "destination": "https://betostore-backend.onrender.com/api/:match*" },
+    { "source": "/api/:path(*)", "destination": "https://betostore-backend.onrender.com/api/:path(*)" },
     { "source": "/contact", "destination": "https://betostore-backend.onrender.com/contact" },
-    { "source": "/assets/:match*", "destination": "/frontend/assets/:match*" },
-    { "source": "/shop.html", "destination": "/frontend/templates/shop.html" },
-    { "source": "/shop-single.html", "destination": "/frontend/templates/shop-single.html" },
-    { "source": "/login.html", "destination": "/frontend/templates/login.html" },
-    { "source": "/register.html", "destination": "/frontend/templates/register.html" },
-    { "source": "/contact.html", "destination": "/frontend/templates/contact.html" },
-    { "source": "/about.html", "destination": "/frontend/templates/about.html" },
-    { "source": "/cart.html", "destination": "/frontend/templates/cart.html" },
-    { "source": "/checkout.html", "destination": "/frontend/templates/checkout.html" },
-    { "source": "/:match*", "destination": "/frontend/templates/index.html" }
+    { "source": "/assets/:path(*)", "destination": "frontend/assets/:path(*)" },
+    { "source": "/shop.html", "destination": "frontend/templates/shop.html" },
+    { "source": "/shop-single.html", "destination": "frontend/templates/shop-single.html" },
+    { "source": "/login.html", "destination": "frontend/templates/login.html" },
+    { "source": "/register.html", "destination": "frontend/templates/register.html" },
+    { "source": "/contact.html", "destination": "frontend/templates/contact.html" },
+    { "source": "/about.html", "destination": "frontend/templates/about.html" },
+    { "source": "/cart.html", "destination": "frontend/templates/cart.html" },
+    { "source": "/checkout.html", "destination": "frontend/templates/checkout.html" },
+    { "source": "/(.*)", "destination": "frontend/templates/index.html" }
   ]
 }
