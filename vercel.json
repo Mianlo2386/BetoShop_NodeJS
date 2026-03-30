@@ -1,10 +1,16 @@
 {
   "builds": [
     {
-      "use": "@vercel/static",
-      "config": {
-        "output": "frontend"
-      }
+      "src": "index.html",
+      "use": "static"
+    },
+    {
+      "src": "*.html",
+      "use": "static"
+    },
+    {
+      "src": "assets/**",
+      "use": "static"
     }
   ]
 }
