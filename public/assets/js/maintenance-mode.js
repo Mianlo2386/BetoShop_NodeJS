@@ -70,7 +70,12 @@
     }
 
     const form = target.closest('form');
-    if (form && form.id === 'contactForm') {
+    if (form && (form.id === 'contactForm' || form.classList.contains('modal-search-form'))) {
+      return false;
+    }
+
+    // Allow search form buttons
+    if (target.closest('.modal-search-form') || target.closest('#templatemo_search')) {
       return false;
     }
 
