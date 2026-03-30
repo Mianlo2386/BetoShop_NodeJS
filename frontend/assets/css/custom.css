@@ -28,3 +28,93 @@ Custom CSS - BetoStore
 #tempaltemo_footer .logo {
     color: #59ab6e !important;
 }
+
+/* Search Box */
+.nav-search {
+    position: relative;
+}
+
+.btn-search {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    color: #333;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.btn-search:hover {
+    color: #28a745;
+}
+
+.search-box {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 0;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 25px;
+    display: flex;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.search-box.active {
+    width: 300px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+.search-box input {
+    border: none;
+    border-radius: 25px 0 0 25px;
+    padding: 10px 15px;
+    width: 250px;
+    outline: none;
+}
+
+.search-box input:focus {
+    box-shadow: none;
+}
+
+.btn-search-submit {
+    background: #28a745;
+    border: none;
+    border-radius: 0 25px 25px 0;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-search-submit:hover {
+    background: #20c997;
+}
+
+/* Pagination - Verde */
+.pagination .page-link {
+    color: #28a745;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+}
+
+/* Hero text */
+.hero-betostore {
+    font-family: 'Arial Black', 'Helvetica Neue', sans-serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: #28a745;
+}

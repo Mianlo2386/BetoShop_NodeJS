@@ -30,6 +30,13 @@
                 <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito</a></li>
             </ul>
+            <div class="nav-search ms-3">
+                <button class="btn btn-search" type="button" id="searchToggle"><i class="fas fa-search"></i></button>
+                <div class="search-box" id="searchBox">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+                    <button class="btn btn-search-submit" id="searchSubmit"><i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
@@ -121,7 +128,8 @@
 <script src="/assets/js/templatemo.js"></script>
 <script src="/assets/js/custom.js"></script>
 <script src="/assets/js/api.js"></script>
-<script src="/assets/js/maintenance-mode.js"></script>
+    <script src="/assets/js/search.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
 
 <script>
 function showSizeModal() {

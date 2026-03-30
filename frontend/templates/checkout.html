@@ -1,13 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 
-<div th:insert="~{fragments/head :: head}"></div>
+<head>
+    <title>Checkout - BetoStore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
 <body>
 
-<div th:insert="~{fragments/navbar :: navbar}"></div>
-<div th:insert="~{fragments/header :: header}"></div>
-<div th:insert="~{fragments/modal :: modal}"></div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
+            </ul>
+            <div class="nav-search ms-3">
+                <button class="btn btn-search" type="button" id="searchToggle"><i class="fas fa-search"></i></button>
+                <div class="search-box" id="searchBox">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+                    <button class="btn btn-search-submit" id="searchSubmit"><i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <!-- Contenido del checkout -->
 <section class="bg-light">
@@ -17,85 +49,48 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="h2 text-center">Confirmar Compra</h2>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
-                                <th>Precio Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="item : ${items}">
-                                <td>
-                                    <a th:href="@{/shopsingle/{id}(id=${item.producto.id})}"
-                                       th:text="${item.producto.nombre}"
-                                       class="text-dark text-decoration-none">
-                                    </a>
-                                </td>
-                                <td th:text="${item.quantity}"></td>
-                                <td th:text="'$' + ${item.producto.precio}"></td>
-                                <td th:text="'$' + ${item.producto.precio * item.quantity}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <!-- Total de la compra -->
-                        <h3 class="h3 text-center mt-4">
-                            Total: <span th:text="'$' + ${total}"></span>
-                        </h3>
-
-                        <!-- Botones de acción -->
-                        <div class="d-flex justify-content-center gap-5 mt-4">
-                            <a href="/shop" class="btn btn-success btn-lg">Seguir comprando</a>
-                            <!-- Botón para abrir el modal -->
-                            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                                Confirmar compra
-                            </button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Confirmación de Compra</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ¿Estás seguro de que quieres finalizar la compra?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                            <button type="submit" class="btn btn-success" onclick="if(document.getElementById('confirmCheckoutForm')) document.getElementById('confirmCheckoutForm').submit();">
-                                                Sí, confirmar
-                                            </button>
-                                        </div>
-                                    </div>
+                        
+                        <div id="loading" class="text-center py-5">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                        </div>
+                        
+                        <div id="checkout-vacio" class="text-center py-5 d-none">
+                            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                            <p class="lead">No hay productos para comprar</p>
+                            <a href="/shop.html" class="btn btn-success btn-lg">Ver productos</a>
+                        </div>
+                        
+                        <div id="checkout-contenido" class="d-none">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Precio Total</th>
+                                </tr>
+                                </thead>
+                                <tbody id="checkout-items">
+                                </tbody>
+                            </table>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <h4>Datos de contacto:</h4>
+                                    <p><strong>Nombre:</strong> <span id="usuario-nombre"></span></p>
+                                    <p><strong>Email:</strong> <span id="usuario-email"></span></p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <h4>Total a pagar: <span id="checkout-total" class="text-success">$0</span></h4>
                                 </div>
                             </div>
-                            <!-- Modal de compra confirmada -->
-                            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
-                                 th:if="${compraExitosa}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">¡Compra realizada con éxito!</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Gracias por tu compra. Serás contactado en breve para los detalles de entrega.
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <a href="/shop" class="btn btn-success">Volver a la tienda</a>
-                                        </div>
-                                    </div>
-                                </div>
+                            
+                            <div class="text-center mt-4">
+                                <a href="/cart.html" class="btn btn-secondary btn-lg">Volver al carrito</a>
+                                <button class="btn btn-success btn-lg" onclick="confirmarCompra()">Confirmar compra</button>
                             </div>
-
-                            <!-- Formulario fuera del modal -->
-                            <form id="confirmCheckoutForm" action="/checkout/confirmar" method="POST" style="display:none;"></form>
                         </div>
                     </div>
                 </div>
@@ -104,26 +99,113 @@
     </div>
 </section>
 
-<div th:insert="~{fragments/footer :: footer}"></div>
+<!-- Footer -->
+<footer class="bg-dark" id="tempaltemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-success border-bottom pb-3 border-light logo">betostore</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><i class="fas fa-map-marker-alt fa-fw"></i> Argentina</li>
+                    <li><i class="fa fa-phone fa-fw"></i> 010-020-0340</li>
+                    <li><i class="fa fa-envelope fa-fw"></i> betostore72@gmail.com</li>
+                </ul>
+            </div>
+            <div class="col-md-4 pt-5">
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
+                <ul class="list-unstyled text-light footer-link-list">
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row text-light">
+            <div class="col-12">
+                <div class="border-top pt-3">
+                    <p class="text-left">Copyright &copy; 2025 MianloDev</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
-<!-- Start Script -->
-<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
-<script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
-<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/assets/js/templatemo.js}"></script>
-<script th:src="@{/assets/js/custom.js}"></script>
-<script th:src="@{/assets/js/carrousel.releases.js}"></script>
-<script th:if="${compraExitosa}">
-    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-    successModal.show();
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/search.js"></script>
+<script src="/assets/js/maintenance-mode.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    cargarCheckout();
+});
+
+async function cargarCheckout() {
+    const loading = document.getElementById('loading');
+    const checkoutVacio = document.getElementById('checkout-vacio');
+    const checkoutContenido = document.getElementById('checkout-contenido');
+    
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            loading.classList.add('d-none');
+            checkoutVacio.classList.remove('d-none');
+            return;
+        }
+        
+        const response = await api.carrito.get();
+        
+        loading.classList.add('d-none');
+        
+        if (!response.success || !response.data || response.data.items.length === 0) {
+            checkoutVacio.classList.remove('d-none');
+            return;
+        }
+        
+        const items = response.data.items;
+        const tbody = document.getElementById('checkout-items');
+        
+        let total = 0;
+        tbody.innerHTML = items.map(item => {
+            const producto = item.producto || item;
+            const cantidad = item.cantidad || 1;
+            const precioUnitario = producto.precio || 0;
+            const precioTotal = precioUnitario * cantidad;
+            total += precioTotal;
+            
+            return `
+                <tr>
+                    <td>${producto.nombre}</td>
+                    <td>${cantidad}</td>
+                    <td>$${precioUnitario.toLocaleString('es-AR')}</td>
+                    <td>$${precioTotal.toLocaleString('es-AR')}</td>
+                </tr>
+            `;
+        }).join('');
+        
+        document.getElementById('checkout-total').textContent = '$' + total.toLocaleString('es-AR');
+        document.getElementById('usuario-nombre').textContent = localStorage.getItem('username') || 'Usuario';
+        checkoutContenido.classList.remove('d-none');
+        
+    } catch (error) {
+        console.error('Error:', error);
+        loading.classList.add('d-none');
+        checkoutVacio.classList.remove('d-none');
+    }
+}
+
+function confirmarCompra() {
+    Swal.fire({
+        icon: 'info',
+        title: 'Próximamente',
+        text: 'El sistema de pagos está en construcción. Contáctanos para finalizar tu compra.',
+        confirmButtonText: 'Contactar'
+    }).then(() => {
+        window.location.href = '/contact.html';
+    });
+}
 </script>
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Script de confirmación de logout -->
-<script th:src="@{/assets/js/logoutConfirm.js}"></script>
-<script th:src="@{/assets/js/maintenance-mode.js}"></script>
-<!-- End Script -->
 
 </body>
 </html>

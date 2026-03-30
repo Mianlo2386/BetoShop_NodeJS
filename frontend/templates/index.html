@@ -49,6 +49,18 @@
                 <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
                 </ul>
+                <!-- Search -->
+                <div class="nav-search ms-3">
+                    <button class="btn btn-search" type="button" id="searchToggle">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-box" id="searchBox">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+                        <button class="btn btn-search-submit" id="searchSubmit">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -64,7 +76,7 @@
                         </div>
                         <div class="col-lg-6 mb-0 d-flex align-items-center">
                             <div class="text-align-left align-self-center">
-                                <h1 class="h1 text-success"><b>BetoShop</b> Tu tienda de confianza</h1>
+                                <h1 class="h1 text-success"><span class="logo">betostore</span> Tu tienda de confianza</h1>
                                 <h3 class="h2">Los mejores productos</h3>
                                 <p>Descubre nuestra colección de cuadros, llaveros y accesorios.</p>
                             </div>
@@ -327,5 +339,6 @@
         }
     </script>
     <script src="/assets/js/maintenance-mode.js"></script>
+    <script src="/assets/js/search.js"></script>
 </body>
 </html>

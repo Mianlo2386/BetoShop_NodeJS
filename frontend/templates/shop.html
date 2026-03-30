@@ -190,7 +190,7 @@
         // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             const params = new URLSearchParams(window.location.search);
-            currentSearch = params.get('search') || '';
+            currentSearch = params.get('busqueda') || params.get('q') || '';
             currentCategoria = params.get('categoria') || '';
             
             // Mostrar/ocultar botón limpiar filtros
