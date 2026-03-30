@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+// URL del backend en producción
+const API_BASE_URL = 'https://betostore-backend.onrender.com';
 
 const api = {
   async get(endpoint) {
