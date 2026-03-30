@@ -44,27 +44,20 @@
                 <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
                 </ul>
-                <button class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-                    <i class="fas fa-search fa-lg"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Modal -->
-    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <form class="modal-search-form" action="/shop.html" method="get">
-                        <input class="form-control" name="search" type="search" placeholder="Buscar productos..." aria-label="Search">
-                        <button type="submit" class="btn btn-success">Buscar</button>
-                    </form>
+                <div class="nav-search ms-3">
+                    <button class="btn btn-search" type="button" id="searchToggle">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-box" id="searchBox">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+                        <button class="btn btn-search-submit" id="searchSubmit">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </nav>
 
     <!-- Start Content -->
     <div class="container py-5">
