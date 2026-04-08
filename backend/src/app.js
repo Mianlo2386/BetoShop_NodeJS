@@ -17,7 +17,9 @@ import contactRoutes from './routes/contact.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware.js';
 import { auditMiddleware } from './middleware/audit.middleware.js';
 
-dotenv.config();
+dotenv.config({ path: './.env' });
+
+const isVercel = process.env.VERCEL === '1';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -72,7 +74,16 @@ app.use('/api/carrito', carritoRoutes);
 app.use('/contact', contactRoutes);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.join(__dirname, '../../public')));
+
+const publicPath = process.env.VERCEL 
+  ? path.join(__dirname, '../../public')
+  : path.join(__dirname, '../../public');
+
+app.use(express.static(publicPath));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
 
 app.use(notFoundHandler);
 app.use(errorHandler);
