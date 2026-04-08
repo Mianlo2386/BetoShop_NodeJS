@@ -35,7 +35,7 @@ if (contactForm) {
         .then(data => {
             console.log('Response data:', data);
             if (data.success) {
-                messageBody.innerHTML = '¡Gracias! Hemos enviado una confirmación a tu correo.';
+                messageBody.innerHTML = 'Hemos recibido tu mensaje. Nos contactaremos a la brevedad.';
                 contactForm.reset();
             } else {
                 messageBody.innerHTML = data.error || 'Error al enviar el mensaje, por favor intenta de nuevo.';
