@@ -92,7 +92,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
             window.location.href = redirectUrl || '/admin/dashboard.html';
         } else {
-        } else {
             errorDiv.textContent = data.error || 'Usuario o contraseña incorrectos';
             errorDiv.classList.remove('d-none');
         }
