@@ -1,26 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 
-<div th:insert="~{fragments/head :: head}"></div>
+<head>
+    <title>Admin - betostore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
-<body>
+<body class="bg-light">
 
-<div th:insert="~{fragments/navbar :: navbar}"></div>
-<div th:insert="~{fragments/header :: header}"></div>
-<div th:insert="~{fragments/modal :: modal}"></div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop.html">Tienda</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
+            </ul>
+            <div class="ms-3">
+                <span class="text-success"><i class="fas fa-user-shield"></i> Admin</span>
+                <button class="btn btn-sm btn-outline-danger ms-2" onclick="logout()">Salir</button>
+            </div>
+        </div>
+    </div>
+</nav>
 
-<section class="bg-light">
-    <div class="container pb-5">
+<!-- Dashboard -->
+<section class="py-5">
+    <div class="container">
         <div class="row">
-            <div class="col-lg-12 mt-5">
-                <div class="card shadow">
+            <div class="col-12">
+                <h2 class="h2 text-success mb-4"><i class="fas fa-cogs"></i> Panel de Administración</h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Productos -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
                     <div class="card-body text-center">
-                        <h2 class="h2">Panel de Administración</h2>
-                        <p class="lead mt-3">Elegí una sección para administrar:</p>
-                        <div class="d-flex justify-content-center gap-4 mt-4">
-                            <a href="/admin/productos" class="btn btn-outline-success btn-lg">Gestionar productos</a>
-                            <a href="/admin/usuarios" class="btn btn-outline-success btn-lg">Gestionar usuarios</a>
-                        </div>
+                        <i class="fas fa-box fa-3x text-success mb-3"></i>
+                        <h4>Productos</h4>
+                        <p class="text-muted">Gestiona el catálogo de productos</p>
+                        <a href="/admin/productos.html" class="btn btn-success">Administrar Productos</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usuarios -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-success mb-3"></i>
+                        <h4>Usuarios</h4>
+                        <p class="text-muted">Gestiona usuarios del sistema</p>
+                        <a href="/admin/usuarios.html" class="btn btn-success">Administrar Usuarios</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contactos -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-envelope fa-3x text-success mb-3"></i>
+                        <h4>Contactos</h4>
+                        <p class="text-muted">Ver mensajes recibidos</p>
+                        <a href="/admin/contactos.html" class="btn btn-success">Ver Mensajes</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Estadísticas -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
+                        <h4>Estadísticas</h4>
+                        <p class="text-muted">Resumen del sistema</p>
+                        <button class="btn btn-outline-success" onclick="loadStats()">Ver Stats</button>
                     </div>
                 </div>
             </div>
@@ -28,21 +97,31 @@
     </div>
 </section>
 
-<div th:insert="~{fragments/footer :: footer}"></div>
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
+<script>
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('roles');
+    window.location.href = '/';
+}
 
-<!-- Start Script -->
-<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
-<script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
-<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/assets/js/templatemo.js}"></script>
-<script th:src="@{/assets/js/custom.js}"></script>
-<script th:src="@{/assets/js/carrousel.releases.js}"></script>
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+function loadStats() {
+    Swal.fire('Estadísticas', 'Próximamente...', 'info');
+}
 
-<!-- Script de confirmación de logout -->
-<script th:src="@{/assets/js/logoutConfirm.js}"></script>
-<!-- End Script -->
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    const roles = localStorage.getItem('roles');
+    
+    if (!token || !roles || !roles.includes('ROLE_ADMIN')) {
+        window.location.href = '/login.html?redirect=/admin/dashboard.html';
+    }
+});
+</script>
 
 </body>
 </html>

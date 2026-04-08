@@ -1,140 +1,220 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head}"></head>
-<body>
+<html lang="es">
 
-<div th:insert="~{fragments/navbar :: navbar}"></div>
-<div th:insert="~{fragments/header :: header}"></div>
-<div th:insert="~{fragments/modal :: modal}"></div>
+<head>
+    <title>Admin Productos - betostore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
-<section class="bg-light">
-    <div class="container pb-5">
-        <div class="row">
-            <div class="col-lg-12 mt-5">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h2 class="h2 text-center mb-4">Gestión de Productos</h2>
+<body class="bg-light">
 
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead class="table-success">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+        <div class="ms-auto">
+            <a href="/admin/dashboard.html" class="btn btn-outline-success btn-sm">Volver</a>
+            <button class="btn btn-success btn-sm" onclick="showAddModal()">+ Nuevo</button>
+        </div>
+    </div>
+</nav>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="h2 text-success mb-4"><i class="fas fa-box"></i> Productos</h2>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-success">
                             <tr>
-                                <th>ID</th>
                                 <th>Imagen</th>
                                 <th>Nombre</th>
+                                <th>Categoría</th>
                                 <th>Precio</th>
                                 <th>Stock</th>
-                                <th>Categoría</th>
                                 <th>Acciones</th>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="producto : ${products}">
-                                <td th:text="${producto.id}">1</td>
-                                <td>
-                                    <img th:src="${producto.imagenUrl}"
-                                         alt="Imagen de [[${producto.nombre}]]"
-                                         class="img-thumbnail"
-                                         style="max-width: 100px; height: auto;">
-                                </td>
-                                <td th:text="${producto.nombre}">Nombre</td>
-                                <td th:text="'$' + ${producto.precio}">100.00</td>
-                                <td th:text="${producto.stock}">5</td>
-                                <td th:text="${producto.categoria}">Sin categoría</td>
-                                <td>
-                                    <div class="d-flex gap-2 justify-content-center">
-                                        <form th:action="@{/admin/productos/editar/{id}(id=${producto.id})}"
-                                              method="get"
-                                              class="m-0 p-0">
-                                            <button type="submit"
-                                                    class="btn btn-outline-success btn-sm px-3 py-1">
-                                                Editar
-                                            </button>
-                                        </form>
-
-                                        <button type="button"
-                                                class="btn btn-outline-danger btn-sm"
-                                                data-bs-toggle="modal"
-                                                th:attr="data-bs-target='#confirmarEliminacion-' + ${producto.id}">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <!-- Modales de confirmación -->
-                        <div th:each="producto : ${products}">
-                            <div th:attr="id='confirmarEliminacion-' + ${producto.id}" class="modal fade" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Confirmar eliminación</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>
-                                                ¿Estás seguro de que querés eliminar el producto
-                                                "<span th:text="${producto.nombre}">Producto</span>"?
-                                            </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                            <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post" class="m-0">
-                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <a href="/admin/productos/nuevo" class="btn btn-success">Agregar nuevo producto</a>
-                        </div>
-
-                    </div>
+                        </thead>
+                        <tbody id="productos-table"><tr><td colspan="6">Cargando...</td></tr></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <!--<div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>-->
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 </section>
 
-<div th:insert="~{fragments/footer :: footer}"></div>
-
-<!-- Scripts -->
-<script th:src="@{/assets/js/jquery-1.11.0.min.js}"></script>
-<script th:src="@{/assets/js/jquery-migrate-1.2.1.min.js}"></script>
-<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/assets/js/templatemo.js}"></script>
-<script th:src="@{/assets/js/custom.js}"></script>
-<script th:src="@{/assets/js/carrousel.releases.js}"></script>
-<script th:src="@{/assets/js/toast.js}"></script>
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Script de confirmación de logout -->
-<script th:src="@{/assets/js/logoutConfirm.js}"></script>
-
-<!-- Toast personalizado -->
-<div th:if="${exito}" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055">
-    <div class="toast align-items-center text-white bg-success border-0"
-         role="alert"
-         aria-live="assertive"
-         aria-atomic="true"
-         data-bs-autohide="true"
-         data-bs-delay="3000">
-        <div class="d-flex">
-            <div class="toast-body" th:text="${exito}">Producto eliminado correctamente.</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast"
-                    aria-label="Cerrar"></button>
+<!-- Modal -->
+<div class="modal fade" id="productoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="productoModalTitle">Nuevo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="productoForm">
+                    <input type="hidden" id="productoId">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" id="productoNombre" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Precio</label>
+                            <input type="number" class="form-control" id="productoPrecio" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Categoría</label>
+                            <select class="form-select" id="productoCategoria">
+                                <option value="Decoración">Decoración</option>
+                                <option value="Películas">Películas</option>
+                                <option value="Deportes">Deportes</option>
+                                <option value="Dibujos animados">Dibujos animados</option>
+                                <option value="Sorpresa">Sorpresa</option>
+                                <option value="Coleccionables">Coleccionables</option>
+                                <option value="Accesorios">Accesorios</option>
+                                <option value="Relojes">Relojes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Stock</label>
+                            <input type="number" class="form-control" id="productoStock" value="0">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Descripción</label>
+                        <textarea class="form-control" id="productoDescripcion" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>URL Imagen</label>
+                        <input type="url" class="form-control" id="productoImagen">
+                    </div>
+                    <div class="mb-3">
+                        <label>Especificaciones</label>
+                        <textarea class="form-control" id="productoEspecificaciones" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" onclick="saveProducto()">Guardar</button>
+            </div>
         </div>
     </div>
 </div>
 
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
+<script>
+let productos = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('token') || !localStorage.getItem('roles')?.includes('ROLE_ADMIN')) {
+        window.location.href = '/login.html?redirect=/admin/dashboard.html';
+        return;
+    }
+    loadProductos();
+});
+
+async function loadProductos() {
+    try {
+        const response = await api.productos.getAll();
+        productos = response.data || [];
+        renderTable();
+    } catch (e) { console.error(e); }
+}
+
+function renderTable() {
+    const tbody = document.getElementById('productos-table');
+    if (!productos.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center">Sin productos</td></tr>';
+        return;
+    }
+    tbody.innerHTML = productos.map(p => `
+        <tr>
+            <td><img src="${p.imagenUrl || '/assets/img/no-image.png'}" width="50"></td>
+            <td>${p.nombre}</td>
+            <td>${p.categoria || '-'}</td>
+            <td>$${(p.precio || 0).toLocaleString('es-AR')}</td>
+            <td>${p.stock || 0}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="editProducto('${p._id}')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteProducto('${p._id}')"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function showAddModal() {
+    document.getElementById('productoModalTitle').textContent = 'Nuevo Producto';
+    document.getElementById('productoId').value = '';
+    document.getElementById('productoForm').reset();
+    new bootstrap.Modal(document.getElementById('productoModal')).show();
+}
+
+function editProducto(id) {
+    const p = productos.find(x => x._id === id);
+    if (!p) return;
+    document.getElementById('productoModalTitle').textContent = 'Editar Producto';
+    document.getElementById('productoId').value = p._id;
+    document.getElementById('productoNombre').value = p.nombre || '';
+    document.getElementById('productoPrecio').value = p.precio || '';
+    document.getElementById('productoCategoria').value = p.categoria || 'Decoración';
+    document.getElementById('productoStock').value = p.stock || 0;
+    document.getElementById('productoDescripcion').value = p.descripcion || '';
+    document.getElementById('productoImagen').value = p.imagenUrl || '';
+    document.getElementById('productoEspecificaciones').value = p.especificaciones || '';
+    new bootstrap.Modal(document.getElementById('productoModal')).show();
+}
+
+async function saveProducto() {
+    const id = document.getElementById('productoId').value;
+    const data = {
+        nombre: document.getElementById('productoNombre').value,
+        precio: parseFloat(document.getElementById('productoPrecio').value) || 0,
+        categoria: document.getElementById('productoCategoria').value,
+        stock: parseInt(document.getElementById('productoStock').value) || 0,
+        descripcion: document.getElementById('productoDescripcion').value,
+        imagenUrl: document.getElementById('productoImagen').value,
+        especificaciones: document.getElementById('productoEspecificaciones').value
+    };
+    
+    try {
+        if (id) {
+            await api.post(`/productos/${id}`, data);
+            Swal.fire('OK', 'Actualizado', 'success');
+        } else {
+            await api.post('/productos', data);
+            Swal.fire('OK', 'Creado', 'success');
+        }
+        bootstrap.Modal.getInstance(document.getElementById('productoModal')).hide();
+        loadProductos();
+    } catch (e) {
+        Swal.fire('Error', 'No se pudo guardar', 'error');
+    }
+}
+
+async function deleteProducto(id) {
+    if (!await Swal.fire({title:'¿Eliminar?',text:'No se puede deshacer',icon:'warning',showCancelButton:true}).then(r=>r.isConfirmed)) return;
+    try {
+        await api.delete(`/productos/${id}`);
+        Swal.fire('OK', 'Eliminado', 'success');
+        loadProductos();
+    } catch (e) {
+        Swal.fire('Error', 'No se pudo eliminar', 'error');
+    }
+}
+</script>
 </body>
 </html>
