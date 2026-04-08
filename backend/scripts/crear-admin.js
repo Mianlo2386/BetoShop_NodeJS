@@ -21,7 +21,7 @@ async function crearAdmin() {
         { 
           $set: { 
             email: 'betostore72@gmail.com',
-            roles: ['user', 'admin']
+            roles: ['ROLE_USER', 'ROLE_ADMIN']
           }
         }
       );
@@ -32,7 +32,7 @@ async function crearAdmin() {
         username: 'admin',
         email: 'betostore72@gmail.com',
         password: hashedPassword,
-        roles: ['user', 'admin'],
+        roles: ['ROLE_USER', 'ROLE_ADMIN'],
         isLocked: false,
         failedLoginAttempts: 0,
         audit: {

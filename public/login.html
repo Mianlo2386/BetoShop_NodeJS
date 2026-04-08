@@ -83,16 +83,15 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
         
         if (response.ok && data.success) {
-            // Login exitoso
-            Swal.fire({
-                title: '¡Bienvenido!',
-                text: 'Has iniciado sesión correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#28a745'
-            }).then(() => {
-                window.location.href = '/';
-            });
+            if (data.data) {
+                localStorage.setItem('token', data.data.accessToken || data.data.token);
+                localStorage.setItem('username', data.data.user ? data.data.user.username : data.data.username);
+                localStorage.setItem('userId', data.data.user ? data.data.user._id : data.data.id);
+                localStorage.setItem('roles', JSON.stringify(data.data.user ? data.data.user.roles : data.data.roles));
+            }
+            const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+            window.location.href = redirectUrl || '/admin/dashboard.html';
+        } else {
         } else {
             errorDiv.textContent = data.error || 'Usuario o contraseña incorrectos';
             errorDiv.classList.remove('d-none');

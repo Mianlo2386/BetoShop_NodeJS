@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.routes.js';
@@ -60,46 +62,7 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.json({
-    name: 'BetoStore API',
-    version: '1.0.0',
-    description: 'E-commerce Backend - Node.js Migration from Java Spring',
-    documentation: '/api/docs',
-    endpoints: {
-      health: '/health',
-      auth: {
-        login: 'POST /api/auth/login',
-        register: 'POST /api/auth/register',
-        refresh: 'POST /api/auth/refresh',
-        recover: 'POST /api/auth/recuperar',
-        resetPassword: 'POST /api/auth/reset-password',
-        me: 'GET /api/auth/me',
-        changePassword: 'POST /api/auth/change-password',
-        validate: 'GET /api/auth/validate',
-      },
-      productos: {
-        list: 'GET /api/productos',
-        search: 'GET /api/productos/search?q=',
-        releases: 'GET /api/productos/releases',
-        byId: 'GET /api/productos/:id',
-        byCategory: 'GET /api/productos/categoria/:categoria',
-        byPriceRange: 'GET /api/productos/precio/rango?min=&max=',
-        categories: 'GET /api/productos/meta/categorias',
-        subcategories: 'GET /api/productos/meta/subcategorias',
-        stats: 'GET /api/productos/meta/estadisticas',
-      },
-      promociones: {
-        list: 'GET /api/promociones',
-        byId: 'GET /api/promociones/:id',
-      },
-      carrito: {
-        get: 'GET /api/carrito',
-        add: 'POST /api/carrito/add',
-        delete: 'DELETE /api/carrito/:productId',
-        clear: 'DELETE /api/carrito',
-      },
-    },
-  });
+  res.sendFile(path.join(__dirname, '../../public/index.html'));
 });
 
 app.use('/api/auth', authRoutes);
@@ -107,6 +70,9 @@ app.use('/api/productos', productosRoutes);
 app.use('/api/promociones', promocionesRoutes);
 app.use('/api/carrito', carritoRoutes);
 app.use('/contact', contactRoutes);
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.join(__dirname, '../../public')));
 
 app.use(notFoundHandler);
 app.use(errorHandler);

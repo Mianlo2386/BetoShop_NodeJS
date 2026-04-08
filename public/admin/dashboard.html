@@ -115,9 +115,23 @@ function loadStats() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
-    const roles = localStorage.getItem('roles');
+    const rolesStr = localStorage.getItem('roles');
     
-    if (!token || !roles || !roles.includes('ROLE_ADMIN')) {
+    if (!token || !rolesStr) {
+        window.location.href = '/login.html?redirect=/admin/dashboard.html';
+        return;
+    }
+    
+    let roles;
+    try {
+        roles = JSON.parse(rolesStr);
+    } catch (e) {
+        roles = rolesStr;
+    }
+    
+    const isAdmin = Array.isArray(roles) ? roles.includes('ROLE_ADMIN') : roles.includes('ROLE_ADMIN');
+    
+    if (!isAdmin) {
         window.location.href = '/login.html?redirect=/admin/dashboard.html';
     }
 });
