@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.routes.js';
@@ -19,24 +20,11 @@ import { auditMiddleware } from './middleware/audit.middleware.js';
 
 dotenv.config({ path: './.env' });
 
-const isVercel = process.env.VERCEL === '1';
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
-  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
-      fontSrc: ["'self'", 'cdnjs.cloudflare.com', 'data:'],
-      imgSrc: ["'self'", 'data:', 'https:', 'i.imgur.com'],
-      connectSrc: ["'self'", 'https:', 'http://localhost:3000', 'http://localhost:3001'],
-      frameSrc: ["'self'"],
-    },
-  } : false,
 }));
 
 app.use(cors({
@@ -49,9 +37,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
-
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-
 app.use(auditMiddleware);
 
 app.get('/health', (req, res) => {
@@ -63,8 +49,41 @@ app.get('/health', (req, res) => {
   });
 });
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const publicPath = path.join(__dirname, '../../public');
+
+app.use('/assets', express.static(path.join(publicPath, 'assets'), {
+  maxAge: '1y',
+  immutable: true
+}));
+
+app.use(express.static(publicPath));
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../public/index.html'));
+  const indexPath = path.join(publicPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.json({ name: 'BetoStore API', status: 'running' });
+  }
+});
+
+app.get('/admin', (req, res) => {
+  const adminIndex = path.join(publicPath, 'admin/index.html');
+  if (fs.existsSync(adminIndex)) {
+    res.sendFile(adminIndex);
+  } else {
+    res.redirect('/admin/');
+  }
+});
+
+app.get('/admin/:page', (req, res) => {
+  const pagePath = path.join(publicPath, `admin/${req.params.page}.html`);
+  if (fs.existsSync(pagePath)) {
+    res.sendFile(pagePath);
+  } else {
+    res.status(404).send('Not found');
+  }
 });
 
 app.use('/api/auth', authRoutes);
@@ -72,18 +91,6 @@ app.use('/api/productos', productosRoutes);
 app.use('/api/promociones', promocionesRoutes);
 app.use('/api/carrito', carritoRoutes);
 app.use('/contact', contactRoutes);
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const publicPath = process.env.VERCEL 
-  ? path.join(__dirname, '../../public')
-  : path.join(__dirname, '../../public');
-
-app.use(express.static(publicPath));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
-});
 
 app.use(notFoundHandler);
 app.use(errorHandler);
@@ -93,19 +100,7 @@ const startServer = async () => {
     await connectDB();
     
     app.listen(PORT, () => {
-      console.log(`
-╔═══════════════════════════════════════════════════════════╗
-║                                                           ║
-║   🚀 BetoStore API started successfully                   ║
-║                                                           ║
-║   Server:  http://localhost:${PORT}                         ║
-║   Health:  http://localhost:${PORT}/health                  ║
-║   API:     http://localhost:${PORT}/api                     ║
-║                                                           ║
-║   Mode:    ${(process.env.NODE_ENV || 'development').padEnd(12)}                             ║
-║                                                           ║
-╚═══════════════════════════════════════════════════════════╝
-      `);
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
@@ -113,27 +108,8 @@ const startServer = async () => {
   }
 };
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
-  process.exit(1);
-});
-
-process.on('SIGTERM', async () => {
-  console.log('🛑 SIGTERM received. Shutting down gracefully...');
-  await mongoose.connection.close();
-  process.exit(0);
-});
-
-process.on('SIGINT', async () => {
-  console.log('🛑 SIGINT received. Shutting down gracefully...');
-  await mongoose.connection.close();
-  process.exit(0);
-});
-
-startServer();
+if (process.env.VERCEL !== '1') {
+  startServer();
+}
 
 export default app;
