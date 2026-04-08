@@ -1,0 +1,14 @@
+/*    /index.html   200
+/admin/*    /admin/index.html   200
+/shop/*    /index.html   200
+/cart/*    /index.html   200
+/checkout/*    /index.html   200
+/contact/*    /index.html   200
+/about/*    /index.html   200
+/releases/*    /index.html   200
+/promociones/*    /index.html   200
+/login/*    /index.html   200
+/register/*    /index.html   200
+/recuperar/*    /index.html   200
+/reset-password/*    /index.html   200
+/shop-single/*    /index.html   200
