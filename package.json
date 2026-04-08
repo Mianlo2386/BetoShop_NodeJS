@@ -1,15 +1,15 @@
 {
-  "name": "betostore-backend",
+  "name": "betostore",
   "version": "1.4.1",
-  "description": "BetoStore E-commerce Backend - Node.js Migration from Java Spring",
+  "description": "BetoStore E-commerce - Node.js Migration from Java Spring",
   "type": "module",
-  "main": "src/app.js",
+  "main": "backend/src/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "node --watch src/app.js",
+    "start": "node backend/src/app.js",
+    "dev": "node --watch backend/src/app.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check-env": "node check-env.js"
+    "build": "echo 'No build needed for Node.js'"
   },
   "keywords": [
     "ecommerce",
@@ -36,5 +36,8 @@
   "devDependencies": {
     "mongodb-memory-server": "^11.0.1",
     "vitest": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
