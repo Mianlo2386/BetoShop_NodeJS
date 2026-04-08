@@ -2,25 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/src/app.js",
-      "use": "@vercel/node",
-      "config": {
-        "nodeVersion": "18"
-      }
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/src/app.js"
-    },
-    {
-      "src": "/health",
-      "dest": "backend/src/app.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "backend/src/app.js"
+      "dest": "/index.html"
     }
   ]
 }
