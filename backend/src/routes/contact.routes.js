@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import emailService from '../services/email.service.js';
+import Contacto from '../schemas/contacto.schema.js';
 import { asyncHandler, ValidationError } from '../middleware/errorHandler.middleware.js';
 
 const router = Router();
@@ -9,7 +9,10 @@ router.post(
   asyncHandler(async (req, res) => {
     console.log('📩 Contact form received:', req.body);
     
-    const { name, email, subject, message } = req.body;
+    const { nombre, email, subject, mensaje } = req.body;
+
+    const name = nombre || req.body.name;
+    const message = mensaje || req.body.message;
 
     if (!name || !email || !subject || !message) {
       throw new ValidationError('Todos los campos son requeridos');
@@ -20,14 +23,18 @@ router.post(
       throw new ValidationError('El formato del email es inválido');
     }
 
-    console.log('📧 Enviando email al admin...');
-    await emailService.sendContactEmail({ name, email, subject, message });
-    console.log('📧 Enviando email de confirmación al usuario...');
-    await emailService.sendConfirmationEmail(email, name);
+    await Contacto.create({
+      nombre: name,
+      email: email,
+      asunto: subject,
+      mensaje: message
+    });
+
+    console.log('✅ Mensaje guardado en MongoDB');
 
     res.json({
       success: true,
-      message: 'Mensaje enviado correctamente',
+      message: 'Hemos recibido tu mensaje. Nos contactaremos a la brevedad.',
     });
   })
 );
