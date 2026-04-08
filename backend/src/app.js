@@ -5,9 +5,6 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
 
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.routes.js';
@@ -21,7 +18,6 @@ import { auditMiddleware } from './middleware/audit.middleware.js';
 dotenv.config({ path: './.env' });
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
@@ -49,43 +45,6 @@ app.get('/health', (req, res) => {
   });
 });
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const publicPath = path.join(__dirname, '../../public');
-
-app.use('/assets', express.static(path.join(publicPath, 'assets'), {
-  maxAge: '1y',
-  immutable: true
-}));
-
-app.use(express.static(publicPath));
-
-app.get('/', (req, res) => {
-  const indexPath = path.join(publicPath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.json({ name: 'BetoStore API', status: 'running' });
-  }
-});
-
-app.get('/admin', (req, res) => {
-  const adminIndex = path.join(publicPath, 'admin/index.html');
-  if (fs.existsSync(adminIndex)) {
-    res.sendFile(adminIndex);
-  } else {
-    res.redirect('/admin/');
-  }
-});
-
-app.get('/admin/:page', (req, res) => {
-  const pagePath = path.join(publicPath, `admin/${req.params.page}.html`);
-  if (fs.existsSync(pagePath)) {
-    res.sendFile(pagePath);
-  } else {
-    res.status(404).send('Not found');
-  }
-});
-
 app.use('/api/auth', authRoutes);
 app.use('/api/productos', productosRoutes);
 app.use('/api/promociones', promocionesRoutes);
@@ -99,6 +58,7 @@ const startServer = async () => {
   try {
     await connectDB();
     
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
