@@ -66,7 +66,10 @@ const api = {
     getById: (id) => api.get(`/api/productos/${id}`),
     search: (q) => api.get(`/api/productos/search?q=${encodeURIComponent(q)}`),
     getReleases: (days = 30) => api.get(`/api/productos/releases?days=${days}`),
-    getByCategoria: (categoria) => api.get(`/api/productos/categoria/${encodeURIComponent(categoria)}`)
+    getByCategoria: (categoria) => api.get(`/api/productos/categoria/${encodeURIComponent(categoria)}`),
+    create: (producto) => api.post('/api/productos', producto),
+    update: (id, producto) => api.put(`/api/productos/${id}`, producto),
+    delete: (id) => api.delete(`/api/productos/${id}`)
   },
 
   // Auth
