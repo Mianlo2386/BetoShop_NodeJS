@@ -90,7 +90,9 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 localStorage.setItem('roles', JSON.stringify(data.data.user ? data.data.user.roles : data.data.roles));
             }
             const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-            window.location.href = redirectUrl || '/admin/dashboard.html';
+            const roles = data.data?.user?.roles || data.data?.roles || [];
+            const isAdmin = roles.includes('ROLE_ADMIN');
+            window.location.href = redirectUrl || (isAdmin ? '/admin/dashboard.html' : '/');
         } else {
             errorDiv.textContent = data.error || 'Usuario o contraseña incorrectos';
             errorDiv.classList.remove('d-none');
