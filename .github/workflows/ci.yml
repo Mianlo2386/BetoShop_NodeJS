@@ -23,10 +23,6 @@ jobs:
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
-      - name: Check secrets
-        run: |
-          echo "MONGO_URI is set: ${{ secrets.MONGO_URI != '' }}"
-
       - name: Install dependencies
         working-directory: ./backend
         run: npm ci
