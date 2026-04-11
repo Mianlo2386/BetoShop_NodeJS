@@ -8,9 +8,9 @@ on:
 
 jobs:
   test:
-    name: Run Test Suite (Node.js 25.8.1)
+    name: Run Test Suite (Node.js 20)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: 25.8.1
+          node-version: 20
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
