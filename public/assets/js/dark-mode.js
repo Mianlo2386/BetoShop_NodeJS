@@ -36,30 +36,21 @@
     const existing = document.getElementById('theme-toggle');
     if (existing) existing.remove();
     
-    // Create button
+    // Create button with styles
     const toggleBtn = document.createElement('button');
     toggleBtn.id = 'theme-toggle';
-    toggleBtn.className = 'btn btn-sm btn-outline-warning theme-toggle-btn';
-    toggleBtn.setAttribute('type', 'button');
-    toggleBtn.setAttribute('style', 'margin-left: 10px; margin-right: 10px;');
-    toggleBtn.setAttribute('title', 'Cambiar tema');
+    toggleBtn.type = 'button';
+    toggleBtn.style.cssText = 'background:transparent;border:1px solid #ffc107;border-radius:50%;width:32px;height:32px;cursor:pointer;color:#ffc107;display:inline-flex;align-items:center;justify-content:center;margin-left:8px;';
+    toggleBtn.title = 'Cambiar tema';
     
     const currentTheme = document.documentElement.getAttribute('data-theme');
     toggleBtn.innerHTML = currentTheme === 'dark' ? LIGHT_ICON : DARK_ICON;
     toggleBtn.onclick = toggle;
     
-    // Find navbar-top or user-menu and append
+    // Find user-menu and add after it
     const userMenu = document.getElementById('user-menu');
-    const navTop = document.getElementById('templatemo_nav_top');
-    const nav = document.querySelector('.navbar');
-    
     if (userMenu) {
-      userMenu.insertBefore(toggleBtn, userMenu.firstChild);
-    } else if (navTop) {
-      const w100 = navTop.querySelector('.w-100');
-      if (w100) w100.appendChild(toggleBtn);
-    } else if (nav) {
-      nav.querySelector('.ms-auto')?.appendChild(toggleBtn);
+      userMenu.parentNode.insertBefore(toggleBtn, userMenu.nextSibling);
     }
   }
   
