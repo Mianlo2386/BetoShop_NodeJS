@@ -1,5 +1,5 @@
-// URL del backend - usa el proxy de Vercel
-const API_BASE_URL = '';
+// URL del backend en producción
+const API_BASE_URL = 'https://betostore-backend.onrender.com';
 
 const api = {
   async get(endpoint) {
