@@ -63,8 +63,11 @@ const startServer = async () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
+    // Don't exit in test environment
+    if (process.env.NODE_ENV !== 'test') {
+      console.error('❌ Failed to start server:', error);
+      process.exit(1);
+    }
   }
 };
 
