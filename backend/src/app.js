@@ -55,6 +55,12 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 const startServer = async () => {
+  // Don't start server in test without valid MongoDB URI
+  if (process.env.NODE_ENV === 'test' && !process.env.MONGO_URI?.includes('mongodb')) {
+    console.log('⚠️ Skipping server start in test (no MongoDB)');
+    return;
+  }
+  
   try {
     await connectDB();
     
@@ -63,10 +69,11 @@ const startServer = async () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    // Don't exit in test environment
     if (process.env.NODE_ENV !== 'test') {
       console.error('❌ Failed to start server:', error);
       process.exit(1);
+    } else {
+      console.log('⚠️ Server start skipped in test env');
     }
   }
 };
