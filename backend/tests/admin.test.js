@@ -10,6 +10,19 @@ describe('📧 Contact API', () => {
     expect(res.status).toBe(400);
   });
   
+  // This test requires MongoDB connection - skip in CI
+  it.skip('debe guardar mensaje válido', async () => {
+    const res = await request(app).post(endpoint).send({
+      nombre: 'Test User',
+      email: 'test@test.com',
+      subject: 'Test',
+      mensaje: 'Hola mundo'
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+  });
+});
+  
   it('debe rechazar email inválido', async () => {
     const res = await request(app).post(endpoint).send({
       nombre: 'Test',
