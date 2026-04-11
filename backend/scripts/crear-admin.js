@@ -6,12 +6,14 @@ dotenv.config({ path: './.env' });
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://miguellopez32_db_user:i0or6hK6UUnETkP2@cluster0.n63ddrn.mongodb.net/betostore';
 
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'AdminTemp2026!';
+
 async function crearAdmin() {
   try {
     await mongoose.connect(MONGO_URI);
     console.log('✅ Conectado a MongoDB');
 
-    const hashedPassword = await bcrypt.hash('Admin123!', 10);
+    const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
     
     const existente = await mongoose.connection.collection('usuarios').findOne({ username: 'admin' });
     
@@ -47,7 +49,7 @@ async function crearAdmin() {
       });
       console.log('✅ Administrador creado');
       console.log('📧 Email: betostore72@gmail.com');
-      console.log('🔑 Password: Admin123!');
+      console.log('🔑 Password: Usar variable ADMIN_PASSWORD o默认值');
     }
     
   } catch (error) {
