@@ -36,12 +36,14 @@
     const existing = document.getElementById('theme-toggle');
     if (existing) existing.remove();
     
-    // Create button with styles
+    // Create button - subtle, just icon
     const toggleBtn = document.createElement('button');
     toggleBtn.id = 'theme-toggle';
     toggleBtn.type = 'button';
-    toggleBtn.style.cssText = 'background:transparent;border:1px solid #ffc107;border-radius:50%;width:32px;height:32px;cursor:pointer;color:#ffc107;display:inline-flex;align-items:center;justify-content:center;margin-left:8px;';
+    toggleBtn.style.cssText = 'background:none;border:none;cursor:pointer;color:#aaa;font-size:16px;padding:4px 8px;margin-left:4px;vertical-align:middle;opacity:0.7;transition:opacity 0.3s;';
     toggleBtn.title = 'Cambiar tema';
+    toggleBtn.onmouseover = () => toggleBtn.style.opacity = '1';
+    toggleBtn.onmouseout = () => toggleBtn.style.opacity = '0.7';
     
     const currentTheme = document.documentElement.getAttribute('data-theme');
     toggleBtn.innerHTML = currentTheme === 'dark' ? LIGHT_ICON : DARK_ICON;
