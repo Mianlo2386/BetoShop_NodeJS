@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import promotionService from '../services/producto.service.js';
 import { optionalAuth } from '../middleware/auth.middleware.js';
 import { asyncHandler } from '../middleware/errorHandler.middleware.js';
 import Promotion from '../schemas/promocion.schema.js';

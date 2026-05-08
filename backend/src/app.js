@@ -3,12 +3,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import connectDB from './config/database.js';
+import { initOracleClient, createPool } from './config/database.js';
 import authRoutes from './routes/auth.routes.js';
 import productosRoutes from './routes/productos.routes.js';
 import promocionesRoutes from './routes/promociones.routes.js';
@@ -38,7 +37,6 @@ app.use(cookieParser());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(auditMiddleware);
 
-// Static files - serve public folder
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicPath = path.join(__dirname, '../../public');
 app.use(express.static(publicPath));
@@ -52,7 +50,8 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    oracle: 'connected',
+    mode: 'Oracle Autonomous Database',
   });
 });
 
@@ -66,26 +65,21 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 const startServer = async () => {
-  // Don't start server in test without valid MongoDB URI
-  if (process.env.NODE_ENV === 'test' && !process.env.MONGO_URI?.includes('mongodb')) {
-    console.log('⚠️ Skipping server start in test (no MongoDB)');
-    return;
-  }
-  
   try {
-    await connectDB();
+    console.log('Initializing Oracle...');
+    await initOracleClient();
     
-    const PORT = process.env.PORT || 3000;
+    console.log('Creating pool...');
+    await createPool();
+    
+    const PORT = process.env.PORT || 3001;
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Health: http://localhost:${PORT}/health`);
     });
   } catch (error) {
-    if (process.env.NODE_ENV !== 'test') {
-      console.error('❌ Failed to start server:', error);
-      process.exit(1);
-    } else {
-      console.log('⚠️ Server start skipped in test env');
-    }
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
   }
 };
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import productoService from '../services/producto.service.js';
+import * as productoService from '../services/producto.service.js';
 import { verifyJWT, optionalAuth, requireAdmin } from '../middleware/auth.middleware.js';
 import { readOnlyMiddleware } from '../middleware/readOnly.middleware.js';
 import { asyncHandler } from '../middleware/errorHandler.middleware.js';

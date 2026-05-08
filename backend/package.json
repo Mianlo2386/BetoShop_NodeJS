@@ -14,8 +14,8 @@
   "keywords": [
     "ecommerce",
     "nodejs",
-    "mongodb",
-    "mongoose"
+    "oracle",
+    "oracledb"
   ],
   "author": "",
   "license": "ISC",
@@ -29,9 +29,9 @@
     "helmet": "^8.0.0",
     "http-proxy-middleware": "^3.0.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.7.0",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.15",
+    "oracledb": "^6.10.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

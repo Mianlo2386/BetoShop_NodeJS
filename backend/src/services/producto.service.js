@@ -1,239 +1,286 @@
-import Producto from '../schemas/producto.schema.js';
-import Promotion from '../schemas/promocion.schema.js';
+import oracledb from 'oracledb';
+import { getPool, withConnection } from '../config/database.js';
 
-class ProductoService {
-
-  async obtenerTodos(opciones = {}) {
-    const {
-      page = 1,
-      limit = 50,
-      sortBy = 'nombre',
-      sortOrder = 'asc',
-      categoria,
-      subcategoria,
-      precioMin,
-      precioMax,
-    } = opciones;
-
-    const query = { 'audit.isActive': true };
-
-    if (categoria) {
-      query.categoria = categoria;
-    }
-
-    if (subcategoria) {
-      query.subcategoria = subcategoria;
-    }
-
-    if (precioMin !== undefined || precioMax !== undefined) {
-      query.precio = {};
-      if (precioMin !== undefined) {
-        query.precio.$gte = precioMin;
-      }
-      if (precioMax !== undefined) {
-        query.precio.$lte = precioMax;
-      }
-    }
-
-    const skip = (page - 1) * limit;
-    const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
-
-    const [productos, total] = await Promise.all([
-      Producto.find(query)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Producto.countDocuments(query),
-    ]);
-
-    return {
-      data: productos,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
-    };
+function processAudit(obj, isNew, modifiedBy = 'system') {
+  const audit = obj.audit || {};
+  if (isNew) {
+    audit.createdAt = new Date();
+    audit.updatedAt = new Date();
+    audit.createdBy = modifiedBy;
+    audit.updatedBy = modifiedBy;
+    audit.version = 1;
+    audit.isActive = true;
+    audit.changeLog = [];
+  } else {
+    audit.updatedAt = new Date();
+    audit.version = (audit.version || 1) + 1;
+    audit.updatedBy = modifiedBy;
+    if (!audit.changeLog) audit.changeLog = [];
+    audit.changeLog.push({ action: 'UPDATE', modifiedBy, modifiedAt: new Date(), changes: {} });
   }
-
-  async obtenerPorId(id) {
-    const producto = await Producto.findByIdActive(id).lean();
-    
-    if (!producto) {
-      return null;
-    }
-
-    return producto;
-  }
-
-  async buscarPorNombreCategoriaSubcategoria(query) {
-    const productos = await Producto.search(query);
-    return productos;
-  }
-
-  async obtenerReleases(daysAgo = 30) {
-    const releases = await Producto.findReleases(daysAgo);
-    return releases;
-  }
-
-  async obtenerPorCategoria(categoria, opciones = {}) {
-    const { page = 1, limit = 50 } = opciones;
-    
-    const query = { 
-      'audit.isActive': true,
-      categoria: new RegExp(categoria, 'i'),
-    };
-
-    const skip = (page - 1) * limit;
-
-    const [productos, total] = await Promise.all([
-      Producto.find(query)
-        .sort({ releaseDate: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Producto.countDocuments(query),
-    ]);
-
-    return {
-      data: productos,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
-    };
-  }
-
-  async obtenerPorRangoPrecio(min, max, opciones = {}) {
-    const { page = 1, limit = 50 } = opciones;
-
-    const query = {
-      'audit.isActive': true,
-      precio: {
-        $gte: min,
-        $lte: max,
-      },
-    };
-
-    const skip = (page - 1) * limit;
-
-    const [productos, total] = await Promise.all([
-      Producto.find(query)
-        .sort({ precio: 1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Producto.countDocuments(query),
-    ]);
-
-    return {
-      data: productos,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
-    };
-  }
-
-  async crear(productoData, createdBy = 'system') {
-    const producto = new Producto(productoData);
-    producto.audit.createdBy = createdBy;
-    producto.audit.updatedBy = createdBy;
-    await producto.save();
-    return producto;
-  }
-
-  async actualizar(id, productoData, updatedBy = 'system') {
-    const producto = await Producto.findByIdActive(id);
-    
-    if (!producto) {
-      throw new Error('Producto no encontrado');
-    }
-
-    Object.assign(producto, productoData);
-    producto.audit.updatedBy = updatedBy;
-    await producto.save();
-    return producto;
-  }
-
-  async eliminar(id, deletedBy = 'system') {
-    const producto = await Producto.findByIdActive(id);
-    
-    if (!producto) {
-      throw new Error('Producto no encontrado');
-    }
-
-    await producto.softDelete(deletedBy);
-    return producto;
-  }
-
-  async restaurar(id, restoredBy = 'system') {
-    const producto = await Producto.findById(id);
-    
-    if (!producto) {
-      throw new Error('Producto no encontrado');
-    }
-
-    await producto.restore(restoredBy);
-    return producto;
-  }
-
-  async obtenerEstadisticas() {
-    const stats = await Producto.aggregate([
-      { $match: { 'audit.isActive': true } },
-      {
-        $group: {
-          _id: null,
-          totalProductos: { $sum: 1 },
-          precioPromedio: { $avg: '$precio' },
-          precioMin: { $min: '$precio' },
-          precioMax: { $max: '$precio' },
-          stockTotal: { $sum: '$stock' },
-          categorias: { $addToSet: '$categoria' },
-        },
-      },
-    ]);
-
-    if (stats.length === 0) {
-      return {
-        totalProductos: 0,
-        precioPromedio: 0,
-        precioMin: 0,
-        precioMax: 0,
-        stockTotal: 0,
-        totalCategorias: 0,
-      };
-    }
-
-    return {
-      totalProductos: stats[0].totalProductos,
-      precioPromedio: Math.round(stats[0].precioPromedio * 100) / 100,
-      precioMin: stats[0].precioMin,
-      precioMax: stats[0].precioMax,
-      stockTotal: stats[0].stockTotal,
-      totalCategorias: stats[0].categorias.filter(c => c).length,
-    };
-  }
-
-  async obtenerCategorias() {
-    const categorias = await Producto.distinct('categoria', { 'audit.isActive': true });
-    return categorias.filter(c => c);
-  }
-
-  async obtenerSubcategorias(categoria) {
-    const query = { 'audit.isActive': true };
-    if (categoria) {
-      query.categoria = categoria;
-    }
-    const subcategorias = await Producto.distinct('subcategoria', query);
-    return subcategorias.filter(s => s);
-  }
+  return { ...obj, audit };
 }
 
-export default new ProductoService();
+function addChange(obj, action, modifiedBy, changes = {}) {
+  if (!obj.audit) obj.audit = {};
+  if (!obj.audit.changeLog) obj.audit.changeLog = [];
+  obj.audit.changeLog.push({ action, modifiedBy: modifiedBy || 'system', modifiedAt: new Date(), changes });
+}
+
+function rowToProducto(row) {
+  if (!row) return null;
+  
+  let data = row.DATA;
+  if (data && typeof data === 'object') {
+    data = data.toString();
+  }
+  
+  if (typeof data === 'string' && data.startsWith('{')) {
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+      console.warn('[rowToProducto] JSON parse error:', e.message);
+    }
+  }
+  
+  return { _id: row.ID, ...data };
+}
+
+async function initCollection() {
+  console.log('[SQL] Ensuring table PRODUCTOS exists...');
+  
+  await withConnection(async (conn) => {
+    try {
+      await conn.execute(`
+        CREATE TABLE PRODUCTOS (
+          ID VARCHAR2(64) PRIMARY KEY,
+          DATA CLOB,
+          CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      await conn.commit();
+      console.log('[SQL] Table PRODUCTOS ready!');
+    } catch (e) {
+      if (e.message.includes('ORA-00955')) {
+        console.log('[SQL] Table already exists');
+      } else {
+        console.log('[SQL] Warning:', e.message);
+      }
+    }
+  });
+  
+  return { success: true };
+}
+
+export { initCollection, rowToProducto, withConnection };
+
+export async function obtenerTodos(opciones = {}) {
+  const { page = 1, limit = 50 } = opciones;
+  const offset = (page - 1) * limit;
+  
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT ID, DATA FROM PRODUCTOS ORDER BY ID OFFSET :1 ROWS FETCH NEXT :2 ROWS ONLY`,
+      [offset, limit],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    
+    const countResult = await conn.execute(`SELECT COUNT(*) as CNT FROM PRODUCTOS`);
+    
+    const productos = result.rows.map(rowToProducto);
+    const total = countResult.rows[0].CNT;
+    
+    return {
+      data: productos,
+      pagination: { page, limit, total, pages: Math.ceil(total / limit) }
+    };
+  });
+}
+
+export async function obtenerPorId(id) {
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1`,
+      [id],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    return result.rows.length > 0 ? rowToProducto(result.rows[0]) : null;
+  });
+}
+
+export async function buscarPorNombreCategoriaSubcategoria(query) {
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT ID, DATA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND (
+        JSON_VALUE(DATA, '$.nombre') LIKE '%' || :1 || '%' OR
+        JSON_VALUE(DATA, '$.categoria') LIKE '%' || :1 || '%' OR
+        JSON_VALUE(DATA, '$.subcategoria') LIKE '%' || :1 || '%'
+      )`,
+      [query],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    return result.rows.map(rowToProducto);
+  });
+}
+
+export async function obtenerReleases(daysAgo = 30) {
+  return await withConnection(async (conn) => {
+    const fechaLimite = new Date();
+    fechaLimite.setDate(fechaLimite.getDate() - daysAgo);
+    const result = await conn.execute(
+      `SELECT ID, DATA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND JSON_VALUE(DATA, '$.releaseDate') >= :1 ORDER BY JSON_VALUE(DATA, '$.releaseDate') DESC`,
+      [fechaLimite.toISOString()],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    return result.rows.map(rowToProducto);
+  });
+}
+
+export async function obtenerPorCategoria(categoria, opciones = {}) {
+  const { page = 1, limit = 50 } = opciones;
+  const offset = (page - 1) * limit;
+  
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT ID, DATA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND JSON_VALUE(DATA, '$.categoria') = :1 ORDER BY JSON_VALUE(DATA, '$.releaseDate') DESC OFFSET :2 ROWS FETCH NEXT :3 ROWS ONLY`,
+      [categoria, offset, limit],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    
+    const countResult = await conn.execute(
+      `SELECT COUNT(*) FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND JSON_VALUE(DATA, '$.categoria') = :1`,
+      [categoria]
+    );
+    
+    const productos = result.rows.map(rowToProducto);
+    const total = countResult.rows[0].COUNT;
+    
+    return { data: productos, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
+  });
+}
+
+export async function obtenerPorRangoPrecio(min, max, opciones = {}) {
+  const { page = 1, limit = 50 } = opciones;
+  const offset = (page - 1) * limit;
+  
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT ID, DATA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND CAST(JSON_VALUE(DATA, '$.precio') AS NUMBER) BETWEEN :1 AND :2 ORDER BY CAST(JSON_VALUE(DATA, '$.precio') AS NUMBER) OFFSET :3 ROWS FETCH NEXT :4 ROWS ONLY`,
+      [min, max, offset, limit],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    
+    const productos = result.rows.map(rowToProducto);
+    const total = productos.length;
+    
+    return { data: productos, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
+  });
+}
+
+export async function crear(productoData, createdBy = 'system') {
+  const id = crypto.randomUUID();
+  const producto = processAudit(productoData, true, createdBy);
+  
+  return await withConnection(async (conn) => {
+    await conn.execute(
+      `INSERT INTO PRODUCTOS (ID, DATA) VALUES (:1, :2)`,
+      [id, JSON.stringify(producto)]
+    );
+    await conn.commit();
+    return { ...producto, _id: id };
+  });
+}
+
+export async function actualizar(id, productoData, updatedBy = 'system') {
+  const existing = await obtenerPorId(id);
+  if (!existing) throw new Error('Producto no encontrado');
+  
+  const merged = { ...existing, ...productoData };
+  const updated = processAudit(merged, false, updatedBy);
+  addChange(updated, 'UPDATE', updatedBy, productoData);
+  
+  return await withConnection(async (conn) => {
+    await conn.execute(
+      `UPDATE PRODUCTOS SET DATA = :1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :2`,
+      [JSON.stringify(updated), id]
+    );
+    await conn.commit();
+    return updated;
+  });
+}
+
+export async function eliminar(id, deletedBy = 'system') {
+  const existing = await obtenerPorId(id);
+  if (!existing) throw new Error('Producto no encontrado');
+  
+  existing.audit.isActive = false;
+  addChange(existing, 'DELETE', deletedBy);
+  const deleted = processAudit(existing, false, deletedBy);
+  
+  return await withConnection(async (conn) => {
+    await conn.execute(
+      `UPDATE PRODUCTOS SET DATA = :1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :2`,
+      [JSON.stringify(deleted), id]
+    );
+    await conn.commit();
+    return deleted;
+  });
+}
+
+export async function restaurar(id, restoredBy = 'system') {
+  const existing = await obtenerPorId(id);
+  if (!existing) throw new Error('Producto no encontrado');
+  
+  existing.audit.isActive = true;
+  addChange(existing, 'RESTORE', restoredBy);
+  const restored = processAudit(existing, false, restoredBy);
+  
+  return await withConnection(async (conn) => {
+    await conn.execute(
+      `UPDATE PRODUCTOS SET DATA = :1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :2`,
+      [JSON.stringify(restored), id]
+    );
+    await conn.commit();
+    return restored;
+  });
+}
+
+export async function obtenerEstadisticas() {
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT COUNT(*) as CNT, AVG(CAST(JSON_VALUE(DATA, '$.precio') AS NUMBER)) as AVG_PRICE, MIN(CAST(JSON_VALUE(DATA, '$.precio') AS NUMBER)) as MIN_PRICE, MAX(CAST(JSON_VALUE(DATA, '$.precio') AS NUMBER)) as MAX_PRICE, SUM(CAST(JSON_VALUE(DATA, '$.stock') AS NUMBER)) as TOTAL_STOCK FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true'`
+    );
+    
+    const row = result.rows[0];
+    return {
+      totalProductos: row.CNT || 0,
+      precioPromedio: Math.round((row.AVG_PRICE || 0) * 100) / 100,
+      precioMin: row.MIN_PRICE || 0,
+      precioMax: row.MAX_PRICE || 0,
+      stockTotal: row.TOTAL_STOCK || 0,
+      totalCategorias: 0
+    };
+  });
+}
+
+export async function obtenerCategorias() {
+  return await withConnection(async (conn) => {
+    const result = await conn.execute(
+      `SELECT DISTINCT JSON_VALUE(DATA, '$.categoria') as CATEGORIA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND JSON_VALUE(DATA, '$.categoria') IS NOT NULL`
+    );
+    return result.rows.map(r => r.CATEGORIA);
+  });
+}
+
+export async function obtenerSubcategorias(categoria) {
+  return await withConnection(async (conn) => {
+    const filter = categoria 
+      ? `AND JSON_VALUE(DATA, '$.categoria') = '${categoria}'`
+      : '';
+    const result = await conn.execute(
+      `SELECT DISTINCT JSON_VALUE(DATA, '$.subcategoria') as SUBCATEGORIA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND JSON_VALUE(DATA, '$.subcategoria') IS NOT NULL ${filter}`
+    );
+    return result.rows.map(r => r.SUBCATEGORIA);
+  });
+}
