@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSP disabled for local development -->
     <title>BetoShop - Catálogo</title>
     <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
     <link rel="stylesheet" href="/assets/css/templatemo.css">
@@ -196,15 +197,15 @@
 
     <!-- Scripts -->
     <script src="/assets/js/jquery-1.11.0.min.js"></script>
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- API -->
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/search.js"></script>
+    <script src="/assets/js/maintenance-mode.js"></script>
     
     <script>
-        // Variables de paginación
         let currentPage = 1;
         let totalPages = 1;
         let currentSearch = '';
@@ -433,7 +434,6 @@
     </script>
     <script src="/assets/js/jquery-1.11.0.min.js"></script>
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/api.js"></script>
     <script src="/assets/js/maintenance-mode.js"></script>
     <script src="/assets/js/dark-mode.js"></script>
 </body>

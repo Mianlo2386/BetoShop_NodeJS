@@ -20,9 +20,18 @@ dotenv.config({ path: './.env' });
 
 const app = express();
 
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' },
-}));
+// Disable helmet CSP for local development
+const isLocal = process.env.NODE_ENV !== 'production';
+if (isLocal) {
+  app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  }));
+} else {
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  }));
+}
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',

@@ -31,11 +31,25 @@ function rowToProducto(row) {
   if (!row) return null;
   
   let data = row.DATA;
+  
+  // Handle CLOB - can be object with read() method
   if (data && typeof data === 'object') {
-    data = data.toString();
+    if (Buffer.isBuffer(data)) {
+      data = data.toString('utf8');
+    } else if (typeof data.read === 'function') {
+      // Synchronous read using amount = -1 to read all
+      try {
+        data = data.read(-1);
+      } catch (e) {
+        console.warn('[rowToProducto] CLOB read error:', e.message);
+        data = null;
+      }
+    } else if (data.toString) {
+      data = data.toString();
+    }
   }
   
-  if (typeof data === 'string' && data.startsWith('{')) {
+  if (typeof data === 'string' && data.trim().startsWith('{')) {
     try {
       data = JSON.parse(data);
     } catch (e) {
@@ -100,8 +114,9 @@ export async function obtenerTodos(opciones = {}) {
 
 export async function obtenerPorId(id) {
   return await withConnection(async (conn) => {
+    // Search by MongoDB _id stored in JSON or by Oracle UUID
     const result = await conn.execute(
-      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1`,
+      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1 OR JSON_VALUE(DATA, '$._id') = :1`,
       [id],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );

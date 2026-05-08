@@ -1,11 +1,13 @@
-// URL del backend en producción
-const API_BASE_URL = 'https://betostore-backend.onrender.com';
+// Backend URL - localhost for local dev, production by default
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+  ? 'http://localhost:3001' 
+  : 'https://betostore-backend.onrender.com';
 
 const api = {
   async get(endpoint) {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -23,7 +25,7 @@ const api = {
   async post(endpoint, data) {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ const api = {
   async delete(endpoint) {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

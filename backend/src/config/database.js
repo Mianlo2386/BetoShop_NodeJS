@@ -8,6 +8,9 @@ dotenv.config({ path: './.env' });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Force CLOB to String conversion (for Thick mode)
+oracledb.fetchAsString = [ oracledb.CLOB ];
+
 let pool = null;
 let useThickMode = false;
 
