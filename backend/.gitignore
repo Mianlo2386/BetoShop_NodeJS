@@ -1,5 +1,2 @@
-node_modules/
-.env
-dist/
-src/config/wallet/
-src/config/instantclient/
+"node_modules/`n.env`ndist/`nbackend/node_modules/" 
+backend/src/config/wallet/
