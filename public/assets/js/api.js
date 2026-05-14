@@ -1,7 +1,7 @@
 // Backend URL - localhost for local dev, production by default
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
   ? 'http://localhost:3001' 
-  : 'https://gains-repair-adopted-denver.trycloudflare.com';
+  : '';
 
 const api = {
   async get(endpoint) {
