@@ -8,16 +8,14 @@ dotenv.config({ path: './.env' });
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Force CLOB to String conversion (for Thick mode)
 oracledb.fetchAsString = [ oracledb.CLOB ];
 
 let pool = null;
 let useThickMode = false;
 
-// Hardcoded credentials - env gets overridden from root workspace
-const DB_USER = 'ADMIN';
-const DB_PASSWORD = '72BetoStore*';
-const CONNECT_STRING = 'betostoredb_high';
+const DB_USER = process.env.DB_USER || 'ADMIN';
+const DB_PASSWORD = process.env.DB_PASSWORD || '';
+const CONNECT_STRING = process.env.CONNECT_STRING || 'betostoredb_high';
 
 const initOracleClient = async () => {
   const instantClientPath = path.join(__dirname, '../config/instantclient/instantclient_23_0');
@@ -31,7 +29,6 @@ const initOracleClient = async () => {
   
   try {
     console.log('[DB] Attempting THICK mode with wallet...');
-    
     await oracledb.initOracleClient({
       libDir: instantClientPath,
       configDir: walletPath,
@@ -50,8 +47,6 @@ const createPool = async () => {
   const user = DB_USER;
   const password = DB_PASSWORD;
   const connectString = CONNECT_STRING;
-  
-  // TNS_ADMIN must point to wallet for SSL/TLS connections
   const walletPath = path.join(__dirname, '../config/wallet');
   process.env.TNS_ADMIN = walletPath;
   
@@ -69,12 +64,13 @@ const createPool = async () => {
       user,
       password,
       connectString,
+      walletLocation: walletPath,
+      walletPassword: process.env.WALLET_PASSWORD || '',
       poolMin: 1,
       poolMax: 5,
       poolTimeout: 120,
       connectTimeout: 60,
     });
-
     console.log('[DB] ✅ Pool created successfully!');
     return pool;
   } catch (error) {
