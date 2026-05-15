@@ -116,8 +116,8 @@ export async function obtenerPorId(id) {
   return await withConnection(async (conn) => {
     // Search by MongoDB _id stored in JSON or by Oracle UUID
     const result = await conn.execute(
-      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1 OR JSON_VALUE(DATA, '$._id') = :1`,
-      [id],
+      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1 OR JSON_VALUE(DATA, '$._id') = :2`,
+      [id, id],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     return result.rows.length > 0 ? rowToProducto(result.rows[0]) : null;
