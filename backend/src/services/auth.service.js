@@ -207,6 +207,27 @@ class AuthService {
       isActive: u.IS_ACTIVE !== undefined ? !!u.IS_ACTIVE : true,
     };
   }
+
+
+  async lockUser(userId) {
+    await withConnection(async (conn) => {
+      await conn.execute(
+        `UPDATE USUARIOS SET IS_LOCKED = 1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :id`,
+        { id: userId }, { autoCommit: true }
+      );
+    });
+    return { message: 'Usuario bloqueado' };
+  }
+
+  async unlockUser(userId) {
+    await withConnection(async (conn) => {
+      await conn.execute(
+        `UPDATE USUARIOS SET IS_LOCKED = 0, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :id`,
+        { id: userId }, { autoCommit: true }
+      );
+    });
+    return { message: 'Usuario desbloqueado' };
+  }
 }
 
 export default new AuthService();

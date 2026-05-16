@@ -304,4 +304,24 @@ router.post(
   })
 );
 
+
+router.post(
+  '/usuarios/:id/lock',
+  verifyJWT,
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    await authService.lockUser(req.params.id);
+    res.json({ success: true, message: 'Usuario bloqueado' });
+  })
+);
+
+router.post(
+  '/usuarios/:id/unlock',
+  verifyJWT,
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    await authService.unlockUser(req.params.id);
+    res.json({ success: true, message: 'Usuario desbloqueado' });
+  })
+);
 export default router;

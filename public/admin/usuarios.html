@@ -52,7 +52,7 @@
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/api.js"></script>
 <script>
-let usuarios = [];
+const response = await api.get('/api/auth/usuarios');let usuarios = [];
 
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('token') || !localStorage.getItem('roles')?.includes('ROLE_ADMIN')) {
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadUsuarios() {
     try {
-        const response = await api.get('/api/usuarios');
+        const response = await api.get('/api/auth/usuarios');
         usuarios = response.data || [];
         renderTable();
     } catch (e) { console.error(e); }
@@ -81,10 +81,10 @@ function renderTable() {
             <td>${u.username}</td>
             <td>${u.email}</td>
             <td>${(u.roles || []).join(', ')}</td>
-            <td>${u.isLocked ? '<span class="badge bg-danger">Bloqueado</span>' : '<span class="badge bg-success">Activo</span>'}</td>
+            <td>${!u.isActive ? '<span class="badge bg-danger">Bloqueado</span>' : '<span class="badge bg-success">Activo</span>'}</td>
             <td>
-                <button class="btn btn-sm btn-outline-primary" onclick="toggleLock('${u._id}', ${!u.isLocked})">
-                    <i class="fas fa-${u.isLocked ? 'unlock' : 'lock'}"></i>
+                <button class="btn btn-sm btn-outline-primary" onclick="toggleLock('${u.id}', ${!!u.isActive})">
+                    <i class="fas fa-${!u.isActive ? 'unlock' : 'lock'}"></i>
                 </button>
             </td>
         </tr>
@@ -93,7 +93,7 @@ function renderTable() {
 
 async function toggleLock(id, lock) {
     try {
-        await api.post(`/api/usuarios/${id}/${lock ? 'lock' : 'unlock'}`, {});
+        await api.post(`/api/auth/usuarios/${id}/${lock ? 'lock' : 'unlock'}`, {});
         Swal.fire('OK', lock ? 'Usuario bloqueado' : 'Usuario desbloqueado', 'success');
         loadUsuarios();
     } catch (e) {
@@ -103,3 +103,4 @@ async function toggleLock(id, lock) {
 </script>
 </body>
 </html>
+
