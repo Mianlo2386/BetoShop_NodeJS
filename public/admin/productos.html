@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Precio</label>
-                            <input type="number" class="form-control" id="productoPrecio" step="0.01" required>
+                            <input type="text" class="form-control" id="productoPrecio" step="0.01" required>
                         </div>
                     </div>
                     <div class="row">
@@ -180,6 +180,7 @@ function editProducto(id) {
 
 async function saveProducto() {
     const id = document.getElementById('productoId').value;
+    console.log('DEBUG id:', id, 'precio:', document.getElementById('productoPrecio').value);
     const data = {
         nombre: document.getElementById('productoNombre').value,
         precio: parseFloat(document.getElementById('productoPrecio').value) || 0,
@@ -192,10 +193,10 @@ async function saveProducto() {
     
     try {
         if (id) {
-            await api.post(`/productos/${id}`, data);
+            await api.productos.update(id, data);
             Swal.fire('OK', 'Actualizado', 'success');
         } else {
-            await api.post('/productos', data);
+            await api.productos.create(data);
             Swal.fire('OK', 'Creado', 'success');
         }
         bootstrap.Modal.getInstance(document.getElementById('productoModal')).hide();
@@ -208,7 +209,7 @@ async function saveProducto() {
 async function deleteProducto(id) {
     if (!await Swal.fire({title:'¿Eliminar?',text:'No se puede deshacer',icon:'warning',showCancelButton:true}).then(r=>r.isConfirmed)) return;
     try {
-        await api.delete(`/productos/${id}`);
+        await api.productos.delete(id);
         Swal.fire('OK', 'Eliminado', 'success');
         loadProductos();
     } catch (e) {

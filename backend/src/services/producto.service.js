@@ -57,7 +57,7 @@ function rowToProducto(row) {
     }
   }
   
-  return { _id: row.ID, ...data };
+  return { _oracleId: row.ID, _id: row.ID, ...data };
 }
 
 async function initCollection() {
@@ -218,7 +218,7 @@ export async function actualizar(id, productoData, updatedBy = 'system') {
   return await withConnection(async (conn) => {
     await conn.execute(
       `UPDATE PRODUCTOS SET DATA = :1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :2`,
-      [JSON.stringify(updated), id]
+      [JSON.stringify(updated), existing._oracleId || id]
     );
     await conn.commit();
     return updated;

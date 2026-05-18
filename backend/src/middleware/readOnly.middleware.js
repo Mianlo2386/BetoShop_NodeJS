@@ -2,7 +2,7 @@ import { ROLES } from '../config/auth.js';
 
 export const READ_ONLY_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
-export const MODO_CONSULTA_ACTIVO = true;
+export const MODO_CONSULTA_ACTIVO = false;
 
 export const readOnlyMiddleware = (req, res, next) => {
   if (MODO_CONSULTA_ACTIVO && READ_ONLY_METHODS.includes(req.method)) {

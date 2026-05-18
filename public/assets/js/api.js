@@ -41,6 +41,25 @@ const api = {
     }
   },
 
+  async put(endpoint, data) {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  },
+
   async delete(endpoint) {
     const token = localStorage.getItem('token');
     try {

@@ -94,13 +94,14 @@ router.post(
       maxAge: refreshMaxAge * 1000,
     });
 
-    const { accessToken, refreshToken, ...userData } = result;
+    const { refreshToken, ...userData } = result;
 
     res.json({
       success: true,
       data: {
         ...userData,
         usesCookies: true,
+        accessToken: result.accessToken,
       },
       message: 'Login exitoso',
     });
@@ -138,6 +139,7 @@ router.post(
       data: {
         ...tokenData,
         usesCookies: true,
+        accessToken: result.accessToken,
       },
     });
   })
