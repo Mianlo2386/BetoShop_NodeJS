@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import oracledb from 'oracledb';
 import { getPool, withConnection } from '../config/database.js';
 
@@ -95,7 +96,7 @@ export async function obtenerTodos(opciones = {}) {
   
   return await withConnection(async (conn) => {
     const result = await conn.execute(
-      `SELECT ID, DATA FROM PRODUCTOS ORDER BY ID OFFSET :1 ROWS FETCH NEXT :2 ROWS ONLY`,
+      `SELECT ID, DATA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' ORDER BY ID OFFSET :1 ROWS FETCH NEXT :2 ROWS ONLY`,
       [offset, limit],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
@@ -236,7 +237,7 @@ export async function eliminar(id, deletedBy = 'system') {
   return await withConnection(async (conn) => {
     await conn.execute(
       `UPDATE PRODUCTOS SET DATA = :1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :2`,
-      [JSON.stringify(deleted), id]
+      [JSON.stringify(deleted), existing._oracleId || id]
     );
     await conn.commit();
     return deleted;
@@ -254,7 +255,7 @@ export async function restaurar(id, restoredBy = 'system') {
   return await withConnection(async (conn) => {
     await conn.execute(
       `UPDATE PRODUCTOS SET DATA = :1, UPDATED_AT = CURRENT_TIMESTAMP WHERE ID = :2`,
-      [JSON.stringify(restored), id]
+      [JSON.stringify(restored), existing._oracleId || id]
     );
     await conn.commit();
     return restored;
