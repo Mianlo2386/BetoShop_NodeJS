@@ -206,7 +206,7 @@
     <script src="/assets/js/maintenance-mode.js"></script>
     
     <script>
-        let currentPage = 1;
+        let currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
         let totalPages = 1;
         let currentSearch = '';
         let currentCategoria = '';

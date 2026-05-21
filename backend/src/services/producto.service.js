@@ -101,10 +101,11 @@ export async function obtenerTodos(opciones = {}) {
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     
-    const countResult = await conn.execute(`SELECT COUNT(*) as CNT FROM PRODUCTOS`);
+    const countResult = await conn.execute(`SELECT COUNT(*) as CNT FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true'`);
     
+    const total = countResult.rows[0][0] || countResult.rows[0].CNT || 0;
     const productos = result.rows.map(rowToProducto);
-    const total = countResult.rows[0].CNT;
+    
     
     return {
       data: productos,
@@ -117,8 +118,7 @@ export async function obtenerPorId(id) {
   return await withConnection(async (conn) => {
     // Search by MongoDB _id stored in JSON or by Oracle UUID
     const result = await conn.execute(
-      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1 OR JSON_VALUE(DATA, '$._id') = :2`,
-      [id, id],
+      `SELECT ID, DATA FROM PRODUCTOS WHERE ID = :1 OR JSON_VALUE(DATA, '$._id') = :2`,      [id, id],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     return result.rows.length > 0 ? rowToProducto(result.rows[0]) : null;

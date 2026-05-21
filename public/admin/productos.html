@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadProductos() {
     try {
-        const response = await api.productos.getAll();
+        const response = await api.productos.getAll({limit: 1000});
         productos = response.data || [];
         renderTable();
     } catch (e) { console.error(e); }
