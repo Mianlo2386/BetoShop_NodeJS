@@ -127,13 +127,16 @@ export async function obtenerPorId(id) {
 
 export async function buscarPorNombreCategoriaSubcategoria(query) {
   return await withConnection(async (conn) => {
+    console.log('[SEARCH] query:', query);
     const result = await conn.execute(
       `SELECT ID, DATA FROM PRODUCTOS WHERE JSON_VALUE(DATA, '$.audit.isActive') = 'true' AND (
-        JSON_VALUE(DATA, '$.nombre') LIKE '%' || :1 || '%' OR
-        JSON_VALUE(DATA, '$.categoria') LIKE '%' || :1 || '%' OR
-        JSON_VALUE(DATA, '$.subcategoria') LIKE '%' || :1 || '%'
+        UPPER(JSON_VALUE(DATA, '$.nombre')) LIKE '%' || UPPER(:1) || '%' OR
+        UPPER(JSON_VALUE(DATA, '$.categoria')) LIKE '%' || UPPER(:2) || '%' OR
+        UPPER(JSON_VALUE(DATA, '$.subcategoria')) LIKE '%' || UPPER(:3) || '%' OR
+        UPPER(JSON_VALUE(DATA, '$.descripcion')) LIKE '%' || UPPER(:4) || '%' OR
+        UPPER(JSON_VALUE(DATA, '$.especificaciones')) LIKE '%' || UPPER(:5) || '%'
       )`,
-      [query],
+      [query, query, query, query, query],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     return result.rows.map(rowToProducto);
