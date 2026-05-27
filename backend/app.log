@@ -1,0 +1,30 @@
+nohup: ignoring input
+Initializing Oracle...
+[DB] Checking paths...
+[DB] __dirname: /home/opc/betoshop/backend/src/config
+[DB] instantClientPath: /home/opc/betoshop/backend/src/config/instantclient/instantclient_23_0
+[DB] instantClientPath exists: false
+[DB] walletPath exists: true
+[DB] Attempting THICK mode with wallet...
+[DB] ⚠️ THICK mode failed: DPI-1047: Cannot locate a 64-bit Oracle Client library: "/home/opc/betoshop/backend/src/config/instantclient/instantclient_23_0/libclntsh.so: cannot open shared object file: No such file or directory". See https://node-oracledb.readthedocs.io/en/latest/user_guide/installation.html for help
+Node-oracledb installation instructions: https://node-oracledb.readthedocs.io/en/latest/user_guide/installation.html
+You must have Linux 64-bit Oracle Client libraries configured with ldconfig, or in LD_LIBRARY_PATH.
+If you do not have Oracle Database on this computer, then install the Instant Client Basic or Basic Light package from 
+https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
+
+Creating pool...
+[DB] ========== CONNECTION CONFIG ==========
+[DB] CONNECT_STRING: betostoredb_low
+[DB] USER: ADMIN
+[DB] TNS_ADMIN: /home/opc/betoshop/backend/src/config/wallet
+[DB] TNS_ADMIN exists: true
+[DB] MODE: THIN
+[DB] =======================================
+[DB] Creating pool (this may take up to 60 seconds)...
+[DB] ✅ Pool created successfully!
+Server running on http://localhost:3001
+Health: http://localhost:3001/health
+[0mGET /health [32m200[0m 7.626 ms - 137[0m
+[0mGET /api/productos?limit=6 [32m200[0m 169.208 ms - 3194[0m
+[0mGET /api/productos?limit=6 [32m200[0m 6.530 ms - 3194[0m
+[0mGET /api/productos?page=1&limit=12 [32m200[0m 5.787 ms - 6379[0m
