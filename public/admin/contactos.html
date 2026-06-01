@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Admin Contactos - betostore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+        <div class="ms-auto d-flex align-items-center gap-2">
+            <span id="badge-noLeidos" class="badge bg-danger d-none"></span>
+            <button class="btn btn-sm btn-outline-secondary" onclick="toggleFiltro()" id="btn-filtro">
+                <i class="fas fa-filter"></i> Solo no leídos
+            </button>
+            <a href="/admin/dashboard.html" class="btn btn-outline-success btn-sm">Volver</a>
+        </div>
+    </div>
+</nav>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="h2 text-success mb-4"><i class="fas fa-envelope"></i> Mensajes de Contacto</h2>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Estado</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Asunto</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactos-table">
+                            <tr><td colspan="7" class="text-center">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="paginacion" class="d-flex justify-content-between align-items-center mt-3 d-none">
+                    <small class="text-muted" id="info-paginacion"></small>
+                    <div>
+                        <button class="btn btn-sm btn-outline-success" id="btn-anterior" onclick="cambiarPagina(-1)">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </button>
+                        <button class="btn btn-sm btn-outline-success ms-2" id="btn-siguiente" onclick="cambiarPagina(1)">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
+<script>
+let paginaActual = 1;
+let soloNoLeidos = false;
+let totalPaginas = 1;
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (!localStorage.getItem('token') || !localStorage.getItem('roles')?.includes('ROLE_ADMIN')) {
+        window.location.href = '/login.html?redirect=/admin/dashboard.html';
+        return;
+    }
+    loadContactos();
+});
+
+async function loadContactos() {
+    try {
+        const params = `?page=${paginaActual}&limit=15${soloNoLeidos ? '&noLeidos=true' : ''}`;
+        const response = await api.get(`/api/contactos${params}`);
+        const { data, pagination } = response;
+
+        totalPaginas = pagination.pages || 1;
+        renderTable(data);
+        renderPaginacion(pagination);
+        actualizarBadge(data);
+    } catch (e) {
+        console.error(e);
+        document.getElementById('contactos-table').innerHTML =
+            '<tr><td colspan="7" class="text-center text-danger">Error al cargar mensajes</td></tr>';
+    }
+}
+
+function renderTable(contactos) {
+    const tbody = document.getElementById('contactos-table');
+    if (!contactos.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Sin mensajes</td></tr>';
+        return;
+    }
+    tbody.innerHTML = contactos.map(c => `
+        <tr class="${!c.leido ? 'fw-bold' : 'text-muted'}">
+            <td>
+                ${!c.leido
+                    ? '<span class="badge bg-warning text-dark"><i class="fas fa-circle"></i> Nuevo</span>'
+                    : '<span class="badge bg-secondary"><i class="fas fa-check"></i> Leído</span>'}
+            </td>
+            <td>${c.nombre}</td>
+            <td><a href="mailto:${c.email}">${c.email}</a></td>
+            <td>${c.telefono || '<span class="text-muted">—</span>'}</td>
+            <td>${c.asunto}</td>
+            <td>${formatFecha(c.createdAt)}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary me-1" onclick="verMensaje(${JSON.stringify(c).replace(/"/g, '&quot;')})" title="Ver mensaje">
+                    <i class="fas fa-eye"></i>
+                </button>
+                ${!c.leido ? `
+                <button class="btn btn-sm btn-outline-success" onclick="marcarLeido(${c.id})" title="Marcar como leído">
+                    <i class="fas fa-check"></i>
+                </button>` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+function renderPaginacion(pagination) {
+    const div = document.getElementById('paginacion');
+    const info = document.getElementById('info-paginacion');
+    const btnAnterior = document.getElementById('btn-anterior');
+    const btnSiguiente = document.getElementById('btn-siguiente');
+
+    if (pagination.total === 0) { div.classList.add('d-none'); return; }
+
+    div.classList.remove('d-none');
+    info.textContent = `Mostrando página ${pagination.page} de ${pagination.pages} (${pagination.total} mensajes)`;
+    btnAnterior.disabled = paginaActual <= 1;
+    btnSiguiente.disabled = paginaActual >= totalPaginas;
+}
+
+function actualizarBadge(contactos) {
+    const badge = document.getElementById('badge-noLeidos');
+    const noLeidos = contactos.filter(c => !c.leido).length;
+    if (noLeidos > 0) {
+        badge.textContent = `${noLeidos} sin leer`;
+        badge.classList.remove('d-none');
+    } else {
+        badge.classList.add('d-none');
+    }
+}
+
+function toggleFiltro() {
+    soloNoLeidos = !soloNoLeidos;
+    paginaActual = 1;
+    const btn = document.getElementById('btn-filtro');
+    btn.classList.toggle('btn-outline-secondary', !soloNoLeidos);
+    btn.classList.toggle('btn-warning', soloNoLeidos);
+    loadContactos();
+}
+
+function cambiarPagina(delta) {
+    paginaActual += delta;
+    loadContactos();
+}
+
+async function marcarLeido(id) {
+    try {
+        await api.patch(`/api/contactos/${id}/leido`, {});
+        loadContactos();
+    } catch (e) {
+        Swal.fire('Error', 'No se pudo marcar como leído', 'error');
+    }
+}
+
+function verMensaje(c) {
+    Swal.fire({
+        title: c.asunto,
+        html: `
+            <div class="text-start">
+                <p><strong>De:</strong> ${c.nombre} &lt;${c.email}&gt;</p>
+                ${c.telefono ? `<p><strong>Teléfono:</strong> ${c.telefono}</p>` : ''}
+                <p><strong>Fecha:</strong> ${formatFecha(c.createdAt)}</p>
+                <hr>
+                <p style="white-space: pre-wrap;">${c.mensaje}</p>
+            </div>
+        `,
+        confirmButtonText: 'Cerrar',
+        confirmButtonColor: '#28a745',
+        width: '600px',
+    });
+    if (!c.leido) marcarLeido(c.id);
+}
+
+function formatFecha(fecha) {
+    if (!fecha) return '—';
+    return new Date(fecha).toLocaleString('es-AR', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+    });
+}
+</script>
+</body>
+</html>

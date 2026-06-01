@@ -68,7 +68,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/productos', productosRoutes);
 app.use('/api/promociones', promocionesRoutes);
 app.use('/api/carrito', carritoRoutes);
-app.use('/contact', contactRoutes);
+app.use('/api/contactos', contactRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
