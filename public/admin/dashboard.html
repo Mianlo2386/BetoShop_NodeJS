@@ -109,8 +109,47 @@ function logout() {
     window.location.href = '/';
 }
 
-function loadStats() {
-    Swal.fire('Estadísticas', 'Próximamente...', 'info');
+async function loadStats() {
+    try {
+        const response = await api.get('/api/dashboard');
+        if (!response.success) throw new Error();
+        const s = response.data;
+        Swal.fire({
+            title: '<i class="fas fa-chart-bar text-success"></i> Estadísticas',
+            html: `
+                <div class="text-start">
+                    <h6 class="text-success"><i class="fas fa-box"></i> Productos</h6>
+                    <ul class="list-unstyled ms-3 mb-3">
+                        <li>Total activos: <strong>${s.productos.total}</strong></li>
+                        <li>Categorías: <strong>${s.productos.categorias}</strong></li>
+                        <li>Stock bajo (≤5): <strong>${s.productos.stockBajo}</strong></li>
+                        <li>Precio promedio: <strong>$${s.productos.precioPromedio.toLocaleString('es-AR')}</strong></li>
+                    </ul>
+                    <h6 class="text-success"><i class="fas fa-envelope"></i> Contactos</h6>
+                    <ul class="list-unstyled ms-3 mb-3">
+                        <li>Total: <strong>${s.contactos.total}</strong></li>
+                        <li>No leídos: <strong>${s.contactos.noLeidos}</strong></li>
+                        <li>Últimos 7 días: <strong>${s.contactos.ultimosSieteDias}</strong></li>
+                    </ul>
+                    <h6 class="text-success"><i class="fas fa-tag"></i> Promociones</h6>
+                    <ul class="list-unstyled ms-3 mb-3">
+                        <li>Activas hoy: <strong>${s.promociones.activasHoy}</strong></li>
+                        <li>Vencen en 7 días: <strong>${s.promociones.vencenPronto}</strong></li>
+                    </ul>
+                    <h6 class="text-success"><i class="fas fa-users"></i> Usuarios</h6>
+                    <ul class="list-unstyled ms-3">
+                        <li>Total activos: <strong>${s.usuarios.total}</strong></li>
+                        <li>Nuevos (30 días): <strong>${s.usuarios.nuevosUltimos30Dias}</strong></li>
+                    </ul>
+                </div>
+            `,
+            confirmButtonText: 'Cerrar',
+            confirmButtonColor: '#28a745',
+            width: '500px',
+        });
+    } catch (e) {
+        Swal.fire('Error', 'No se pudieron cargar las estadísticas', 'error');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

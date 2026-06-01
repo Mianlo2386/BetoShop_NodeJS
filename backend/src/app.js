@@ -13,6 +13,7 @@ import productosRoutes from './routes/productos.routes.js';
 import promocionesRoutes from './routes/promociones.routes.js';
 import carritoRoutes from './routes/carrito.routes.js';
 import contactRoutes from './routes/contact.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware.js';
 import { auditMiddleware } from './middleware/audit.middleware.js';
 
@@ -69,6 +70,7 @@ app.use('/api/productos', productosRoutes);
 app.use('/api/promociones', promocionesRoutes);
 app.use('/api/carrito', carritoRoutes);
 app.use('/api/contactos', contactRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
