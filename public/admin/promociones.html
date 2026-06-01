@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Admin Promociones - betostore</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://i.imgur.com/039muYH.jpeg">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/templatemo.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand text-success logo h2" href="/">betostore</a>
+        <div class="ms-auto">
+            <a href="/admin/dashboard.html" class="btn btn-outline-success btn-sm me-2">Volver</a>
+            <button class="btn btn-success btn-sm" onclick="showAddModal()">+ Nueva</button>
+        </div>
+    </div>
+</nav>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="h2 text-success mb-4"><i class="fas fa-tag"></i> Promociones</h2>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Título</th>
+                                <th>Tipo</th>
+                                <th>Descuento</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promociones-table">
+                            <tr><td colspan="7" class="text-center">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="promocionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="promocionModalTitle">Nueva Promoción</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="promocionId">
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label>Título <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="promocionTitulo" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Tipo <span class="text-danger">*</span></label>
+                        <select class="form-select" id="promocionTipo">
+                            <option value="BANNER">Banner</option>
+                            <option value="CATEGORY_DISCOUNT">Descuento por categoría</option>
+                            <option value="PRODUCT_DISCOUNT">Descuento por producto</option>
+                            <option value="FLASH_SALE">Flash Sale</option>
+                            <option value="BUY_ONE_GET_ONE">2x1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Descripción</label>
+                    <textarea class="form-control" id="promocionDescripcion" rows="2"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Descuento (%)</label>
+                        <input type="number" class="form-control" id="promocionDescuento" min="0" max="100">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Categoría (opcional)</label>
+                        <input type="text" class="form-control" id="promocionCategoria">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Activa</label>
+                        <select class="form-select" id="promocionActiva">
+                            <option value="true">Sí</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Fecha inicio <span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" id="promocionInicio">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Fecha fin <span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" id="promocionFin">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" onclick="savePromocion()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/jquery-1.11.0.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/api.js"></script>
+<script>
+let promociones = [];
+
+const TIPOS = {
+    BANNER: 'Banner',
+    CATEGORY_DISCOUNT: 'Desc. Categoría',
+    PRODUCT_DISCOUNT: 'Desc. Producto',
+    FLASH_SALE: 'Flash Sale',
+    BUY_ONE_GET_ONE: '2x1',
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (!localStorage.getItem('token') || !localStorage.getItem('roles')?.includes('ROLE_ADMIN')) {
+        window.location.href = '/login.html?redirect=/admin/dashboard.html';
+        return;
+    }
+    loadPromociones();
+});
+
+async function loadPromociones() {
+    try {
+        const response = await api.get('/api/promociones/admin');
+        promociones = response.data || [];
+        renderTable();
+    } catch (e) { console.error(e); }
+}
+
+function renderTable() {
+    const tbody = document.getElementById('promociones-table');
+    if (!promociones.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Sin promociones</td></tr>';
+        return;
+    }
+    const ahora = new Date();
+    tbody.innerHTML = promociones.map(p => {
+        const inicio = new Date(p.startDate);
+        const fin = new Date(p.endDate);
+        const activa = p.isActive && ahora >= inicio && ahora <= fin;
+        const vencida = ahora > fin;
+        let estadoBadge = activa
+            ? '<span class="badge bg-success">Activa</span>'
+            : vencida
+                ? '<span class="badge bg-secondary">Vencida</span>'
+                : '<span class="badge bg-warning text-dark">Pendiente</span>';
+        if (!p.isActive) estadoBadge = '<span class="badge bg-danger">Desactivada</span>';
+
+        return `
+        <tr>
+            <td>${p.title}</td>
+            <td>${TIPOS[p.type] || p.type}</td>
+            <td>${p.discountPercentage ? p.discountPercentage + '%' : '—'}</td>
+            <td>${formatFecha(p.startDate)}</td>
+            <td>${formatFecha(p.endDate)}</td>
+            <td>${estadoBadge}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary me-1" onclick="editPromocion(${p.id})" title="Editar">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deletePromocion(${p.id})" title="Eliminar">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function showAddModal() {
+    document.getElementById('promocionModalTitle').textContent = 'Nueva Promoción';
+    document.getElementById('promocionId').value = '';
+    document.getElementById('promocionTitulo').value = '';
+    document.getElementById('promocionDescripcion').value = '';
+    document.getElementById('promocionTipo').value = 'BANNER';
+    document.getElementById('promocionDescuento').value = '';
+    document.getElementById('promocionCategoria').value = '';
+    document.getElementById('promocionActiva').value = 'true';
+    document.getElementById('promocionInicio').value = '';
+    document.getElementById('promocionFin').value = '';
+    new bootstrap.Modal(document.getElementById('promocionModal')).show();
+}
+
+function editPromocion(id) {
+    const p = promociones.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('promocionModalTitle').textContent = 'Editar Promoción';
+    document.getElementById('promocionId').value = p.id;
+    document.getElementById('promocionTitulo').value = p.title || '';
+    document.getElementById('promocionDescripcion').value = p.description || '';
+    document.getElementById('promocionTipo').value = p.type || 'BANNER';
+    document.getElementById('promocionDescuento').value = p.discountPercentage || '';
+    document.getElementById('promocionCategoria').value = p.category || '';
+    document.getElementById('promocionActiva').value = p.isActive ? 'true' : 'false';
+    document.getElementById('promocionInicio').value = toLocalDatetime(p.startDate);
+    document.getElementById('promocionFin').value = toLocalDatetime(p.endDate);
+    new bootstrap.Modal(document.getElementById('promocionModal')).show();
+}
+
+async function savePromocion() {
+    const id = document.getElementById('promocionId').value;
+    const data = {
+        title: document.getElementById('promocionTitulo').value.trim(),
+        description: document.getElementById('promocionDescripcion').value.trim(),
+        type: document.getElementById('promocionTipo').value,
+        discountPercentage: parseFloat(document.getElementById('promocionDescuento').value) || null,
+        category: document.getElementById('promocionCategoria').value.trim() || null,
+        isActive: document.getElementById('promocionActiva').value === 'true',
+        startDate: new Date(document.getElementById('promocionInicio').value).toISOString(),
+        endDate: new Date(document.getElementById('promocionFin').value).toISOString(),
+    };
+
+    if (!data.title || !data.startDate || !data.endDate) {
+        Swal.fire('Error', 'Título, fecha inicio y fecha fin son requeridos', 'error');
+        return;
+    }
+
+    try {
+        if (id) {
+            await api.put(`/api/promociones/${id}`, data);
+            Swal.fire('OK', 'Promoción actualizada', 'success');
+        } else {
+            await api.post('/api/promociones', data);
+            Swal.fire('OK', 'Promoción creada', 'success');
+        }
+        bootstrap.Modal.getInstance(document.getElementById('promocionModal')).hide();
+        loadPromociones();
+    } catch (e) {
+        Swal.fire('Error', 'No se pudo guardar', 'error');
+    }
+}
+
+async function deletePromocion(id) {
+    const confirm = await Swal.fire({
+        title: '¿Eliminar promoción?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    });
+    if (!confirm.isConfirmed) return;
+    try {
+        await api.delete(`/api/promociones/${id}`);
+        Swal.fire('OK', 'Promoción eliminada', 'success');
+        loadPromociones();
+    } catch (e) {
+        Swal.fire('Error', 'No se pudo eliminar', 'error');
+    }
+}
+
+function formatFecha(fecha) {
+    if (!fecha) return '—';
+    return new Date(fecha).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function toLocalDatetime(fecha) {
+    if (!fecha) return '';
+    const d = new Date(fecha);
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+</script>
+</body>
+</html>
