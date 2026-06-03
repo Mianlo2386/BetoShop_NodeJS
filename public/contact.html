@@ -72,9 +72,15 @@
                     <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Tu email" required>
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="subject">Asunto</label>
-                <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Asunto de tu mensaje" required>
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="phone">Teléfono (opcional)</label>
+                    <input type="tel" class="form-control mt-1" id="phone" name="phone" placeholder="Tu teléfono">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="subject">Asunto</label>
+                    <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Asunto de tu mensaje" required>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="message">Mensaje</label>
@@ -101,6 +107,73 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ -->
+<div class="container py-5">
+    <h2 class="text-center mb-4">Preguntas Frecuentes</h2>
+    <div class="accordion col-md-8 m-auto" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    <i class="fas fa-truck text-success me-2"></i> ¿Hacen envíos a todo el país?
+                </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                    Sí. Podemos coordinar el envío a través de un servicio de Expreso, con el costo de envío a cargo del comprador. Coordinamos juntos la mejor opción según tu ubicación.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    <i class="fas fa-credit-card text-success me-2"></i> ¿Cuáles son los medios de pago?
+                </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                    Aceptamos pagos a través de <strong>Mercado Pago</strong> y también <strong>efectivo contra entrega</strong> para compras coordinadas personalmente.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    <i class="fas fa-clock text-success me-2"></i> ¿Cuánto tarda el envío?
+                </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                    El tiempo de entrega es variable según lo que coordinemos con el comprador y el lugar de destino. Nos preocupamos siempre porque sea lo más rápido posible.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    <i class="fas fa-star text-success me-2"></i> ¿Hacen pedidos personalizados?
+                </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                    ¡Sí! No dudes en contactarnos y pedirnos lo que quieras. Te daremos un presupuesto sin compromiso.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    <i class="fas fa-file-invoice text-success me-2"></i> ¿Hacen Factura A?
+                </button>
+            </h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-muted">
+                    Los precios publicados corresponden a pago en efectivo o transferencia. Para Factura A es necesario agregar los impuestos correspondientes. Consultanos para más información.
+                </div>
             </div>
         </div>
     </div>
