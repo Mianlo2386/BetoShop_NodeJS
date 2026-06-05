@@ -221,3 +221,48 @@
 [data-theme="dark"] .page-link:hover {
   background-color: var(--bg-card);
 }
+/* ── Fixes contraste dark mode ───────────────────────────────────────────── */
+[data-theme="dark"] p,
+[data-theme="dark"] li,
+[data-theme="dark"] label,
+[data-theme="dark"] span {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #a0aab4 !important;
+}
+
+[data-theme="dark"] .accordion-button {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .accordion-body {
+    background-color: var(--bg-card) !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .accordion-item {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .card {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .pagination .page-link {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--bg-card) !important;
+}
