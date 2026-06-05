@@ -55,7 +55,6 @@
                 <li class="nav-item"><a class="nav-link" href="/contact.html">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="/cart.html">Carrito <span id="cart-count" class="badge bg-success">0</span></a></li>
                 </ul>
-                <!-- Search -->
                 <div class="nav-search ms-3">
                     <button class="btn btn-search" type="button" id="searchToggle">
                         <i class="fas fa-search"></i>
@@ -71,26 +70,75 @@
         </div>
     </nav>
 
-    <!-- Header/Hero -->
-    <div id="template-mo-zay-photo-carousel">
+    <!-- Header/Hero Carousel -->
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></button>
+        </div>
         <div class="carousel-inner">
+            <!-- Slide 1 -->
             <div class="carousel-item active">
                 <div class="container">
                     <div class="row p-5">
                         <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                            <img class="img-fluid" src="/assets/img/lufi.png" alt="">
+                            <img class="img-fluid" src="/assets/img/lufi.png" alt="BetoStore">
                         </div>
                         <div class="col-lg-6 mb-0 d-flex align-items-center">
                             <div class="text-align-left align-self-center">
                                 <h1 class="h1 text-success"><span class="logo">betostore</span> Tu tienda de confianza</h1>
                                 <h3 class="h2">Los mejores productos</h3>
                                 <p>Descubre nuestra colección de cuadros, llaveros y accesorios.</p>
+                                <a href="/shop.html" class="btn btn-success px-4 mt-2">Ver productos</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="https://i.imgur.com/v3ZfSe1.png" alt="Colección BetoStore">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text-success">Colección exclusiva</h1>
+                                <h3 class="h2">Productos únicos y especiales</h3>
+                                <p>Cada artículo está pensado para sorprender.</p>
+                                <a href="/shop.html" class="btn btn-success px-4 mt-2">Explorar tienda</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="https://i.imgur.com/F1IQJTL.png" alt="Pedidos personalizados">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text-success">Pedidos personalizados</h1>
+                                <h3 class="h2">¿Tenés algo en mente?</h3>
+                                <p>Contanos qué querés y te damos un presupuesto sin compromiso.</p>
+                                <a href="/contact.html" class="btn btn-success px-4 mt-2">Contactanos</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
     </div>
 
     <!-- Section Categorías -->
@@ -102,18 +150,18 @@
         </div>
         <div class="row">
             <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="/shop.html?categoria=Cuadros">
+                <a href="/shop.html?categoria=Pel%C3%ADculas">
                     <img src="https://i.imgur.com/qFiv3cn.jpg" class="rounded-circle img-fluid border">
                 </a>
-                <h5 class="text-center mt-3 mb-3">Cuadros</h5>
-                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Cuadros">Ver más</a></p>
+                <h5 class="text-center mt-3 mb-3">Películas</h5>
+                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Pel%C3%ADculas">Ver más</a></p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
-                <a href="/shop.html?categoria=Llaveros">
+                <a href="/shop.html?categoria=Decoraci%C3%B3n">
                     <img src="https://i.imgur.com/29Qp3VF.jpg" class="rounded-circle img-fluid border">
                 </a>
-                <h5 class="text-center mt-3 mb-3">Llaveros</h5>
-                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Llaveros">Ver más</a></p>
+                <h5 class="text-center mt-3 mb-3">Decoración</h5>
+                <p class="text-center"><a class="btn btn-success" href="/shop.html?categoria=Decoraci%C3%B3n">Ver más</a></p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="/shop.html?categoria=Accesorios">
@@ -133,15 +181,11 @@
                     <h1 class="h1">Productos Destacados</h1>
                 </div>
             </div>
-            
-            <!-- Loading -->
             <div id="loading-destacados" class="text-center py-5">
                 <div class="spinner-border text-success" role="status">
                     <span class="visually-hidden">Cargando...</span>
                 </div>
             </div>
-
-            <!-- Productos -->
             <div class="row" id="productos-destacados">
             </div>
         </div>
@@ -209,16 +253,11 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="/assets/js/jquery-1.11.0.min.js"></script>
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/custom.js"></script>
-    
-    <!-- API -->
     <script src="/assets/js/api.js"></script>
-    
     <script>
-        // Cargar productos destacados
         document.addEventListener('DOMContentLoaded', function() {
             cargarProductosDestacados();
             actualizarMenuUsuario();
@@ -227,11 +266,9 @@
         async function cargarProductosDestacados() {
             const container = document.getElementById('productos-destacados');
             const loading = document.getElementById('loading-destacados');
-
             try {
                 const response = await api.productos.getAll({ limit: 6 });
                 loading.classList.add('d-none');
-
                 if (response.data && response.data.length > 0) {
                     container.innerHTML = response.data.map(producto => `
                         <div class="col-12 col-md-4 p-5 mt-3">
@@ -240,7 +277,7 @@
                                 <div class="card-body">
                                     <ul class="list-unstyled d-flex justify-content-between">
                                         <li>
-                                            ${Array(5).fill(0).map((_, i) => 
+                                            ${Array(5).fill(0).map((_, i) =>
                                                 `<i class="${i < producto.stars ? 'fa fa-star text-warning' : 'fa fa-star text-secondary'}"></i>`
                                             ).join('')}
                                         </li>
@@ -261,7 +298,6 @@
                     container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No hay productos disponibles</p></div>';
                 }
             } catch (error) {
-                console.error('Error:', error);
                 loading.classList.add('d-none');
                 container.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Error al cargar productos</p></div>';
             }
@@ -275,30 +311,17 @@
                     title: 'Inicia sesión',
                     text: 'Necesitas estar logueado para agregar al carrito',
                     confirmButtonText: 'Ir a Login'
-                }).then(() => {
-                    window.location.href = '/login.html';
-                });
+                }).then(() => { window.location.href = '/login.html'; });
                 return;
             }
-
             try {
                 const response = await api.carrito.add(productoId, 1);
                 if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Agregado!',
-                        text: 'Producto agregado al carrito',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
+                    Swal.fire({ icon: 'success', title: '¡Agregado!', text: 'Producto agregado al carrito', timer: 1500, showConfirmButton: false });
                     actualizarCarrito();
                 }
             } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudo agregar al carrito'
-                });
+                Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo agregar al carrito' });
             }
         }
 
