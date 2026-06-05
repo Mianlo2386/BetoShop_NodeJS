@@ -107,9 +107,10 @@
             <div class="col-md-4 pt-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">Productos</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="/shop.html?categoria=Cuadros">Cuadros</a></li>
-                    <li><a class="text-decoration-none" href="/shop.html?categoria=Llaveros">Llaveros</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Pel%C3%ADculas">Películas</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Decoraci%C3%B3n">Decoración</a></li>
                     <li><a class="text-decoration-none" href="/shop.html?categoria=Accesorios">Accesorios</a></li>
+                    <li><a class="text-decoration-none" href="/shop.html?categoria=Coleccionables">Coleccionables</a></li>
                 </ul>
             </div>
             <div class="col-md-4 pt-5">
@@ -123,7 +124,7 @@
         <div class="row text-light">
             <div class="col-12">
                 <div class="border-top pt-3">
-                    <p class="text-left">Copyright &copy; 2025 MianloDev</p>
+                    <p class="text-left">Copyright &copy; 2026 MianloDev</p>
                 </div>
             </div>
         </div>
@@ -168,19 +169,24 @@ async function cargarCarrito() {
         
         let total = 0;
         tbody.innerHTML = items.map(item => {
-            const producto = item.producto || item;
-            const cantidad = item.cantidad || 1;
-            const precioUnitario = producto.precio || 0;
+            const precioUnitario = item.precio || 0;
+            const cantidad = item.quantity || 1;
             const precioTotal = precioUnitario * cantidad;
             total += precioTotal;
             
             return `
                 <tr>
-                    <td><a href="/shop-single.html?id=${producto._id}" class="text-dark text-decoration-none">${producto.nombre}</a></td>
-                    <td>${cantidad}</td>
+                    <td><a href="/shop-single.html?id=${item.productoId}" class="text-dark text-decoration-none">${item.nombre}</a></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="cambiarCantidad('${item.productoId}', ${cantidad - 1})">-</button>
+                            <span>${cantidad}</span>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="cambiarCantidad('${item.productoId}', ${cantidad + 1})">+</button>
+                        </div>
+                    </td>
                     <td>$${precioUnitario.toLocaleString('es-AR')}</td>
                     <td>$${precioTotal.toLocaleString('es-AR')}</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito('${producto._id}')"><i class="fas fa-trash"></i></button></td>
+                    <td><button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito('${item.productoId}')"><i class="fas fa-trash"></i></button></td>
                 </tr>
             `;
         }).join('');
@@ -210,11 +216,16 @@ async function eliminarDelCarrito(productoId) {
             cargarCarrito();
         }
     } catch (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo eliminar el producto'
-        });
+        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar el producto' });
+    }
+}
+
+async function cambiarCantidad(productoId, nuevaCantidad) {
+    try {
+        const response = await api.patch(`/api/carrito/${productoId}`, { quantity: nuevaCantidad });
+        if (response.success) cargarCarrito();
+    } catch (error) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar la cantidad' });
     }
 }
 
