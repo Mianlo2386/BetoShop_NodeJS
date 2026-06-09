@@ -266,3 +266,32 @@
 [data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
     background-color: var(--bg-card) !important;
 }
+
+
+}
+
+/* ── Hero carousel & logo animado - dark mode ─── */
+[data-theme="dark"] #template-mo-zay-hero-carousel {
+    background: #16213e !important;
+}
+
+[data-theme="dark"] #template-mo-zay-hero-carousel h1,
+[data-theme="dark"] #template-mo-zay-hero-carousel h1 span,
+[data-theme="dark"] #template-mo-zay-hero-carousel h2,
+[data-theme="dark"] #template-mo-zay-hero-carousel h3,
+[data-theme="dark"] #template-mo-zay-hero-carousel p,
+[data-theme="dark"] #template-mo-zay-hero-carousel .logo,
+[data-theme="dark"] #template-mo-zay-hero-carousel .text-success,
+[data-theme="dark"] #template-mo-zay-hero-carousel .carousel-title {
+    color: #eaeaea !important;
+}
+
+[data-theme="dark"] .hero-logo-text {
+    fill: #eaeaea !important;
+}
+
+[data-theme="dark"] .h1,
+[data-theme="dark"] .h2,
+[data-theme="dark"] .h3 {
+    color: var(--text-primary) !important;
+}

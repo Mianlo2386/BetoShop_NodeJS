@@ -71,11 +71,23 @@
     </nav>
 
     <!-- Header/Hero Carousel -->
-    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <style>
+        #beto-hero { background-color: #f8f9fa; transition: background-color 0.3s; }
+        [data-theme="dark"] #beto-hero { background-color: #16213e; }
+        #beto-hero .beto-slide-title { color: #1a202c; }
+        [data-theme="dark"] #beto-hero .beto-slide-title { color: #eaeaea; }
+        #beto-hero .beto-slide-subtitle { color: #444; }
+        [data-theme="dark"] #beto-hero .beto-slide-subtitle { color: #b0b0b0; }
+        #beto-hero .beto-slide-text { color: #555; }
+        [data-theme="dark"] #beto-hero .beto-slide-text { color: #9090a0; }
+        #beto-hero .hero-logo-text { fill: #1a1a1a; }
+        [data-theme="dark"] #beto-hero .hero-logo-text { fill: #eaeaea; }
+    </style>
+    <div id="beto-hero" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#beto-hero" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#beto-hero" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#beto-hero" data-bs-slide-to="2"></button>
         </div>
         <div class="carousel-inner">
             <!-- Slide 0 - Logo Animado -->
@@ -99,7 +111,7 @@
                         <text x="60" y="55" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1" class="bt">BETO</text>
                         <text x="60" y="72" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1" class="bt">STORE</text>
                       </g>
-                      <text x="128" y="52" font-family="Arial Black,sans-serif" font-size="38" font-weight="900" font-style="italic" fill="#1a1a1a" letter-spacing="-1" class="mt">betostore</text>
+                      <text x="128" y="52" font-family="Arial Black,sans-serif" font-size="38" font-weight="900" font-style="italic" letter-spacing="-1" class="mt hero-logo-text">betostore</text>
                       <text x="130" y="75" font-family="Arial,sans-serif" font-size="13" fill="#28a745" letter-spacing="2" class="st">✦ ANIME &amp; COLLECTIBLES ✦</text>
                     </svg>
                 </div>
@@ -113,9 +125,9 @@
                         </div>
                         <div class="col-lg-6 mb-0 d-flex align-items-center">
                             <div class="text-align-left align-self-center">
-                                <h1 class="h1 text-success"><span class="logo">betostore</span> Tu tienda de confianza</h1>
-                                <h3 class="h2">Los mejores productos</h3>
-                                <p>Descubre nuestra colección de cuadros, llaveros y accesorios.</p>
+                                <h1 class="beto-slide-title" style="font-size:2rem;font-weight:700;"><span style="color:#28a745">betostore</span> Tu tienda de confianza</h1>
+                                <h3 class="beto-slide-subtitle" style="font-size:1.3rem;">Los mejores productos</h3>
+                                <p class="beto-slide-text">Descubre nuestra colección de cuadros, llaveros y accesorios.</p>
                                 <a href="/shop.html" class="btn btn-success px-4 mt-2">Ver productos</a>
                             </div>
                         </div>
@@ -131,9 +143,9 @@
                         </div>
                         <div class="col-lg-6 mb-0 d-flex align-items-center">
                             <div class="text-align-left align-self-center">
-                                <h1 class="h1 text-success">Colección exclusiva</h1>
-                                <h3 class="h2">Productos únicos y especiales</h3>
-                                <p>Cada artículo está pensado para sorprender.</p>
+                                <h1 class="beto-slide-title" style="font-size:2rem;font-weight:700;">Colección exclusiva</h1>
+                                <h3 class="beto-slide-subtitle" style="font-size:1.3rem;">Productos únicos y especiales</h3>
+                                <p class="beto-slide-text">Cada artículo está pensado para sorprender.</p>
                                 <a href="/shop.html" class="btn btn-success px-4 mt-2">Explorar tienda</a>
                             </div>
                         </div>
@@ -149,9 +161,9 @@
                         </div>
                         <div class="col-lg-6 mb-0 d-flex align-items-center">
                             <div class="text-align-left align-self-center">
-                                <h1 class="h1 text-success">Pedidos personalizados</h1>
-                                <h3 class="h2">¿Tenés algo en mente?</h3>
-                                <p>Contanos qué querés y te damos un presupuesto sin compromiso.</p>
+                                <h1 class="beto-slide-title" style="font-size:2rem;font-weight:700;">Pedidos personalizados</h1>
+                                <h3 class="beto-slide-subtitle" style="font-size:1.3rem;">¿Tenés algo en mente?</h3>
+                                <p class="beto-slide-text">Contanos qué querés y te damos un presupuesto sin compromiso.</p>
                                 <a href="/contact.html" class="btn btn-success px-4 mt-2">Contactanos</a>
                             </div>
                         </div>
@@ -159,10 +171,10 @@
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#beto-hero" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#beto-hero" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
         </button>
     </div>

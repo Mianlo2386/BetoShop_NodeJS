@@ -332,3 +332,22 @@ h4, h5, h6 {
 #template-mo-zay-hero-carousel .carousel-control-next:hover {
     opacity: 0 !important;
 }
+
+/* Scrollbar sutil global */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
+* { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.2) transparent; }
+
+/* Ocultar paneles laterales carousel */
+#beto-hero .carousel-control-prev,
+#beto-hero .carousel-control-next {
+    background: transparent !important;
+    opacity: 0 !important;
+}
+
+/* Ocultar indicadores carousel */
+#beto-hero .carousel-indicators {
+    display: none !important;
+}
