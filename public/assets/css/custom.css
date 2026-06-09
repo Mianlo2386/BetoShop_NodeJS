@@ -351,3 +351,15 @@ h4, h5, h6 {
 #beto-hero .carousel-indicators {
     display: none !important;
 }
+
+/* ── Hero carousel beto-hero ─── */
+#beto-hero { background-color: #f8f9fa; transition: background-color 0.3s; }
+[data-theme="dark"] #beto-hero { background-color: #16213e; }
+#beto-hero .beto-slide-title { color: #1a202c; }
+[data-theme="dark"] #beto-hero .beto-slide-title { color: #eaeaea; }
+#beto-hero .beto-slide-subtitle { color: #444; }
+[data-theme="dark"] #beto-hero .beto-slide-subtitle { color: #b0b0b0; }
+#beto-hero .beto-slide-text { color: #555; }
+[data-theme="dark"] #beto-hero .beto-slide-text { color: #9090a0; }
+#beto-hero .hero-logo-text { fill: #1a1a1a; }
+[data-theme="dark"] #beto-hero .hero-logo-text { fill: #eaeaea; }
