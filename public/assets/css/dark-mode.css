@@ -295,3 +295,16 @@
 [data-theme="dark"] .h3 {
     color: var(--text-primary) !important;
 }
+
+/* Hamburguesa visible en dark mode */
+[data-theme="dark"] .navbar-toggler-icon {
+    filter: invert(1);
+}
+[data-theme="dark"] .navbar-toggler {
+    border-color: rgba(255,255,255,0.3) !important;
+}
+
+/* Mantener verde en el span del logo en slides */
+[data-theme="dark"] #beto-hero span[style*="color:#28a745"] {
+    color: #28a745 !important;
+}
