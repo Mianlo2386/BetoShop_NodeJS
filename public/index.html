@@ -78,8 +78,34 @@
             <button type="button" data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></button>
         </div>
         <div class="carousel-inner">
-            <!-- Slide 1 -->
+            <!-- Slide 0 - Logo Animado -->
             <div class="carousel-item active">
+                <div class="container-fluid d-flex align-items-center justify-content-center" style="min-height:400px; padding: 120px 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" style="width:80%; max-width:700px;">
+                      <style>
+                        .bc { transform-origin:60px 60px; animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both; }
+                        .br { stroke-dasharray:270; stroke-dashoffset:270; animation:drawRing .8s .3s ease forwards; }
+                        .bt { opacity:0; animation:fadeIn .4s .7s ease forwards; }
+                        .mt { opacity:0; transform:translateX(-20px); animation:slideIn .5s .5s cubic-bezier(.34,1.2,.64,1) forwards; }
+                        .st { opacity:0; animation:fadeIn .5s .9s ease forwards; }
+                        @keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+                        @keyframes drawRing { to{stroke-dashoffset:0} }
+                        @keyframes fadeIn { to{opacity:1} }
+                        @keyframes slideIn { to{opacity:1;transform:translateX(0)} }
+                      </style>
+                      <g class="bc">
+                        <circle cx="60" cy="60" r="50" fill="#28a745"/>
+                        <circle cx="60" cy="60" r="43" class="br" fill="none" stroke="white" stroke-width="2"/>
+                        <text x="60" y="55" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1" class="bt">BETO</text>
+                        <text x="60" y="72" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1" class="bt">STORE</text>
+                      </g>
+                      <text x="128" y="52" font-family="Arial Black,sans-serif" font-size="38" font-weight="900" font-style="italic" fill="#1a1a1a" letter-spacing="-1" class="mt">betostore</text>
+                      <text x="130" y="75" font-family="Arial,sans-serif" font-size="13" fill="#28a745" letter-spacing="2" class="st">✦ ANIME &amp; COLLECTIBLES ✦</text>
+                    </svg>
+                </div>
+            </div>
+            <!-- Slide 1 -->
+            <div class="carousel-item">
                 <div class="container">
                     <div class="row p-5">
                         <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
